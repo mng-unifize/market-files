@@ -1,11 +1,10 @@
 name: daily-files
 on:
   schedule:
-    # 6:45, 7:15, 7:45 and 8:15 PM India time, Monday to Friday (GitHub runs can start late)
+    # 6:45, 7:15 and 7:45 PM India time, Monday to Friday (GitHub runs can start late)
     - cron: "15 13 * * 1-5"
     - cron: "45 13 * * 1-5"
     - cron: "15 14 * * 1-5"
-    - cron: "45 14 * * 1-5"
   workflow_dispatch:
     inputs:
       date:
