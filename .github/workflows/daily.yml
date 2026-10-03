@@ -1,0 +1,45 @@
+name: daily-files
+on:
+  schedule:
+    # 6:45, 7:15, 7:45 and 8:15 PM India time, Monday to Friday (GitHub runs can start late)
+    - cron: "15 13 * * 1-5"
+    - cron: "45 13 * * 1-5"
+    - cron: "15 14 * * 1-5"
+    - cron: "45 14 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "One date YYYY-MM-DD (blank = today)"
+        required: false
+      since:
+        description: "Fill every weekday from this date YYYY-MM-DD"
+        required: false
+permissions:
+  contents: write
+concurrency:
+  group: daily-files
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download exchange files
+        run: |
+          if [ -n "${{ github.event.inputs.since }}" ]; then
+            python scripts/fetch.py --since "${{ github.event.inputs.since }}"
+          elif [ -n "${{ github.event.inputs.date }}" ]; then
+            python scripts/fetch.py --date "${{ github.event.inputs.date }}"
+          else
+            python scripts/fetch.py
+          fi
+      - name: Save to repository
+        run: |
+          git config user.name "penny-bot"
+          git config user.email "penny-bot@users.noreply.github.com"
+          git add data index.json
+          git diff --cached --quiet || git commit -m "Exchange files $(date -u +%F)"
+          git push
