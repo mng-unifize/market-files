@@ -1,6 +1,3752 @@
 {
- "updated": "2026-10-05T20:01:08+05:30",
+ "updated": "2026-10-06T00:14:16+05:30",
  "dates": {
+  "2024-07-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240708_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240708_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240709_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240709_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240710_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240710_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240711_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240711_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240712_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240712_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240715_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240715_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240716_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240716_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-17": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2024-07-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240718_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240718_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240719_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240719_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240722_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240722_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240723_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240723_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240724_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240724_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240725_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240725_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240726_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240726_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240729_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240729_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240730_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240730_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-07-31": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240731_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240731_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240801_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240801_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240802_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240802_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240805_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240805_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240806_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240806_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240807_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240807_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240808_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240808_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240809_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240809_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240812_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240812_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240813_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240813_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240814_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240814_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-15": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2024-08-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240816_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240816_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240819_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240819_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240820_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240820_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240821_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240821_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240822_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240822_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240823_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240823_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240826_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240826_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240827_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240827_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240828_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240828_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240829_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240829_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-08-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240830_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240830_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240902_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240902_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240903_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240903_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240904_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240904_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240905_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240905_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240906_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240906_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240909_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240909_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240910_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240910_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240911_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240911_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240912_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240912_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240913_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240913_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240916_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240916_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240917_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240917_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240918_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240918_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240919_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240919_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240920_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240920_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240923_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240923_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240924_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240924_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240925_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240925_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240926_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240926_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240927_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240927_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-09-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20240930_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20240930_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241001_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241001_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-02": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2024-10-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241003_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241003_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241004_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241004_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241007_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241007_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241008_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241008_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241009_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241009_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241010_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241010_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241011_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241011_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241014_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241014_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241015_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241015_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241016_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241016_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241017_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241017_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241018_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241018_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241021_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241021_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241022_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241022_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241023_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241023_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241024_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241024_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241025_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241025_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241028_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241028_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241029_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241029_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241030_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241030_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-10-31": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241031_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241031_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241101_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241101_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241104_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241104_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241105_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241105_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241106_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241106_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241107_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241107_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241108_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241108_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241111_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241111_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241112_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241112_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241113_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241113_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241114_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241114_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-15": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2024-11-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241118_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241118_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241119_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241119_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-20": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2024-11-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241121_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241121_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241122_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241122_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241125_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241125_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241126_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241126_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241127_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241127_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241128_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241128_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-11-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241129_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241129_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241202_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241202_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241203_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241203_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241204_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241204_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241205_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241205_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241206_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241206_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241209_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241209_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241210_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241210_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241211_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241211_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241212_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241212_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241213_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241213_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241216_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241216_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241217_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241217_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241218_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241218_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241219_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241219_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241220_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241220_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241223_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241223_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241224_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241224_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-25": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2024-12-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241226_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241226_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241227_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241227_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241230_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241230_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2024-12-31": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20241231_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20241231_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250101_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250101_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250102_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250102_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250103_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250103_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250106_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250106_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250107_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250107_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250108_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250108_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250109_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250109_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250110_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250110_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250113_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250113_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250114_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250114_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250115_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250115_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250116_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250116_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250117_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250117_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250120_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250120_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250121_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250121_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250122_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250122_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250123_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250123_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250124_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250124_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250127_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250127_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250128_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250128_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250129_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250129_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250130_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250130_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-01-31": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250131_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250131_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250203_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250203_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250204_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250204_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250205_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250205_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250206_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250206_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250207_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250207_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250210_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250210_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250211_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250211_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250212_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250212_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250213_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250213_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250214_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250214_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250217_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250217_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250218_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250218_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250219_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250219_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250220_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250220_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250221_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250221_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250224_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250224_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250225_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250225_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-26": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-02-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250227_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250227_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-02-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250228_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250228_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250303_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250303_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250304_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250304_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250305_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250305_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250306_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250306_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250307_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250307_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250310_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250310_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250311_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250311_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250312_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250312_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250313_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250313_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-14": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-03-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250317_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250317_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250318_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250318_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250319_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250319_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250320_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250320_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250321_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250321_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250324_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250324_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250325_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250325_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250326_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250326_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250327_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250327_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250328_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250328_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-03-31": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-04-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250401_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250401_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250402_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250402_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250403_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250403_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250404_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250404_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250407_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250407_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250408_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250408_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250409_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250409_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-10": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-04-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250411_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250411_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-14": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-04-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250415_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250415_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250416_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250416_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250417_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250417_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-18": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-04-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250421_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250421_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250422_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250422_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250423_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250423_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250424_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250424_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250425_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250425_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250428_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250428_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250429_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250429_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-04-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250430_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250430_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-01": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-05-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250502_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250502_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250505_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250505_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250506_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250506_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250507_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250507_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250508_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250508_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250509_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250509_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250512_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250512_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250513_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250513_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250514_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250514_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250515_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250515_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250516_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250516_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250519_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250519_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250520_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250520_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250521_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250521_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250522_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250522_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250523_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250523_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250526_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250526_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250527_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250527_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250528_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250528_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250529_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250529_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-05-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250530_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250530_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250602_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250602_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250603_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250603_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250604_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250604_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250605_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250605_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250606_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250606_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250609_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250609_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250610_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250610_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250611_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250611_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250612_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250612_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250613_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250613_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250616_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250616_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250617_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250617_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250618_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250618_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250619_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250619_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250620_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250620_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250623_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250623_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250624_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250624_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250625_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250625_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250626_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250626_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250627_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250627_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-06-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250630_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250630_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250701_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250701_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250702_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250702_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250703_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250703_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250704_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250704_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250707_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250707_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250708_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250708_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250709_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250709_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250710_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250710_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250711_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250711_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250714_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250714_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250715_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250715_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250716_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250716_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250717_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250717_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250718_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250718_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250721_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250721_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250722_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250722_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250723_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250723_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250724_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250724_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250725_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250725_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250728_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250728_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250729_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250729_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250730_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250730_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-07-31": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250731_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250731_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250801_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250801_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250804_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250804_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250805_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250805_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250806_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250806_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250807_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250807_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250808_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250808_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250811_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250811_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250812_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250812_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250813_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250813_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250814_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250814_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-15": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-08-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250818_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250818_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250819_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250819_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250820_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250820_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250821_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250821_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250822_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250822_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250825_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250825_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250826_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250826_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-27": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-08-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250828_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250828_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-08-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250829_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250829_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250901_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250901_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250902_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250902_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250903_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250903_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250904_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250904_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250905_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250905_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250908_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250908_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250909_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250909_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250910_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250910_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250911_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250911_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250912_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250912_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250915_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250915_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250916_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250916_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250917_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250917_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250918_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250918_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250919_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250919_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250922_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250922_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250923_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250923_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250924_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250924_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250925_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250925_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250926_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250926_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250929_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250929_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-09-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20250930_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20250930_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251001_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251001_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-02": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-10-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251003_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251003_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251006_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251006_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251007_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251007_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251008_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251008_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251009_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251009_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251010_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251010_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251013_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251013_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251014_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251014_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251015_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251015_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251016_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251016_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251017_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251017_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251020_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251020_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251021_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251021_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-22": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-10-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251023_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251023_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251024_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251024_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251027_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251027_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251028_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251028_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251029_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251029_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251030_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251030_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-10-31": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251031_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251031_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251103_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251103_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251104_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251104_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-05": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-11-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251106_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251106_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251107_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251107_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251110_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251110_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251111_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251111_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251112_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251112_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251113_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251113_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251114_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251114_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251117_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251117_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251118_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251118_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251119_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251119_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251120_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251120_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251121_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251121_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251124_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251124_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251125_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251125_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251126_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251126_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251127_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251127_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-11-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251128_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251128_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251201_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251201_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251202_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251202_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251203_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251203_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251204_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251204_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251205_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251205_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251208_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251208_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251209_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251209_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251210_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251210_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251211_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251211_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251212_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251212_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251215_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251215_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251216_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251216_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251217_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251217_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251218_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251218_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251219_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251219_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251222_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251222_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251223_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251223_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251224_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251224_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-25": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2025-12-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251226_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251226_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251229_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251229_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251230_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251230_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2025-12-31": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20251231_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20251231_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260101_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260101_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260102_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260102_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260105_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260105_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260106_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260106_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260107_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260107_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260108_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260108_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260109_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260109_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260112_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260112_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260113_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260113_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-14": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260114_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260114_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-15": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-01-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260116_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260116_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260119_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260119_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260120_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260120_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-21": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260121_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260121_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-22": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260122_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260122_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260123_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260123_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-26": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-01-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260127_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260127_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-28": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260128_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260128_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-29": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260129_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260129_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-01-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260130_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260130_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260202_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260202_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-03": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260203_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260203_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260204_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260204_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260205_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260205_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260206_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260206_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260209_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260209_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260210_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260210_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260211_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260211_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260212_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260212_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260213_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260213_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260216_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260216_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260217_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260217_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260218_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260218_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260219_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260219_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260220_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260220_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260223_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260223_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260224_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260224_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260225_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260225_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-26": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260226_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260226_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-02-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260227_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260227_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260302_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260302_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-03": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-03-04": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260304_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260304_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-05": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260305_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260305_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260306_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260306_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260309_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260309_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260310_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260310_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-11": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260311_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260311_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-12": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260312_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260312_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260313_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260313_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260316_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260316_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260317_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260317_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-18": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260318_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260318_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-19": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260319_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260319_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-20": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260320_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260320_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260323_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260323_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-24": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260324_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260324_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-25": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260325_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260325_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-26": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-03-27": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260327_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260327_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-30": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260330_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260330_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-03-31": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-04-01": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260401_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260401_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-02": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260402_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260402_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-03": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-04-06": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260406_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260406_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-07": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260407_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260407_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-08": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260408_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260408_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-09": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260409_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260409_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-10": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260410_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260410_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-13": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260413_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260413_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-14": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-04-15": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260415_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260415_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-16": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260416_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260416_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
+  "2026-04-17": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20260417_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20260417_F_0000.csv.zip"
+   ],
+   "issues": []
+  },
   "2026-04-20": {
    "ready": true,
    "files": [
