@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-08",
+  "checked_at": "2026-10-08T19:05:08+05:30",
+  "files": {
+    "nse_bhavcopy": "ok",
+    "nse_flags": "ok",
+    "bse_bhavcopy": "ok"
+  },
+  "issues": [],
+  "ready": true
+}
