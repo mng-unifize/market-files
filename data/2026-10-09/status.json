@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-09",
+  "checked_at": "2026-10-09T19:04:50+05:30",
+  "files": {
+    "nse_bhavcopy": "ok",
+    "nse_flags": "missing",
+    "bse_bhavcopy": "ok"
+  },
+  "issues": [
+    "nse_flags: HTTP 404 (not published yet, or a holiday)"
+  ],
+  "ready": false
+}
