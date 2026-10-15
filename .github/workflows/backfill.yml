@@ -1,0 +1,37 @@
+name: history-backfill
+on:
+  workflow_dispatch:
+    inputs:
+      first_year:
+        description: "First year to download (old NSE format)"
+        required: true
+        default: "2015"
+      last_year:
+        description: "Last year to download (2024 stops at 5 July, where the daily job takes over)"
+        required: true
+        default: "2024"
+permissions:
+  contents: write
+concurrency:
+  group: daily-files
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download one year at a time and save after each year
+        run: |
+          git config user.name "penny-bot"
+          git config user.email "penny-bot@users.noreply.github.com"
+          for y in $(seq ${{ github.event.inputs.first_year }} ${{ github.event.inputs.last_year }}); do
+            python scripts/backfill.py --since "$y-01-01" --until "$y-12-31"
+            git add history
+            git diff --cached --quiet || git commit -m "History backfill $y"
+            git pull --rebase --quiet || true
+            git push
+          done
