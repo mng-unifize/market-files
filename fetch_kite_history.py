@@ -6,7 +6,12 @@ from kiteconnect import KiteConnect
 START = dt.date(int(os.environ.get("START_YEAR", "2024")), int(os.environ.get("START_MONTH", "10")), 1)
 WANT = {"NSEI": ("NSE", "NIFTY 50"), "NSEBANK": ("NSE", "NIFTY BANK"), "BSESN": ("BSE", "SENSEX"), "VIX": ("NSE", "INDIA VIX")}
 if os.environ.get("ONLY"): WANT = {k: v for k, v in WANT.items() if k in os.environ["ONLY"].replace(" ", "").split(",")}   # e.g. ONLY=VIX
-OUT = "data/kite"; CHUNK_DAYS = 95   # the 5-minute limit is 100 days per request
+OUT = os.environ.get("OUTDIR", "data/kite"); CHUNK_DAYS = 95   # the 5-minute limit is 100 days per request
+
+STOCKS = [s.strip() for s in os.environ.get("STOCKS", "").split(",") if s.strip()]
+if STOCKS: WANT = {s: ("NSE", s) for s in STOCKS}   # company shares instead of indexes
+
+def fname(nm): return nm.replace("&", "AND").replace(" ", "_")
 
 def token_from(raw):
     raw = raw.strip().strip('"').strip("'")
@@ -27,11 +32,11 @@ def main():
     for ex in ("NSE", "BSE"):
         for ins in kite.instruments(ex):
             for nm, (e, sym) in WANT.items():
-                if e == ex and ins["tradingsymbol"] == sym: tokens[nm] = ins["instrument_token"]
+                if e == ex and ins["tradingsymbol"] == sym and (not STOCKS or ins.get("instrument_type") == "EQ"): tokens[nm] = ins["instrument_token"]
     print("instrument tokens", tokens)
     for nm in WANT:
         if nm not in tokens: print("NOT FOUND", nm); continue
-        path = "%s/%s_5m.csv" % (OUT, nm); rows = {}
+        path = "%s/%s_5m.csv" % (OUT, fname(nm)); rows = {}
         if os.path.exists(path):
             for r in csv.DictReader(open(path)): rows[r["ts_ist"]] = [r["ts_ist"], r["open"], r["high"], r["low"], r["close"], r["volume"]]
         a = START
@@ -48,7 +53,7 @@ def main():
             print(nm, a, b, got, "candles"); a = b + dt.timedelta(days=1); time.sleep(0.4)
         save(path, rows); ks = sorted(rows); print("SAVED", nm, len(ks), "rows", ks[0] if ks else "-", ks[-1] if ks else "-")
         # daily candles (up to 2000 days per request)
-        dpath = "%s/%s_daily.csv" % (OUT, nm); drows = {}
+        dpath = "%s/%s_daily.csv" % (OUT, fname(nm)); drows = {}
         if os.path.exists(dpath):
             for r in csv.DictReader(open(dpath)): drows[r["ts_ist"]] = [r["ts_ist"], r["open"], r["high"], r["low"], r["close"], r["volume"]]
         a = START
@@ -63,7 +68,7 @@ def main():
             a = b + dt.timedelta(days=1)
         save(dpath, drows); ks = sorted(drows); print("SAVED daily", nm, len(ks), "rows", ks[0] if ks else "-", ks[-1] if ks else "-")
         if os.environ.get("FETCH_1M") == "1":
-            mpath = "%s/%s_1m.csv" % (OUT, nm); mrows = {}; a = START
+            mpath = "%s/%s_1m.csv" % (OUT, fname(nm)); mrows = {}; a = START
             while a <= today:
                 b = min(a + dt.timedelta(days=55), today)
                 for attempt in range(3):
