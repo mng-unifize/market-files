@@ -21,6 +21,8 @@ jobs:
           FYERS_SECRET: ${{ secrets.FYERS_SECRET }}
           FYERS_REDIRECT: ${{ secrets.FYERS_REDIRECT }}
           FYERS_AUTH_CODE: ${{ github.event.inputs.auth_code }}
+          START_YEAR: "2024"
+          START_MONTH: "10"
       - run: |
           git config user.name "intraday-bot"
           git config user.email "bot@users.noreply.github.com"
