@@ -10,7 +10,11 @@ START = dt.date(int(os.environ.get("START_YEAR", "2025")), int(os.environ.get("S
 def token():
     s = fyersModel.SessionModel(client_id=os.environ["FYERS_APP_ID"], secret_key=os.environ["FYERS_SECRET"],
                                 redirect_uri=os.environ["FYERS_REDIRECT"], response_type="code", grant_type="authorization_code")
-    s.set_token(os.environ["FYERS_AUTH_CODE"].strip()); r = s.generate_token()
+    raw = os.environ["FYERS_AUTH_CODE"].strip().strip('"').strip("'")
+    if "auth_code=" in raw: raw = raw.split("auth_code=", 1)[1].split("&", 1)[0]          # accept the whole redirect address
+    raw = raw.split("&", 1)[0].strip()
+    print("auth code length:", len(raw), "(a real code is several hundred characters)")
+    s.set_token(raw); r = s.generate_token()
     if "access_token" not in r: raise SystemExit("login failed: " + str(r))
     return r["access_token"]
 def main():
