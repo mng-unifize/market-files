@@ -184,13 +184,14 @@ CH={"NSEI":("hold",["high volatility","entries on Monday","lunch window 12:15-13
 NAMES={"NSEI":"Nifty 50","NSEBANK":"Bank Nifty","BSESN":"Sensex"}
 VAR=[("square off daily","flat",None),("hold overnight","hold",None),("recipe (with skips)",None,None)]
 def combine(nm,work):
+    """Order of trust per candle time: official Kite file, then live Kite candles saved by the live job (data/live/candles), then Yahoo."""
     rows={}
     for r in csv.DictReader(open(f"{KITE}/{nm}_5m.csv")):rows[r["ts_ist"]]=r
     last=max(rows)
-    p=f"{INTRA}/{nm}_5m.csv"
-    if os.path.exists(p):
-        for r in csv.DictReader(open(p)):
-            if r["ts_ist"]>last and r["ts_ist"][11:]<"15:30":rows[r["ts_ist"]]=r
+    for p in (f"data/live/candles/{nm}_5m.csv",f"{INTRA}/{nm}_5m.csv"):
+        if os.path.exists(p):
+            for r in csv.DictReader(open(p)):
+                if r["ts_ist"]>last and r["ts_ist"][11:]<"15:30":rows.setdefault(r["ts_ist"],r)
     os.makedirs(work,exist_ok=True)
     with open(f"{work}/{nm}_5m.csv","w",newline="") as f:
         w=csv.writer(f);w.writerow(["ts_ist","open","high","low","close","volume"])

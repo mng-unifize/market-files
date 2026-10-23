@@ -61,6 +61,33 @@ def check_ledger(snap_old, trades, summary, problems, info):
             problems.append(("warn", f"{len(changed)} earlier trade rows changed and {len(missing)} vanished since the last run (first: {(changed + missing)[:3]}). This happens when official Kite candles replace Yahoo candles; review it."))
     return last_day
 
+def check_live(trades, problems, info):
+    """Compare the live ledger (data/live/ledger.csv) with what the replay engine says should have happened, for days since the live start."""
+    path = f"{LIVE}/ledger.csv"
+    if not os.path.exists(path): info["live"] = "no live ledger yet (dry run or not started)"; return
+    start = open(f"{LIVE}/live_start.txt").read().strip() if os.path.exists(f"{LIVE}/live_start.txt") else "9999"
+    led = {}
+    for r in csv.DictReader(open(path)):
+        if r["signal_bar"][:10] >= start: led[(r["index"], r["event"], r["signal_bar"])] = r
+    exp = {}
+    for t in trades:
+        if t["day"] < start: continue
+        d = t["day"]
+        if t["status"] == "Skipped": exp[(t["index"], "SKIP", f"{d} {t['entry_bar']}")] = (t["entry_price"], t["side"])
+        else:
+            if t.get("entry_bar"): exp[(t["index"], "ENTRY", f"{d} {t['entry_bar']}")] = (t["entry_price"], t["side"])
+            if t["status"].startswith("Closed") and t.get("exit_bar"): exp[(t["index"], "EXIT", f"{d} {t['exit_bar']}")] = (t["exit_price"], "SELL" if t["side"] == "BUY" else "BUY")
+    missed = sorted(k for k in exp if k not in led); extra = sorted(k for k in led if k not in exp)
+    diff = [k for k in exp if k in led and (abs(float(led[k]["index_price"]) - float(exp[k][0])) > 0.01 or led[k]["side"] != exp[k][1])]
+    nofut = [k for k, r in led.items() if k[1] != "SKIP" and r["fut_price"] == ""]
+    wide = [k for k, r in led.items() if r["fut_price"] != "" and abs(float(r["fut_price"]) / float(r["index_price"]) - 1) > 0.01]
+    info["live"] = dict(start=start, events=len(led), expected=len(exp), missed=len(missed), extra=len(extra), price_or_side_differs=len(diff), no_future_price=len(nofut), future_far_from_index=len(wide))
+    if missed: problems.append(("warn", f"live ledger missed {len(missed)} replay events (first: {missed[:3]})"))
+    if extra: problems.append(("warn", f"live ledger has {len(extra)} events the replay does not (first: {extra[:3]})"))
+    if diff: problems.append(("warn", f"{len(diff)} live events differ from the replay in price or side (first: {diff[:3]})"))
+    if nofut: problems.append(("warn", f"{len(nofut)} live events have no futures price (first: {nofut[:2]})"))
+    if wide: problems.append(("warn", f"{len(wide)} live events have a futures price over 1% away from the index price (first: {wide[:2]})"))
+
 def rowhash(t):  # would_have_net is a hypothetical for skipped trades and depends on later candles, so it is not part of the fingerprint
     return hashlib.sha1(json.dumps({k: t[k] for k in sorted(t) if k not in ("note", "would_have_net")}, sort_keys=True, default=str).encode()).hexdigest()[:12]
 
@@ -77,6 +104,7 @@ def main():
         D.build()
         trades = json.load(open(f"{DASH}/trades.json")); summary = json.load(open(f"{DASH}/summary.json"))
         last_day = check_ledger(snap_old, trades, summary, problems, info)
+        check_live(trades, problems, info)
         rows_now = {f"{t['day']}|{t['index']}|{t['trade_no']}": rowhash(t) for t in trades}
         json.dump(dict(saved=today, rows=rows_now), open(f"{LIVE}/ledger_snapshot.json", "w"), separators=(",", ":"))
         status_extra = dict(latest_day=last_day, trade_rows=len(trades), summary_rows=len(summary),
