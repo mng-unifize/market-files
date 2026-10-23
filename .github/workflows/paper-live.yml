@@ -1,0 +1,34 @@
+name: paper-live
+# Records live paper (mock) signals every 5 minutes while the market is open (09:20 to 15:50 India time).
+# Dry run by default: set the repository variable PAPER_RECORD to yes (Settings, Secrets and variables, Actions, Variables) to record.
+on:
+  schedule:
+    - cron: "*/5 3-10 * * 1-5"   # UTC, which is 08:30 to 16:25 India time; the script ignores times outside 09:20 to 15:50
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: { group: paper-live, cancel-in-progress: false }
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install kiteconnect
+      - id: live
+        run: python3 paper/live.py
+        env:
+          KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
+          KITE_ACCESS_TOKEN: ${{ secrets.KITE_ACCESS_TOKEN }}
+          PAPER_RECORD: ${{ vars.PAPER_RECORD }}
+      - name: Commit
+        if: always() && steps.live.outputs.changed == 'true'
+        run: |
+          git config user.name "paper-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/live/ledger.csv data/live/live_start.txt data/live/live_status.json data/live/dryrun_last.json 2>/dev/null || true
+          if [ "${{ steps.live.outputs.final }}" = "true" ]; then git add data/live/candles; fi
+          git diff --cached --quiet || git commit -m "paper live $(date -u +%F-%H%M)"
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
