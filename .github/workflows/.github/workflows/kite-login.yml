@@ -1,0 +1,35 @@
+name: kite-login
+# Run this every trading morning (after logging in to Kite, before 9:15 AM India time).
+# It turns the one-time login code into the day's access token and saves it as the repository secret KITE_ACCESS_TOKEN.
+on:
+  workflow_dispatch:
+    inputs:
+      request_token:
+        description: "Paste the whole address from the browser after Kite login (or just the request_token value)"
+        required: true
+permissions:
+  contents: read
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install kiteconnect
+      - name: Exchange the login code for an access token
+        env:
+          KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
+          KITE_API_SECRET: ${{ secrets.KITE_API_SECRET }}
+          KITE_REQUEST_TOKEN: ${{ github.event.inputs.request_token }}
+        run: python3 paper/kite_login.py
+      - name: Save the token as a secret
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          set -e
+          TOKEN="$(cat "$RUNNER_TEMP/kite_token.txt")"
+          echo "::add-mask::$TOKEN"
+          gh secret set KITE_ACCESS_TOKEN --repo "$GITHUB_REPOSITORY" --body "$TOKEN"
+          rm -f "$RUNNER_TEMP/kite_token.txt"
+          echo "Saved KITE_ACCESS_TOKEN for today."
