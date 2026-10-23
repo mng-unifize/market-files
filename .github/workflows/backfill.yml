@@ -1,37 +1,31 @@
-name: history-backfill
+name: kite-backfill
 on:
   workflow_dispatch:
     inputs:
-      first_year:
-        description: "First year to download (old NSE format)"
+      request_token:
+        description: "Paste the whole address from the browser after Zerodha login (or just the request_token value)"
         required: true
-        default: "2015"
-      last_year:
-        description: "Last year to download (2024 stops at 5 July, where the daily job takes over)"
-        required: true
-        default: "2024"
 permissions:
   contents: write
-concurrency:
-  group: daily-files
-  cancel-in-progress: false
 jobs:
-  backfill:
+  fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Download one year at a time and save after each year
-        run: |
-          git config user.name "penny-bot"
-          git config user.email "penny-bot@users.noreply.github.com"
-          for y in $(seq ${{ github.event.inputs.first_year }} ${{ github.event.inputs.last_year }}); do
-            python scripts/backfill.py --since "$y-01-01" --until "$y-12-31"
-            git add history
-            git diff --cached --quiet || git commit -m "History backfill $y"
-            git pull --rebase --quiet || true
-            git push
-          done
+        with: { python-version: "3.12" }
+      - run: pip install kiteconnect
+      - run: python3 fetch_kite_history.py
+        env:
+          KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
+          KITE_API_SECRET: ${{ secrets.KITE_API_SECRET }}
+          KITE_REQUEST_TOKEN: ${{ github.event.inputs.request_token }}
+          START_YEAR: "2021"
+          START_MONTH: "10"
+          ONLY: "VIX"   # only India VIX; delete this line to redownload everything
+      - run: |
+          git config user.name "intraday-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/kite
+          git diff --cached --quiet || git commit -m "kite backfill $(date -u +%F)"
+          git push
