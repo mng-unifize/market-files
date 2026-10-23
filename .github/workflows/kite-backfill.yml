@@ -20,7 +20,7 @@ jobs:
           KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
           KITE_API_SECRET: ${{ secrets.KITE_API_SECRET }}
           KITE_REQUEST_TOKEN: ${{ github.event.inputs.request_token }}
-          START_YEAR: "2024"
+          START_YEAR: "2021"
           START_MONTH: "10"
       - run: |
           git config user.name "intraday-bot"
