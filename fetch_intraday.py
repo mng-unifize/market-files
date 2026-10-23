@@ -3,7 +3,7 @@
 # Yahoo keeps only about 60 days of 5-minute history, so this runs daily and appends; old rows are kept.
 import csv, json, os, sys, time, urllib.request, datetime as dt
 OUT = "data/intraday"
-SYMS = {"NSEI": "%5ENSEI", "BSESN": "%5EBSESN"}
+SYMS = {"NSEI": "%5ENSEI", "BSESN": "%5EBSESN", "NSEBANK": "%5ENSEBANK"}
 HDR = ["ts_ist", "open", "high", "low", "close", "volume"]
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
 
