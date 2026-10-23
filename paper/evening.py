@@ -82,7 +82,7 @@ def check_live(trades, problems, info):
     nofut = [k for k, r in led.items() if k[1] != "SKIP" and r["fut_price"] == ""]
     wide = [k for k, r in led.items() if r["fut_price"] != "" and abs(float(r["fut_price"]) / float(r["index_price"]) - 1) > 0.01]
     info["live"] = dict(start=start, events=len(led), expected=len(exp), missed=len(missed), extra=len(extra), price_or_side_differs=len(diff), no_future_price=len(nofut), future_far_from_index=len(wide))
-    if missed: problems.append(("warn", f"live ledger missed {len(missed)} replay events (first: {missed[:3]})"))
+    if missed: problems.append(("warn", f"live ledger is missing {len(missed)} replay events (first: {missed[:3]}). Usually a missed Kite login or a failed live run. They are filled in after the next successful live run if within 6 days; the replay itself is unaffected."))
     if extra: problems.append(("warn", f"live ledger has {len(extra)} events the replay does not (first: {extra[:3]})"))
     if diff: problems.append(("warn", f"{len(diff)} live events differ from the replay in price or side (first: {diff[:3]})"))
     if nofut: problems.append(("warn", f"{len(nofut)} live events have no futures price (first: {nofut[:2]})"))
