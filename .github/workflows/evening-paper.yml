@@ -1,0 +1,24 @@
+name: evening-paper
+# Rebuilds the paper (mock) trading dashboard files after the market closes, checks them, and commits the result.
+on:
+  schedule:
+    - cron: "0 11 * * 1-5"   # 16:30 India time. Runs after the 16:15 candle fetch (intraday-candles).
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: { group: evening-paper, cancel-in-progress: false }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 fetch_intraday.py
+      - run: python3 paper/evening.py
+      - run: |
+          git config user.name "paper-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/intraday data/mock/dash data/live
+          git diff --cached --quiet || git commit -m "paper ledger $(date -u +%F)"
+          git pull --rebase origin ${GITHUB_REF_NAME} && git push
