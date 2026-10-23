@@ -1,0 +1,29 @@
+name: fyers-backfill
+on:
+  workflow_dispatch:
+    inputs:
+      auth_code:
+        description: "auth_code copied from the address bar after FYERS login"
+        required: true
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install fyers-apiv3
+      - run: python3 fetch_fyers_history.py
+        env:
+          FYERS_APP_ID: ${{ secrets.FYERS_APP_ID }}
+          FYERS_SECRET: ${{ secrets.FYERS_SECRET }}
+          FYERS_REDIRECT: ${{ secrets.FYERS_REDIRECT }}
+          FYERS_AUTH_CODE: ${{ github.event.inputs.auth_code }}
+      - run: |
+          git config user.name "intraday-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/fyers
+          git diff --cached --quiet || git commit -m "fyers backfill $(date -u +%F)"
+          git push
