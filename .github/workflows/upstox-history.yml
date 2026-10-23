@@ -1,0 +1,19 @@
+name: upstox-history
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 fetch_upstox_history.py
+      - run: |
+          git config user.name "intraday-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/upstox
+          git diff --cached --quiet || git commit -m "upstox history $(date -u +%F)"
+          git push
