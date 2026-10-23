@@ -4,7 +4,8 @@ Env: KITE_API_KEY, KITE_API_SECRET, KITE_REQUEST_TOKEN (the request_token, or th
 import csv, os, sys, time, datetime as dt
 from kiteconnect import KiteConnect
 START = dt.date(int(os.environ.get("START_YEAR", "2024")), int(os.environ.get("START_MONTH", "10")), 1)
-WANT = {"NSEI": ("NSE", "NIFTY 50"), "NSEBANK": ("NSE", "NIFTY BANK"), "BSESN": ("BSE", "SENSEX")}
+WANT = {"NSEI": ("NSE", "NIFTY 50"), "NSEBANK": ("NSE", "NIFTY BANK"), "BSESN": ("BSE", "SENSEX"), "VIX": ("NSE", "INDIA VIX")}
+if os.environ.get("ONLY"): WANT = {k: v for k, v in WANT.items() if k in os.environ["ONLY"].replace(" ", "").split(",")}   # e.g. ONLY=VIX
 OUT = "data/kite"; CHUNK_DAYS = 95   # the 5-minute limit is 100 days per request
 
 def token_from(raw):
