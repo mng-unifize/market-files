@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-22T20:10:30+05:30",
+ "updated": "2026-10-23T19:20:39+05:30",
  "dates": {
   "2024-07-08": {
    "ready": true,
@@ -4841,6 +4841,15 @@
     "BhavCopy_BSE_CM_0_0_0_20261022_F_0000.csv.gz",
     "BhavCopy_NSE_CM_0_0_0_20261022_F_0000.csv.zip",
     "REG_IND221026.csv"
+   ],
+   "issues": []
+  },
+  "2026-10-23": {
+   "ready": true,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20261023_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20261023_F_0000.csv.zip",
+    "REG_IND231026.csv"
    ],
    "issues": []
   }
