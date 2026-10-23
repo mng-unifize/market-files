@@ -1,4 +1,4 @@
-name: kite-backfill
+name: kite-stocks-backfill
 on:
   workflow_dispatch:
     inputs:
@@ -22,9 +22,11 @@ jobs:
           KITE_REQUEST_TOKEN: ${{ github.event.inputs.request_token }}
           START_YEAR: "2021"
           START_MONTH: "10"
+          OUTDIR: "data/kite-stocks"
+          STOCKS: "RELIANCE,HDFCBANK,ICICIBANK,SBIN,INFY,TCS,AXISBANK,KOTAKBANK,LT,ITC,BHARTIARTL,TATASTEEL,BAJFINANCE,MARUTI,M&M,HINDUNILVR,SUNPHARMA,ASIANPAINT,HCLTECH,NTPC"
       - run: |
           git config user.name "intraday-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/kite
-          git diff --cached --quiet || git commit -m "kite backfill $(date -u +%F)"
+          git add data/kite-stocks
+          git diff --cached --quiet || git commit -m "kite stocks backfill $(date -u +%F)"
           git push
