@@ -91,9 +91,28 @@ def check_live(trades, problems, info):
 def rowhash(t):  # would_have_net is a hypothetical for skipped trades and depends on later candles, so it is not part of the fingerprint
     return hashlib.sha1(json.dumps({k: t[k] for k in sorted(t) if k not in ("note", "would_have_net")}, sort_keys=True, default=str).encode()).hexdigest()[:12]
 
+def write_dash_live(out):
+    """Two small files for the dashboard's live check panel (the evening Claude task uploads them)."""
+    os.makedirs(f"{LIVE}/dash", exist_ok=True)
+    live = out["data"].get("live"); probs = out["problems"]
+    if isinstance(live, dict): live_txt = f"{live['events']} live events, {live['missed']} missed, {live['extra']} extra, {live['price_or_side_differs']} differing, {live['no_future_price']} without futures price"
+    else: live_txt = live or "no live ledger yet"
+    head = f"{out['status']}: {len(probs)} problem(s); latest day {out.get('latest_day', '?')}; live: {live_txt}"
+    rows = [dict(item="headline", value=head), dict(item="status", value=out["status"]), dict(item="checked at (India time)", value=out["run_at"]),
+            dict(item="latest day in ledger", value=str(out.get("latest_day", "?"))), dict(item="problems", value="; ".join(probs) if probs else "none"), dict(item="live ledger", value=live_txt)]
+    for nm in INDEXES:
+        d = out["data"].get(nm, {})
+        rows.append(dict(item=f"newest candle {NAMES[nm]}", value=f"{d.get('last_candle', '?')} ({d.get('source_of_last', '?')})"))
+    for ix, v in sorted(out.get("net_by_index", {}).items()): rows.append(dict(item=f"net result {ix} (Rs)", value=f"{v:,}"))
+    json.dump(rows, open(f"{LIVE}/dash/live_check.json", "w"), separators=(",", ":"))
+    src = f"{LIVE}/ledger.csv"; hdr = "event_id,recorded_at_ist,event,index,side,signal_bar,fill_time,index_price,fut_symbol,fut_price,fut_candle,qty,note\n"
+    open(f"{LIVE}/dash/live_ledger.csv", "w").write(open(src).read() if os.path.exists(src) else hdr)
+
 def main():
     os.makedirs(LIVE, exist_ok=True)
-    today = dt.datetime.now(IST).strftime("%Y-%m-%d")
+    _n = dt.datetime.now(IST)
+    while _n.weekday() >= 5: _n -= dt.timedelta(days=1)   # weekends: expect the Friday data
+    today = _n.strftime("%Y-%m-%d")
     problems = []; info = {}; status_extra = {}
     try:
         snap_old = json.load(open(f"{LIVE}/ledger_snapshot.json")) if os.path.exists(f"{LIVE}/ledger_snapshot.json") else None
@@ -116,6 +135,7 @@ def main():
     status = "fail" if any(p[0] == "fail" for p in problems) else "warn" if problems else "ok"
     out = dict(status=status, run_at=dt.datetime.now(IST).strftime("%Y-%m-%d %H:%M"), today=today, problems=[f"{a}: {b}" for a, b in problems], data=info, **status_extra)
     json.dump(out, open(f"{LIVE}/last_run.json", "w"), indent=1)
+    write_dash_live(out)
     print(json.dumps(out, indent=1))
 
 main()
