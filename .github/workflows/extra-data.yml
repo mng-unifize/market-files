@@ -1,0 +1,39 @@
+name: extra-data
+on:
+  schedule:
+    - cron: "30 15 * * 1-5"   # 9:00 pm India time on weekdays, after NSE posts the delivery file
+  workflow_dispatch:
+    inputs:
+      from_date:
+        description: "Backfill start date YYYY-MM-DD (blank = refresh the last 7 days)"
+        required: false
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: extra-data
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch extra data
+        env:
+          FROM_DATE: ${{ github.event.inputs.from_date }}
+          BUDGET_MIN: "300"
+        run: |
+          if [ -n "$FROM_DATE" ]; then python scripts/extra_fetch.py --from "$FROM_DATE"; else python scripts/extra_fetch.py; fi
+      - name: Save to the repository
+        if: always()
+        run: |
+          git config user.name "extra-data-bot"
+          git config user.email "extra-data-bot@users.noreply.github.com"
+          git add extra
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "extra data $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do git pull --rebase && git push && break || sleep 10; done
