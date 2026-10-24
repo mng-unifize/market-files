@@ -1,0 +1,32 @@
+name: preflight
+# Morning check after your Kite login: token, indexes, futures contracts, lot sizes, candle flow, quotes.
+# Runs by itself at 08:55 India time on weekdays, and on demand. A failure emails you before the market opens.
+on:
+  schedule:
+    - cron: "25 3 * * 1-5"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: { group: preflight, cancel-in-progress: false }
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install kiteconnect
+      - id: pre
+        run: python3 paper/preflight.py
+        env:
+          KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
+          KITE_ACCESS_TOKEN: ${{ secrets.KITE_ACCESS_TOKEN }}
+      - name: Commit result
+        if: always()
+        run: |
+          git config user.name "paper-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/live/preflight.json
+          git diff --cached --quiet || git commit -m "preflight $(date -u +%F)"
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
