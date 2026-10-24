@@ -20,6 +20,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+      - run: python3 paper/shadow_vix.py
+        continue-on-error: true
       - run: |
           git config user.name "paper-bot"
           git config user.email "bot@users.noreply.github.com"
