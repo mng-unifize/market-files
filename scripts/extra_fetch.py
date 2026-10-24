@@ -12,9 +12,11 @@ Saves, under extra/ in this repository:
   actions/YYYY-MM.json.gz         corporate actions (splits, bonus, dividends, demergers)
   bulkhist/YYYY-MM.json.gz, blockhist/YYYY-MM.json.gz   month history of bulk and block deals
   pledge/YYYY-MM-DD.json.gz       promoter pledge snapshot
+  prices_old/YYYY-MM-DD.csv.zip   NSE daily prices before 8 Jul 2024 (old file format)
   index.json                      what was fetched, what is missing, what failed
 
-Usage:  python scripts/extra_fetch.py [--from YYYY-MM-DD] [--dry-run]
+Usage:  python scripts/extra_fetch.py [--from YYYY-MM-DD] [--only name,name] [--dry-run]
+  names: delivery announcements results shareholding insider actions bulkhist blockhist prices_old
 Without --from it refreshes the last 7 days. With --from it backfills in time-limited slices;
 run it again and it resumes (finished items are skipped).
 Endpoints are NSE public pages. They are not an official data feed and can change or block cloud servers.
@@ -106,6 +108,11 @@ def write_gz(rel, data):
     with gzip.open(p, "wb") as f: f.write(data)
 
 
+def write_raw(rel, data):
+    p = os.path.join(OUT, rel); os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "wb") as f: f.write(data)
+
+
 def mark(ds, key, **kw):
     IDX["sets"].setdefault(ds, {})[key] = kw
 
@@ -117,7 +124,8 @@ def note_blocked(e):
 
 def done(ds, key, refetch):
     v = IDX["sets"].get(ds, {}).get(key)
-    return bool(v) and v.get("ok") and not refetch
+    empty = bool(v) and v.get("rows", 1) == 0 and not v.get("missing") and ds in ("results", "insider", "shareholding", "actions")
+    return bool(v) and v.get("ok") and not refetch and not empty   # empty months are tried again
 
 
 def out_of_time():
@@ -148,7 +156,7 @@ def fetch_json(ds, key, rel, url, refetch):
         mark(ds, key, ok=False, err=str(e)[:120]); IDX["issues"].append(f"{ds} {key}: {str(e)[:100]}")
 
 
-def fetch_csv(ds, key, rel, url, refetch, must_start=None):
+def fetch_csv(ds, key, rel, url, refetch, must_start=None, raw_zip=False):
     if done(ds, key, refetch): return
     try:
         b = S.get(url)
@@ -172,9 +180,11 @@ def months(a, b):
 
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--from", dest="frm", default=""); ap.add_argument("--dry-run", action="store_true")
+    ap = argparse.ArgumentParser(); ap.add_argument("--from", dest="frm", default=""); ap.add_argument("--dry-run", action="store_true"); ap.add_argument("--only", default="")
     a = ap.parse_args()
     today = dt.date.today()
+    only = set(x for x in a.only.split(",") if x)
+    want = lambda name: not only or name in only
     start = dt.date.fromisoformat(a.frm) if a.frm else today - dt.timedelta(days=7)
     days = [start + dt.timedelta(n) for n in range((today - start).days + 1)]
     days = [d for d in days if d.weekday() < 5]
@@ -196,13 +206,14 @@ def main():
     code = 0
     try:
         # 1. Today's snapshots first (they only exist for the latest day, so never skip them)
-        if start >= today - dt.timedelta(days=7):
+        if start >= today - dt.timedelta(days=7) and not only:
             for nm, path in (("bulk", "/content/equities/bulk.csv"), ("block", "/content/equities/block.csv")):
                 k = today.isoformat()
                 fetch_csv(nm, k, f"{nm}/{k}.csv.gz", ARCH + path, True)
             fetch_json("pledge", today.isoformat(), f"pledge/{today.isoformat()}.json.gz", NSE + "/api/corporate-pledgedata?index=equities", True)
         # 2. Months, newest first
         for nm in api:
+            if not want(nm): continue
             for m0, m1 in reversed(mths):
                 if out_of_time(): raise TimeoutError
                 if BLOCKED.get("api"): break
@@ -214,8 +225,13 @@ def main():
             if out_of_time(): raise TimeoutError
             if BLOCKED.get("api") and BLOCKED.get("arch"): break
             k = d.isoformat()
-            fetch_csv("delivery", k, f"delivery/{k}.csv.gz", ARCH + f"/products/content/sec_bhavdata_full_{d.strftime('%d%m%Y')}.csv", recent(d), must_start="SYMBOL")
-            fetch_json("announcements", k, f"announcements/{k}.json.gz", NSE + f"/api/corporate-announcements?index=equities&from_date={fmt(d)}&to_date={fmt(d)}", recent(d))
+            if want("delivery"):
+                fetch_csv("delivery", k, f"delivery/{k}.csv.gz", ARCH + f"/products/content/sec_bhavdata_full_{d.strftime('%d%m%Y')}.csv", recent(d), must_start="SYMBOL")
+            if want("announcements"):
+                fetch_json("announcements", k, f"announcements/{k}.json.gz", NSE + f"/api/corporate-announcements?index=equities&from_date={fmt(d)}&to_date={fmt(d)}", recent(d))
+            if want("prices_old") and d < dt.date(2024, 7, 8):   # NSE daily price file in its old format (the repository starts at 8 Jul 2024)
+                mon = d.strftime("%b").upper()
+                fetch_csv("prices_old", k, f"prices_old/{k}.csv.zip", ARCH + f"/content/historical/EQUITIES/{d.year}/{mon}/cm{d.strftime('%d')}{mon}{d.year}bhav.csv.zip", False, raw_zip=True)
             if S.n % 25 == 0: save_idx()
     except TimeoutError:
         IDX["issues"].append("time budget reached, run again to resume")
