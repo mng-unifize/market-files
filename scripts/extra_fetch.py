@@ -35,19 +35,27 @@ class Blocked(Exception):
     pass
 
 
+BLOCKED = {}   # "api" or "arch" -> True once NSE keeps refusing us
+
+
+def kind_of(url):
+    return "api" if "/api/" in url else "arch"
+
+
 class Sess:
     def __init__(self):
         self.jar = http.cookiejar.CookieJar()
         self.op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(self.jar))
-        self.n = 0; self.bad = 0
+        self.n = 0; self.bad = {}
 
     def warm(self):
         for p in ("/", "/companies-listing/corporate-filings-financial-results"):
-            try: self._get(NSE + p, html=True, tries=1)
+            try: self._get(NSE + p, html=True, tries=1, rewarm=False)
             except Exception: pass
 
-    def _get(self, url, html=False, tries=4):
-        last = None
+    def _get(self, url, html=False, tries=4, rewarm=True):
+        last = None; kind = kind_of(url)
+        if BLOCKED.get(kind): raise Blocked(f"{kind} is blocked")
         for k in range(tries):
             req = urllib.request.Request(url, headers={
                 "User-Agent": UA, "Accept": "text/html,*/*" if html else "application/json,text/csv,*/*",
@@ -56,18 +64,22 @@ class Sess:
                 with self.op.open(req, timeout=60) as r:
                     b = r.read()
                     if r.headers.get("Content-Encoding") == "gzip": b = gzip.decompress(b)
-                    self.bad = 0; return b
+                    self.bad[kind] = 0; return b
             except urllib.error.HTTPError as e:
                 last = e
                 if e.code == 404: raise
-                if e.code in (401, 403, 429): self.bad += 1; self.warm()
-                if self.bad >= 8: raise Blocked(f"HTTP {e.code} repeatedly for {url}")
+                if e.code in (401, 403, 429) and rewarm:   # warm-up pages never count as a block
+                    self.bad[kind] = self.bad.get(kind, 0) + 1
+                    if self.bad[kind] >= 6:
+                        BLOCKED[kind] = True; raise Blocked(f"HTTP {e.code} repeatedly for {kind} pages ({url[:60]})")
+                    if rewarm: self.warm()
             except Exception as e:
                 last = e
             time.sleep(2 * (k + 1))
         raise last
 
     def get(self, url, **kw):
+        if BLOCKED.get(kind_of(url)): raise Blocked(f"{kind_of(url)} is blocked")
         self.n += 1
         if self.n % 120 == 0: self.warm()
         time.sleep(PAUSE)
@@ -98,6 +110,11 @@ def mark(ds, key, **kw):
     IDX["sets"].setdefault(ds, {})[key] = kw
 
 
+def note_blocked(e):
+    msg = "BLOCKED: " + str(e)
+    if msg not in IDX["issues"]: IDX["issues"].append(msg)
+
+
 def done(ds, key, refetch):
     v = IDX["sets"].get(ds, {}).get(key)
     return bool(v) and v.get("ok") and not refetch
@@ -126,7 +143,7 @@ def fetch_json(ds, key, rel, url, refetch):
         j, n = json_rows(b)
         write_gz(rel, json.dumps(j, separators=(",", ":")).encode())
         mark(ds, key, ok=True, rows=n)
-    except Blocked: raise
+    except Blocked as e: note_blocked(e)
     except Exception as e:
         mark(ds, key, ok=False, err=str(e)[:120]); IDX["issues"].append(f"{ds} {key}: {str(e)[:100]}")
 
@@ -141,7 +158,7 @@ def fetch_csv(ds, key, rel, url, refetch, must_start=None):
     except urllib.error.HTTPError as e:
         if e.code == 404: mark(ds, key, ok=True, rows=0, missing=True)   # holiday or not published
         else: mark(ds, key, ok=False, err=f"HTTP {e.code}"); IDX["issues"].append(f"{ds} {key}: HTTP {e.code}")
-    except Blocked: raise
+    except Blocked as e: note_blocked(e)
     except Exception as e:
         mark(ds, key, ok=False, err=str(e)[:120]); IDX["issues"].append(f"{ds} {key}: {str(e)[:100]}")
 
@@ -188,20 +205,21 @@ def main():
         for nm in api:
             for m0, m1 in reversed(mths):
                 if out_of_time(): raise TimeoutError
+                if BLOCKED.get("api"): break
                 key = m0.strftime("%Y-%m")
                 fetch_json(nm, key, f"{nm}/{key}.json.gz", NSE + api[nm].format(a=fmt(m0), b=fmt(m1)), m1 >= today - dt.timedelta(days=40))
                 if S.n % 25 == 0: save_idx()
         # 3. Days, newest first
         for d in reversed(days):
             if out_of_time(): raise TimeoutError
+            if BLOCKED.get("api") and BLOCKED.get("arch"): break
             k = d.isoformat()
             fetch_csv("delivery", k, f"delivery/{k}.csv.gz", ARCH + f"/products/content/sec_bhavdata_full_{d.strftime('%d%m%Y')}.csv", recent(d), must_start="SYMBOL")
             fetch_json("announcements", k, f"announcements/{k}.json.gz", NSE + f"/api/corporate-announcements?index=equities&from_date={fmt(d)}&to_date={fmt(d)}", recent(d))
             if S.n % 25 == 0: save_idx()
     except TimeoutError:
         IDX["issues"].append("time budget reached, run again to resume")
-    except Blocked as e:
-        IDX["issues"].append("BLOCKED: " + str(e)); code = 3
+    if BLOCKED: code = 3
     save_idx()
     ok = sum(1 for s in IDX["sets"].values() for v in s.values() if v.get("ok")); bad = sum(1 for s in IDX["sets"].values() for v in s.values() if not v.get("ok"))
     print("requests", S.n, "ok items", ok, "failed items", bad, "issues", len(IDX["issues"]))
