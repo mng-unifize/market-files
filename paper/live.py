@@ -12,7 +12,7 @@ from mock_trades import M, ema, rules_, combine
 
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
 LIVE = "data/live"; CANDLES = f"{LIVE}/candles"; LEDGER = f"{LIVE}/ledger.csv"
-HDR = ["event_id", "recorded_at_ist", "event", "index", "side", "signal_bar", "fill_time", "index_price", "fut_symbol", "fut_price", "fut_candle", "qty", "note"]
+HDR = ["event_id", "recorded_at_ist", "event", "index", "side", "signal_bar", "fill_time", "index_price", "fut_symbol", "fut_price", "fut_candle", "qty", "fut_bid", "fut_ask", "quote_delay_min", "note"]
 IDX = {"NSEI": ("NSE", "NIFTY 50"), "NSEBANK": ("NSE", "NIFTY BANK"), "BSESN": ("BSE", "SENSEX")}
 FUT_EX = {"NSEI": "NFO", "NSEBANK": "NFO", "BSESN": "BFO"}
 FUT_NAME = {"NSEI": "NIFTY", "NSEBANK": "BANKNIFTY", "BSESN": "SENSEX"}
@@ -75,13 +75,13 @@ def find_tokens(kite, today):
         for ins in kite.instruments(ex):
             for nm in FUT_EX:
                 if FUT_EX[nm] == ex and ins.get("name") == FUT_NAME[nm] and ins.get("instrument_type") == "FUT":
-                    futs.setdefault(nm, {})[ins["tradingsymbol"]] = (ins["instrument_token"], str(ins["expiry"])[:10])
+                    futs.setdefault(nm, {})[ins["tradingsymbol"]] = (ins["instrument_token"], str(ins["expiry"])[:10], ins.get("lot_size"))
     return tokens, futs
 
 def pick_future(nm, day, futs):
     want = D.contract(nm, day); f = futs.get(nm, {})
     if want in f: return want, f[want][0]
-    ok = sorted((e, s) for s, (t, e) in f.items() if e >= day)   # fallback: nearest expiry
+    ok = sorted((e, s) for s, (t, e, _l) in f.items() if e >= day)   # fallback: nearest expiry
     return (ok[0][1], f[ok[0][1]][0]) if ok else (want, None)
 
 def recipe_events(nm, work):
@@ -118,7 +118,7 @@ def main():
         print(status); return 1 if hhmm < "09:35" else 0   # fail loudly only in the first runs so you get one email, not 75
     missing = [nm for nm in IDX if nm not in tokens]
     if missing: status["problems"].append(f"index not found at Kite: {missing}")
-    work = "/tmp/live_work"; fut_c = {}; fut_sym = {}
+    work = "/tmp/live_work"; fut_c = {}; fut_sym = {}; fut_tok = {}
     for nm in IDX:
         if nm not in tokens: continue
         try:
@@ -131,7 +131,7 @@ def main():
         save_rows(path, merged)
         n_today = sum(1 for k in rows if k[:10] == today); status[f"{nm}_candles_today"] = n_today
         if final and n_today and n_today < 74: status["problems"].append(f"{nm}: only {n_today} of 75 candles today")
-        sym, ftok = pick_future(nm, today, futs); fut_sym[nm] = sym
+        sym, ftok = pick_future(nm, today, futs); fut_sym[nm] = sym; fut_tok[nm] = ftok
         if ftok is None: status["problems"].append(f"{nm}: future {sym} not found at Kite"); fut_c[nm] = {}
         else:
             try: fut_c[nm] = candles(kite, ftok, now, days=1)
@@ -143,7 +143,10 @@ def main():
     start = os.environ.get("PAPER_START") or (open(f"{LIVE}/live_start.txt").read().strip() if os.path.exists(f"{LIVE}/live_start.txt") else today)
     have = set()
     if os.path.exists(LEDGER): have = {r["event_id"] for r in csv.DictReader(open(LEDGER))}
-    new = []
+    new = []; last_entry = {}
+    if os.path.exists(LEDGER):
+        for r in csv.DictReader(open(LEDGER)):
+            if r["event"] == "ENTRY": last_entry[r["index"]] = r["fut_symbol"]
     for nm in IDX:
         if nm not in tokens: continue
         for ev in recipe_events(nm, work):
@@ -152,9 +155,21 @@ def main():
             if eid in have: continue
             fts = (dt.datetime.strptime(ev["bar"], "%Y-%m-%d %H:%M") + dt.timedelta(minutes=ev["tf"] - 5)).strftime("%Y-%m-%d %H:%M")   # last 5-minute candle of the bar
             fc = fut_c.get(nm, {}).get(fts); fp = round(float(fc[4]), 2) if fc and ev["day"] == today else ""
-            note = ev["note"] or ("" if fp != "" else ("future price not captured (late catch-up or missing candle)"))
-            new.append([eid, now.strftime("%Y-%m-%d %H:%M"), ev["event"], D.NAMES[nm], ev["side"], ev["bar"], ev["fill"], ev["price"], fut_sym.get(nm, ""), fp, fts if fp != "" else "", LOTS[nm], note])
-    status["new_events"] = [r[:3] + r[3:5] + [r[6]] for r in new]
+            notes = [ev["note"]] if ev["note"] else ([] if fp != "" else ["future price not captured (late catch-up or missing candle)"])
+            if ev["event"] == "ENTRY": last_entry[D.NAMES[nm]] = fut_sym.get(nm, "")
+            if ev["event"] == "EXIT" and last_entry.get(D.NAMES[nm]) and fut_sym.get(nm) and last_entry[D.NAMES[nm]] != fut_sym[nm]:
+                notes.append(f"rolled: entered in {last_entry[D.NAMES[nm]]}, exit priced in {fut_sym[nm]}; roll cost not modelled")
+            bid = ask = delay = ""
+            fill_dt = dt.datetime.strptime(ev["day"] + " " + ev["fill"], "%Y-%m-%d %H:%M").replace(tzinfo=IST)
+            lag = (now - fill_dt).total_seconds() / 60
+            if ev["event"] != "SKIP" and ev["day"] == today and lag <= 15 and fut_tok.get(nm):
+                try:
+                    q = kite.quote([f"{FUT_EX[nm]}:{fut_sym[nm]}"])[f"{FUT_EX[nm]}:{fut_sym[nm]}"]["depth"]
+                    bid, ask, delay = q["buy"][0]["price"], q["sell"][0]["price"], round(lag, 1)
+                except Exception as e: notes.append("quote not captured: " + str(e)[:60])
+                time.sleep(1.1)   # the quote endpoint allows 1 request per second
+            new.append([eid, now.strftime("%Y-%m-%d %H:%M"), ev["event"], D.NAMES[nm], ev["side"], ev["bar"], ev["fill"], ev["price"], fut_sym.get(nm, ""), fp, fts if fp != "" else "", LOTS[nm], bid, ask, delay, "; ".join(notes)])
+    status["new_events"] = [[r[0], r[1], r[2], r[3], r[4], r[6]] for r in new]
     if record and new:
         os.makedirs(LIVE, exist_ok=True)
         first = not os.path.exists(LEDGER)
