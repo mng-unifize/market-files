@@ -53,5 +53,13 @@ def main():
     latest = max(v) if v else None
     json.dump(dict(rule="skip entry if last VIX close is more than 5% above the mean of the previous 5 closes", scored_from=FROM, latest_vix_day=latest, vix_rows_added=added, by_index=res, total=allr,
                    note="Shadow only. Nothing is skipped in the live ledger. Backtest basis: Nifty + Bank Nifty ratio 1.47 to 1.72, profit down 7%, picked from 43 tests so unproven."), open(OUT, "w"), indent=1)
+    # add the result to the dashboard live-check rows (evening.py wrote them just before this runs)
+    lc = "data/live/dash/live_check.json"
+    if os.path.exists(lc):
+        try:
+            rows = [r for r in json.load(open(lc)) if not str(r.get("item", "")).startswith("SHADOW")]
+            rows.append(dict(item="SHADOW VIX rule (not traded)", value=f"{allr['verdict']}: {allr['trades']} trades scored, {allr['flagged']} flagged; net Rs {allr['net_all']:,} as traded, Rs {allr['net_if_skipped']:,} if flagged entries were skipped; scoring from {FROM}"))
+            json.dump(rows, open(lc, "w"), separators=(",", ":"))
+        except Exception as e: print("could not add shadow rows:", e, file=sys.stderr)
     print("shadow_vix:", allr)
 if __name__ == "__main__": main()
