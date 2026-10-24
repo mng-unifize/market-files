@@ -6,6 +6,7 @@ on:
   workflow_dispatch: {}
 permissions:
   contents: write
+  actions: read
 concurrency: { group: evening-paper, cancel-in-progress: false }
 jobs:
   build:
@@ -16,9 +17,12 @@ jobs:
         with: { python-version: "3.12" }
       - run: python3 fetch_intraday.py
       - run: python3 paper/evening.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
       - run: |
           git config user.name "paper-bot"
           git config user.email "bot@users.noreply.github.com"
           git add data/intraday data/mock/dash data/live
           git diff --cached --quiet || git commit -m "paper ledger $(date -u +%F)"
-          git pull --rebase origin ${GITHUB_REF_NAME} && git push
+          for i in 1 2 3; do git pull --rebase origin ${GITHUB_REF_NAME} && git push && break; sleep 5; done
