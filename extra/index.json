@@ -1,194 +1,7 @@
 {
  "issues": [
   "bulkhist 2026-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-01: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-12: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2025-01: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-12: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2024-01: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-12: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2023-01: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-12: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2022-01: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-12: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2021-01: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-12: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2020-01: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-12: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-10: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-09: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-08: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-07: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-06: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-05: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-04: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-03: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-02: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2019-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-12: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2025-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-12: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2024-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-12: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2023-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-12: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2022-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-12: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2021-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-12: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2020-01: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-12: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-09: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-08: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-07: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-06: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-05: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-04: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-03: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-02: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2019-01: Expecting value: line 2 column 1 (char 1)",
-  "delivery 2022-08-08: unexpected content: PK\u0003\u0004\u0014\u0000\u0006\u0000\b\u0000\u0000\u0000!\u0000LA\u0002\u0011_\u0001\u0000\u0000\ufffd\u0004\u0000\u0000\u0013\u0000\b\u0002[Content_Types].xml \ufffd\u0004\u0002(\ufffd\u0000\u0002\u0000\u0000\u0000"
+  "blockhist 2026-10: Expecting value: line 2 column 1 (char 1)"
  ],
  "sets": {
   "actions": {
@@ -566,7 +379,7 @@
    },
    "2026-10": {
     "ok": true,
-    "rows": 47
+    "rows": 49
    }
   },
   "announcements": {
@@ -8725,6 +8538,16 @@
    "2026-10-23": {
     "ok": true,
     "rows": 601
+   },
+   "2026-10-26": {
+    "ok": true,
+    "rows": 516
+   }
+  },
+  "block": {
+   "2026-10-26": {
+    "ok": true,
+    "rows": 1
    }
   },
   "blockhist": {
@@ -9103,6 +8926,12 @@
    "2026-10": {
     "err": "Expecting value: line 2 column 1 (char 1)",
     "ok": false
+   }
+  },
+  "bulk": {
+   "2026-10-26": {
+    "ok": true,
+    "rows": 89
    }
   },
   "bulkhist": {
@@ -17845,6 +17674,10 @@
    "2026-10-23": {
     "ok": true,
     "rows": 3542
+   },
+   "2026-10-26": {
+    "ok": true,
+    "rows": 3526
    }
   },
   "insider": {
@@ -18223,6 +18056,12 @@
    "2026-10": {
     "ok": true,
     "rows": 0
+   }
+  },
+  "pledge": {
+   "2026-10-26": {
+    "ok": true,
+    "rows": 1558
    }
   },
   "prices_old": {
@@ -24815,9 +24654,9 @@
    },
    "2026-10": {
     "ok": true,
-    "rows": 2416
+    "rows": 2422
    }
   }
  },
- "updated": "2026-10-24T17:13:41Z"
+ "updated": "2026-10-26T16:23:10Z"
 }
