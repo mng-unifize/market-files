@@ -134,7 +134,7 @@ def main():
         sym, ftok = pick_future(nm, today, futs); fut_sym[nm] = sym; fut_tok[nm] = ftok
         if ftok is None: status["problems"].append(f"{nm}: future {sym} not found at Kite"); fut_c[nm] = {}
         else:
-            try: fut_c[nm] = candles(kite, ftok, now, days=1)
+            try: fut_c[nm] = candles(kite, ftok, now, days=4)
             except Exception as e: status["problems"].append(f"{nm} future candles failed: {str(e)[:150]}"); fut_c[nm] = {}
     if not any(status.get(f"{nm}_candles_today") for nm in IDX):
         status["notes"].append("no candles today (market holiday, or data not available yet)")
@@ -154,7 +154,7 @@ def main():
             eid = f"{nm}|{ev['bar']}|{ev['event']}"
             if eid in have: continue
             fts = (dt.datetime.strptime(ev["bar"], "%Y-%m-%d %H:%M") + dt.timedelta(minutes=ev["tf"] - 5)).strftime("%Y-%m-%d %H:%M")   # last 5-minute candle of the bar
-            fc = fut_c.get(nm, {}).get(fts); fp = round(float(fc[4]), 2) if fc and ev["day"] == today else ""
+            fc = fut_c.get(nm, {}).get(fts); fp = round(float(fc[4]), 2) if fc else ""
             notes = [ev["note"]] if ev["note"] else ([] if fp != "" else ["future price not captured (late catch-up or missing candle)"])
             if ev["event"] == "ENTRY": last_entry[D.NAMES[nm]] = fut_sym.get(nm, "")
             if ev["event"] == "EXIT" and last_entry.get(D.NAMES[nm]) and fut_sym.get(nm) and last_entry[D.NAMES[nm]] != fut_sym[nm]:
