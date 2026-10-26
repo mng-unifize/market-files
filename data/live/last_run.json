@@ -1,39 +1,50 @@
 {
- "status": "ok",
- "run_at": "2026-10-23 23:39",
- "today": "2026-10-23",
- "problems": [],
+ "status": "warn",
+ "run_at": "2026-10-26 17:03",
+ "today": "2026-10-26",
+ "problems": [
+  "warn: live job coverage today: 9 of 76 five-minute runs, longest silent gap 59 minutes (GitHub schedules can run late or skip)"
+ ],
  "data": {
   "NSEI": {
-   "last_candle": "2026-10-23 15:30",
+   "last_candle": "2026-10-26 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-10-23 15:30",
+   "last_candle": "2026-10-26 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-10-23 15:30",
+   "last_candle": "2026-10-26 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 26
   },
   "changed_past_rows": 0,
-  "missing_past_rows": 0
+  "missing_past_rows": 0,
+  "live": "no live ledger yet (dry run or not started)",
+  "stop_rule": "recording not started",
+  "run_coverage": {
+   "runs_in_window": 9,
+   "slots": 76,
+   "share": 0.12,
+   "longest_gap_min": 59,
+   "good_day": false
+  }
  },
- "latest_day": "2026-10-23",
- "trade_rows": 84,
- "summary_rows": 45,
+ "latest_day": "2026-10-26",
+ "trade_rows": 91,
+ "summary_rows": 48,
  "net_by_index": {
-  "Sensex": -16812,
-  "Nifty 50": 10441,
-  "Bank Nifty": -62585
+  "Nifty 50": 1225,
+  "Bank Nifty": -62585,
+  "Sensex": -24698
  }
 }
