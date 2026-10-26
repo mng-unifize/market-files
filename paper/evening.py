@@ -38,9 +38,15 @@ def check_coverage(today, has_candles, problems, info):
     """Did the 5-minute live job actually run all day? Appends one line per day to data/live/run_coverage.csv."""
     if today < LIVE_FIRST_DAY or not has_candles: return
     utc_days = {today, (dt.date.fromisoformat(today) - dt.timedelta(days=1)).isoformat()}   # IST morning is the previous UTC date only before 05:30 UTC; runs here are all same UTC date
-    runs = fetch_runs(today)
-    if runs is None: info["run_coverage"] = "could not read the run history"; return
-    ist = []
+    ist = []; runs = []
+    tk = f"{LIVE}/ticks.csv"
+    if os.path.exists(tk):   # the looping job logs every tick itself: exact, no API needed
+        for r in csv.DictReader(open(tk)):
+            if r["ts_ist"][:10] == today and r["rc"] == "0" and "09:20" <= r["ts_ist"][11:16] <= "15:35":
+                ist.append(dt.datetime.strptime(r["ts_ist"], "%Y-%m-%d %H:%M"))
+    else:
+        runs = fetch_runs(today)
+        if runs is None: info["run_coverage"] = "could not read the run history"; return
     for r in runs:
         t = r.get("run_started_at") or r.get("created_at")
         if not t or r.get("conclusion") != "success": continue
