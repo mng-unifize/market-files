@@ -1,19 +1,19 @@
 {
- "run_at": "2026-10-27 12:32",
+ "run_at": "2026-10-27 14:00",
  "mode": "record",
  "problems": [],
  "new_events": [
   [
-   "NSEBANK|2026-10-27 12:25|SKIP",
-   "2026-10-27 12:32",
+   "BSESN|2026-10-27 13:45|SKIP",
+   "2026-10-27 14:00",
    "SKIP",
-   "Bank Nifty",
+   "Sensex",
    "SELL",
-   "12:30"
+   "14:00"
   ]
  ],
  "notes": [],
- "NSEI_candles_today": 39,
- "NSEBANK_candles_today": 39,
- "BSESN_candles_today": 39
+ "NSEI_candles_today": 57,
+ "NSEBANK_candles_today": 57,
+ "BSESN_candles_today": 57
 }
