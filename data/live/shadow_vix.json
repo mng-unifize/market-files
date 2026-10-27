@@ -1,7 +1,7 @@
 {
  "rule": "skip entry if last VIX close is more than 5% above the mean of the previous 5 closes",
  "scored_from": "2026-10-26",
- "latest_vix_day": "2026-10-26",
+ "latest_vix_day": "2026-10-27",
  "vix_rows_added": 1,
  "by_index": {
   "Nifty 50": {

@@ -1,27 +1,27 @@
 {
  "status": "warn",
- "run_at": "2026-10-26 17:03",
- "today": "2026-10-26",
+ "run_at": "2026-10-27 16:58",
+ "today": "2026-10-27",
  "problems": [
-  "warn: live job coverage today: 9 of 76 five-minute runs, longest silent gap 59 minutes (GitHub schedules can run late or skip)"
+  "warn: 1 live events differ from the replay in price or side (first: [('Bank Nifty', 'SKIP', '2026-10-27 12:25')])"
  ],
  "data": {
   "NSEI": {
-   "last_candle": "2026-10-26 15:30",
+   "last_candle": "2026-10-27 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-10-26 15:30",
+   "last_candle": "2026-10-27 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-10-26 15:30",
+   "last_candle": "2026-10-27 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
@@ -29,22 +29,36 @@
   },
   "changed_past_rows": 0,
   "missing_past_rows": 0,
-  "live": "no live ledger yet (dry run or not started)",
-  "stop_rule": "recording not started",
+  "live": {
+   "start": "2026-10-27",
+   "events": 5,
+   "non_skip": 0,
+   "expected": 5,
+   "missed": 0,
+   "extra": 0,
+   "price_or_side_differs": 1,
+   "no_future_price": 0,
+   "future_far_from_index": 0
+  },
+  "stop_rule": {
+   "since": "2026-10-27",
+   "net": 0,
+   "limit": -300000
+  },
   "run_coverage": {
-   "runs_in_window": 9,
+   "runs_in_window": 69,
    "slots": 76,
-   "share": 0.12,
-   "longest_gap_min": 59,
-   "good_day": false
+   "share": 0.91,
+   "longest_gap_min": 20,
+   "good_day": true
   }
  },
- "latest_day": "2026-10-26",
- "trade_rows": 91,
- "summary_rows": 48,
+ "latest_day": "2026-10-27",
+ "trade_rows": 96,
+ "summary_rows": 51,
  "net_by_index": {
-  "Nifty 50": 1225,
   "Bank Nifty": -62585,
+  "Nifty 50": 1225,
   "Sensex": -24698
  }
 }
