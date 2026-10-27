@@ -1,5 +1,5 @@
 {
- "run_at": "2026-10-26 10:31",
+ "run_at": "2026-10-27 09:30",
  "status": "pass",
  "checks": [
   {
@@ -25,17 +25,17 @@
   {
    "check": "expiry: Nifty 50",
    "result": "PASS",
-   "detail": "NIFTY26NOVFUT expires 2026-11-23 (28 days)"
+   "detail": "NIFTY26NOVFUT expires 2026-11-23 (27 days)"
   },
   {
    "check": "index candles: Nifty 50",
    "result": "PASS",
-   "detail": "240 candles over 4 days, newest 2026-10-26 10:25"
+   "detail": "227 candles over 4 days, newest 2026-10-27 09:20"
   },
   {
    "check": "future candles: Nifty 50",
    "result": "PASS",
-   "detail": "240 candles over 4 days, newest 2026-10-26 10:25"
+   "detail": "227 candles over 4 days, newest 2026-10-27 09:20"
   },
   {
    "check": "quote: Nifty 50",
@@ -60,17 +60,17 @@
   {
    "check": "expiry: Bank Nifty",
    "result": "PASS",
-   "detail": "BANKNIFTY26NOVFUT expires 2026-11-23 (28 days)"
+   "detail": "BANKNIFTY26NOVFUT expires 2026-11-23 (27 days)"
   },
   {
    "check": "index candles: Bank Nifty",
    "result": "PASS",
-   "detail": "240 candles over 4 days, newest 2026-10-26 10:25"
+   "detail": "227 candles over 4 days, newest 2026-10-27 09:20"
   },
   {
    "check": "future candles: Bank Nifty",
    "result": "PASS",
-   "detail": "240 candles over 4 days, newest 2026-10-26 10:25"
+   "detail": "227 candles over 4 days, newest 2026-10-27 09:20"
   },
   {
    "check": "quote: Bank Nifty",
@@ -95,17 +95,17 @@
   {
    "check": "expiry: Sensex",
    "result": "PASS",
-   "detail": "SENSEX26NOVFUT expires 2026-11-26 (31 days)"
+   "detail": "SENSEX26NOVFUT expires 2026-11-26 (30 days)"
   },
   {
    "check": "index candles: Sensex",
    "result": "PASS",
-   "detail": "240 candles over 4 days, newest 2026-10-26 10:25"
+   "detail": "227 candles over 4 days, newest 2026-10-27 09:20"
   },
   {
    "check": "future candles: Sensex",
    "result": "PASS",
-   "detail": "240 candles over 4 days, newest 2026-10-26 10:25"
+   "detail": "227 candles over 4 days, newest 2026-10-27 09:20"
   },
   {
    "check": "quote: Sensex",
