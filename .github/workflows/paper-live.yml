@@ -1,12 +1,12 @@
 name: paper-live
 # Records live paper (mock) signals every 5 minutes while the market is open (09:20 to 15:50 India time).
 # GitHub only starts a "*/5" schedule about once an hour on this repository, so this workflow starts a few times a day
-# and each run keeps its own 5-minute clock (paper/live_loop.py). Each run loops for up to 170 minutes, never past 15:50.
+# and each run keeps its own 5-minute clock (paper/live_loop.py). Each run loops for up to 215 minutes, never past 15:50.
 # Dry run by default: set the repository variable PAPER_RECORD to yes to record.
 on:
   schedule:
     - cron: "37 3 * * 1-5"    # 09:07 India time
-    - cron: "17 6 * * 1-5"    # 11:47 India time
+    - cron: "37 6 * * 1-5"    # 12:07 India time
     - cron: "47 8 * * 1-5"    # 14:17 India time
   workflow_dispatch: {}
 permissions:
@@ -15,7 +15,7 @@ concurrency: { group: paper-live, cancel-in-progress: false }
 jobs:
   live:
     runs-on: ubuntu-latest
-    timeout-minutes: 190
+    timeout-minutes: 235
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,7 +25,7 @@ jobs:
           git config user.name "paper-bot"
           git config user.email "bot@users.noreply.github.com"
       - name: Live loop
-        run: python3 paper/live_loop.py --max-minutes 170
+        run: python3 paper/live_loop.py --max-minutes 215
         env:
           KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
           KITE_ACCESS_TOKEN: ${{ secrets.KITE_ACCESS_TOKEN }}
