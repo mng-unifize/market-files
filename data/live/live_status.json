@@ -1,27 +1,19 @@
 {
- "run_at": "2026-10-28 09:48",
+ "run_at": "2026-10-28 12:05",
  "mode": "record",
  "problems": [],
  "new_events": [
   [
-   "NSEI|2026-10-28 09:15|ENTRY",
-   "2026-10-28 09:48",
-   "ENTRY",
-   "Nifty 50",
-   "SELL",
-   "09:30"
-  ],
-  [
-   "BSESN|2026-10-28 09:15|ENTRY",
-   "2026-10-28 09:48",
-   "ENTRY",
-   "Sensex",
-   "SELL",
-   "09:30"
+   "NSEBANK|2026-10-28 12:00|SKIP",
+   "2026-10-28 12:05",
+   "SKIP",
+   "Bank Nifty",
+   "BUY",
+   "12:05"
   ]
  ],
  "notes": [],
- "NSEI_candles_today": 6,
- "NSEBANK_candles_today": 6,
- "BSESN_candles_today": 6
+ "NSEI_candles_today": 34,
+ "NSEBANK_candles_today": 34,
+ "BSESN_candles_today": 34
 }
