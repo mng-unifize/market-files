@@ -146,7 +146,8 @@ def check_live(trades, problems, info):
             if t.get("entry_bar"): exp[(t["index"], "ENTRY", f"{d} {t['entry_bar']}")] = (t["entry_price"], t["side"])
             if t["status"].startswith("Closed") and t.get("exit_bar"): exp[(t["index"], "EXIT", f"{d} {t['exit_bar']}")] = (t["exit_price"], "SELL" if t["side"] == "BUY" else "BUY")
     missed = sorted(k for k in exp if k not in led); extra = sorted(k for k in led if k not in exp)
-    diff = [k for k in exp if k in led and (abs(float(led[k]["index_price"]) - float(exp[k][0])) > 0.01 or led[k]["side"] != exp[k][1])]
+    # live uses Kite candles, the replay can still hold Yahoo candles for the newest day; a price gap under 0.02% (about 4.5 points on Nifty) is that source difference, not a real mismatch. A side or signal difference still counts.
+    diff = [k for k in exp if k in led and (abs(float(led[k]["index_price"]) - float(exp[k][0])) > 0.0002 * float(exp[k][0]) or led[k]["side"] != exp[k][1])]
     nofut = [k for k, r in led.items() if k[1] != "SKIP" and r["fut_price"] == ""]
     wide = [k for k, r in led.items() if r["fut_price"] != "" and abs(float(r["fut_price"]) / float(r["index_price"]) - 1) > 0.01]
     nonskip = sum(1 for k in led if k[1] != "SKIP")
