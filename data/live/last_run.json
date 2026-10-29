@@ -1,34 +1,34 @@
 {
  "status": "warn",
- "run_at": "2026-10-28 17:02",
- "today": "2026-10-28",
+ "run_at": "2026-10-29 17:03",
+ "today": "2026-10-29",
  "problems": [
-  "warn: 6 live events differ from the replay in price or side (first: [('Nifty 50', 'ENTRY', '2026-10-28 09:15'), ('Nifty 50', 'EXIT', '2026-10-28 12:45'), ('Nifty 50', 'ENTRY', '2026-10-28 12:45')])",
-  "warn: live job coverage today: 70 of 76 five-minute runs, longest silent gap 28 minutes (GitHub schedules can run late or skip)"
+  "warn: 5 earlier trade rows changed and 0 vanished since the last run (first: ['2026-10-28|Nifty 50|22', '2026-10-28|Nifty 50|23', '2026-10-27|Bank Nifty|32']). This happens when official Kite candles replace Yahoo candles; review it.",
+  "warn: live job coverage today: 44 of 76 five-minute runs, longest silent gap 130 minutes (GitHub schedules can run late or skip)"
  ],
  "data": {
   "NSEI": {
-   "last_candle": "2026-10-28 15:30",
+   "last_candle": "2026-10-29 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-10-28 15:30",
+   "last_candle": "2026-10-29 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-10-28 15:30",
+   "last_candle": "2026-10-29 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 26
   },
-  "changed_past_rows": 0,
+  "changed_past_rows": 5,
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
@@ -37,29 +37,29 @@
    "expected": 12,
    "missed": 0,
    "extra": 0,
-   "price_or_side_differs": 6,
+   "price_or_side_differs": 0,
    "no_future_price": 0,
    "future_far_from_index": 0
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": -37140,
+   "net": -3412,
    "limit": -300000
   },
   "run_coverage": {
-   "runs_in_window": 70,
+   "runs_in_window": 44,
    "slots": 76,
-   "share": 0.92,
-   "longest_gap_min": 28,
+   "share": 0.58,
+   "longest_gap_min": 130,
    "good_day": false
   }
  },
- "latest_day": "2026-10-28",
- "trade_rows": 101,
- "summary_rows": 54,
+ "latest_day": "2026-10-29",
+ "trade_rows": 103,
+ "summary_rows": 57,
  "net_by_index": {
   "Bank Nifty": -62585,
-  "Nifty 50": -17388,
-  "Sensex": -43225
+  "Sensex": -24944,
+  "Nifty 50": -1941
  }
 }
