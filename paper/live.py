@@ -169,6 +169,8 @@ def main():
                 except Exception as e: notes.append("quote not captured: " + str(e)[:60])
                 time.sleep(1.1)   # the quote endpoint allows 1 request per second
             new.append([eid, now.strftime("%Y-%m-%d %H:%M"), ev["event"], D.NAMES[nm], ev["side"], ev["bar"], ev["fill"], ev["price"], fut_sym.get(nm, ""), fp, fts if fp != "" else "", LOTS[nm], bid, ask, delay, "; ".join(notes)])
+    if record and new and os.path.exists(LEDGER):   # re-check event_id right before writing: the file may have gained rows since the first read
+        have = {r["event_id"] for r in csv.DictReader(open(LEDGER))}; new = [r for r in new if r[0] not in have]
     status["new_events"] = [[r[0], r[1], r[2], r[3], r[4], r[6]] for r in new]
     if record and new:
         os.makedirs(LIVE, exist_ok=True)
