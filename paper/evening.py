@@ -39,11 +39,13 @@ def check_coverage(today, has_candles, problems, info):
     if today < LIVE_FIRST_DAY or not has_candles: return
     utc_days = {today, (dt.date.fromisoformat(today) - dt.timedelta(days=1)).isoformat()}   # IST morning is the previous UTC date only before 05:30 UTC; runs here are all same UTC date
     ist = []; runs = []
-    tk = f"{LIVE}/ticks.csv"
-    if os.path.exists(tk):   # the looping job logs every tick itself: exact, no API needed
-        for r in csv.DictReader(open(tk)):
-            if r["ts_ist"][:10] == today and r["rc"] == "0" and "09:20" <= r["ts_ist"][11:16] <= "15:35":
-                ist.append(dt.datetime.strptime(r["ts_ist"], "%Y-%m-%d %H:%M"))
+    tks = sorted(glob.glob(f"{LIVE}/ticks/*.csv")) + ([f"{LIVE}/ticks.csv"] if os.path.exists(f"{LIVE}/ticks.csv") else [])
+    if tks:   # every looping run logs its own tick file: exact, no API needed. Count each minute once, in case two runs overlap.
+        seen = set()
+        for tk in tks:
+            for r in csv.DictReader(open(tk)):
+                if r["ts_ist"][:10] == today and r["rc"] == "0" and "09:20" <= r["ts_ist"][11:16] <= "15:35" and r["ts_ist"] not in seen:
+                    seen.add(r["ts_ist"]); ist.append(dt.datetime.strptime(r["ts_ist"], "%Y-%m-%d %H:%M"))
     else:
         runs = fetch_runs(today)
         if runs is None: info["run_coverage"] = "could not read the run history"; return
