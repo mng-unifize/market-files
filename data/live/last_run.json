@@ -1,40 +1,37 @@
 {
- "status": "warn",
- "run_at": "2026-10-29 17:03",
- "today": "2026-10-29",
- "problems": [
-  "warn: 5 earlier trade rows changed and 0 vanished since the last run (first: ['2026-10-28|Nifty 50|22', '2026-10-28|Nifty 50|23', '2026-10-27|Bank Nifty|32']). This happens when official Kite candles replace Yahoo candles; review it.",
-  "warn: live job coverage today: 44 of 76 five-minute runs, longest silent gap 130 minutes (GitHub schedules can run late or skip)"
- ],
+ "status": "ok",
+ "run_at": "2026-10-30 16:59",
+ "today": "2026-10-30",
+ "problems": [],
  "data": {
   "NSEI": {
-   "last_candle": "2026-10-29 15:30",
+   "last_candle": "2026-10-30 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-10-29 15:30",
+   "last_candle": "2026-10-30 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-10-29 15:30",
+   "last_candle": "2026-10-30 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 26
   },
-  "changed_past_rows": 5,
+  "changed_past_rows": 0,
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
-   "events": 12,
+   "events": 13,
    "non_skip": 6,
-   "expected": 12,
+   "expected": 13,
    "missed": 0,
    "extra": 0,
    "price_or_side_differs": 0,
@@ -43,23 +40,23 @@
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": -3412,
+   "net": 10321,
    "limit": -300000
   },
   "run_coverage": {
-   "runs_in_window": 44,
+   "runs_in_window": 76,
    "slots": 76,
-   "share": 0.58,
-   "longest_gap_min": 130,
-   "good_day": false
+   "share": 1.0,
+   "longest_gap_min": 6,
+   "good_day": true
   }
  },
- "latest_day": "2026-10-29",
- "trade_rows": 103,
- "summary_rows": 57,
+ "latest_day": "2026-10-30",
+ "trade_rows": 106,
+ "summary_rows": 60,
  "net_by_index": {
   "Bank Nifty": -62585,
-  "Sensex": -24944,
-  "Nifty 50": -1941
+  "Nifty 50": 5622,
+  "Sensex": -18774
  }
 }
