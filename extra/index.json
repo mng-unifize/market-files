@@ -1,6 +1,8 @@
 {
  "issues": [
+  "bulkhist 2026-11: Expecting value: line 2 column 1 (char 1)",
   "bulkhist 2026-10: Expecting value: line 2 column 1 (char 1)",
+  "blockhist 2026-11: Expecting value: line 2 column 1 (char 1)",
   "blockhist 2026-10: Expecting value: line 2 column 1 (char 1)"
  ],
  "sets": {
@@ -380,6 +382,10 @@
    "2026-10": {
     "ok": true,
     "rows": 74
+   },
+   "2026-11": {
+    "ok": true,
+    "rows": 4
    }
   },
   "announcements": {
@@ -8557,7 +8563,11 @@
    },
    "2026-10-30": {
     "ok": true,
-    "rows": 926
+    "rows": 955
+   },
+   "2026-11-02": {
+    "ok": true,
+    "rows": 850
    }
   },
   "block": {
@@ -8580,6 +8590,10 @@
    "2026-10-30": {
     "ok": true,
     "rows": 12
+   },
+   "2026-11-02": {
+    "ok": true,
+    "rows": 1
    }
   },
   "blockhist": {
@@ -8958,6 +8972,10 @@
    "2026-10": {
     "err": "Expecting value: line 2 column 1 (char 1)",
     "ok": false
+   },
+   "2026-11": {
+    "err": "Expecting value: line 2 column 1 (char 1)",
+    "ok": false
    }
   },
   "bulk": {
@@ -8980,6 +8998,10 @@
    "2026-10-30": {
     "ok": true,
     "rows": 88
+   },
+   "2026-11-02": {
+    "ok": true,
+    "rows": 87
    }
   },
   "bulkhist": {
@@ -9356,6 +9378,10 @@
     "ok": false
    },
    "2026-10": {
+    "err": "Expecting value: line 2 column 1 (char 1)",
+    "ok": false
+   },
+   "2026-11": {
     "err": "Expecting value: line 2 column 1 (char 1)",
     "ok": false
    }
@@ -17742,6 +17768,10 @@
    "2026-10-30": {
     "ok": true,
     "rows": 3503
+   },
+   "2026-11-02": {
+    "ok": true,
+    "rows": 3553
    }
   },
   "insider": {
@@ -18120,6 +18150,10 @@
    "2026-10": {
     "ok": true,
     "rows": 0
+   },
+   "2026-11": {
+    "ok": true,
+    "rows": 0
    }
   },
   "pledge": {
@@ -18140,6 +18174,10 @@
     "rows": 1558
    },
    "2026-10-30": {
+    "ok": true,
+    "rows": 1558
+   },
+   "2026-11-02": {
     "ok": true,
     "rows": 1558
    }
@@ -24357,6 +24395,10 @@
    "2026-10": {
     "ok": true,
     "rows": 0
+   },
+   "2026-11": {
+    "ok": true,
+    "rows": 0
    }
   },
   "shareholding": {
@@ -24734,9 +24776,13 @@
    },
    "2026-10": {
     "ok": true,
-    "rows": 2436
+    "rows": 2438
+   },
+   "2026-11": {
+    "ok": true,
+    "rows": 2
    }
   }
  },
- "updated": "2026-10-30T16:17:45Z"
+ "updated": "2026-11-02T16:29:15Z"
 }
