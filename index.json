@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T00:24:54+05:30",
+ "updated": "2026-11-05T01:56:50+05:30",
  "dates": {
   "2024-07-08": {
    "ready": true,
@@ -4924,6 +4924,16 @@
     "REG_IND041126.csv"
    ],
    "issues": []
+  },
+  "2026-11-05": {
+   "ready": false,
+   "files": [],
+   "issues": [
+    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
+    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
+    "nse_flags: HTTP 404 (not published yet, or a holiday)",
+    "bse_bhavcopy: not a data file"
+   ]
   }
  }
 }
