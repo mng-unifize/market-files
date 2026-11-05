@@ -1,27 +1,25 @@
 {
- "status": "warn",
- "run_at": "2026-11-04 23:58",
- "today": "2026-11-04",
- "problems": [
-  "warn: live job coverage today: 0 of 76 five-minute runs, longest silent gap 375 minutes (GitHub schedules can run late or skip)"
- ],
+ "status": "ok",
+ "run_at": "2026-11-05 19:26",
+ "today": "2026-11-05",
+ "problems": [],
  "data": {
   "NSEI": {
-   "last_candle": "2026-11-04 15:30",
+   "last_candle": "2026-11-05 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-11-04 15:30",
+   "last_candle": "2026-11-05 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-11-04 15:30",
+   "last_candle": "2026-11-05 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
@@ -42,23 +40,23 @@
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": 130360,
+   "net": 263774,
    "limit": -300000
   },
   "run_coverage": {
-   "runs_in_window": 0,
+   "runs_in_window": 75,
    "slots": 76,
-   "share": 0.0,
-   "longest_gap_min": 375,
-   "good_day": false
+   "share": 0.99,
+   "longest_gap_min": 10,
+   "good_day": true
   }
  },
- "latest_day": "2026-11-04",
- "trade_rows": 117,
- "summary_rows": 69,
+ "latest_day": "2026-11-05",
+ "trade_rows": 120,
+ "summary_rows": 72,
  "net_by_index": {
-  "Nifty 50": 64610,
-  "Sensex": 38063,
-  "Bank Nifty": -58371
+  "Sensex": 78235,
+  "Bank Nifty": -2569,
+  "Nifty 50": 102050
  }
 }
