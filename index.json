@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T20:51:59+05:30",
+ "updated": "2026-11-06T23:53:03+05:30",
  "dates": {
   "2024-07-08": {
    "ready": true,
@@ -4935,14 +4935,13 @@
    "issues": []
   },
   "2026-11-06": {
-   "ready": false,
+   "ready": true,
    "files": [
     "BhavCopy_BSE_CM_0_0_0_20261106_F_0000.csv.gz",
-    "BhavCopy_NSE_CM_0_0_0_20261106_F_0000.csv.zip"
+    "BhavCopy_NSE_CM_0_0_0_20261106_F_0000.csv.zip",
+    "REG_IND061126.csv"
    ],
-   "issues": [
-    "nse_flags: NSE returned something that is not the flags file"
-   ]
+   "issues": []
   }
  }
 }
