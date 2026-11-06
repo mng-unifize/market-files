@@ -1,30 +1,25 @@
 {
- "status": "warn",
- "run_at": "2026-11-06 00:02",
+ "status": "ok",
+ "run_at": "2026-11-06 23:18",
  "today": "2026-11-06",
- "problems": [
-  "warn: Nifty 50: newest candle is 2026-11-05 15:30, expected 2026-11-06 (holiday, or the fetch failed)",
-  "warn: Bank Nifty: newest candle is 2026-11-05 15:30, expected 2026-11-06 (holiday, or the fetch failed)",
-  "warn: Sensex: newest candle is 2026-11-05 15:30, expected 2026-11-06 (holiday, or the fetch failed)",
-  "warn: dashboard latest day is 2026-11-05, today is 2026-11-06"
- ],
+ "problems": [],
  "data": {
   "NSEI": {
-   "last_candle": "2026-11-05 15:30",
+   "last_candle": "2026-11-06 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-11-05 15:30",
+   "last_candle": "2026-11-06 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-11-05 15:30",
+   "last_candle": "2026-11-06 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
@@ -45,16 +40,23 @@
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": 263774,
+   "net": 364904,
    "limit": -300000
+  },
+  "run_coverage": {
+   "runs_in_window": 75,
+   "slots": 76,
+   "share": 0.99,
+   "longest_gap_min": 10,
+   "good_day": true
   }
  },
- "latest_day": "2026-11-05",
- "trade_rows": 120,
- "summary_rows": 72,
+ "latest_day": "2026-11-06",
+ "trade_rows": 123,
+ "summary_rows": 75,
  "net_by_index": {
-  "Bank Nifty": -2569,
-  "Nifty 50": 102050,
-  "Sensex": 78235
+  "Sensex": 107901,
+  "Bank Nifty": 36801,
+  "Nifty 50": 134144
  }
 }
