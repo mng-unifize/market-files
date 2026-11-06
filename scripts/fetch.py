@@ -5,11 +5,11 @@ Saves into data/<YYYY-MM-DD>/ with a status.json per day, and rebuilds index.jso
 so the dashboard builder can find everything over plain HTTPS.
 
 Usage:
-    python scripts/fetch.py                       # today (IST)
+    python scripts/fetch.py                       # the day that is due now (IST; after midnight it is still the day that just closed)
     python scripts/fetch.py --date 2026-10-01
     python scripts/fetch.py --since 2026-04-20    # every weekday from that date to today, skips days already complete
 """
-import argparse, gzip, http.cookiejar, io, json, time, zipfile
+import argparse, gzip, http.cookiejar, io, json, sys, time, zipfile
 import urllib.request, urllib.error
 from datetime import datetime, timedelta, date
 from pathlib import Path
@@ -114,6 +114,13 @@ def run_day(op, d, want_flags=True):
     return status
 
 
+def due_day(now=None):
+    """The trading day whose files are due right now. A run that starts after midnight India time
+    (GitHub can start runs hours late) still belongs to the day that just closed, not the new calendar day."""
+    now = now or datetime.now(IST)
+    return (now - timedelta(hours=6)).date()
+
+
 def rebuild_index():
     idx = {}
     for st in sorted(DATA.glob("*/status.json")):
@@ -127,7 +134,14 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--date")
     p.add_argument("--since")
+    p.add_argument("--ready", action="store_true", help="exit 0 if that day's files are complete (or it is a weekend), else 1; fetches nothing")
     a = p.parse_args()
+    if a.ready:
+        d = date.fromisoformat(a.date) if a.date else due_day()
+        st = DATA / d.isoformat() / "status.json"
+        ok = d.weekday() >= 5 or (st.exists() and json.loads(st.read_text()).get("ready", False))
+        print(d, "ready" if ok else "not ready")
+        sys.exit(0 if ok else 1)
     op = opener()
     today = datetime.now(IST).date()
     if a.since:
@@ -139,7 +153,7 @@ def main():
                 time.sleep(1.5)
             d += timedelta(days=1)
     else:
-        d = date.fromisoformat(a.date) if a.date else today
+        d = date.fromisoformat(a.date) if a.date else due_day()
         if d.weekday() >= 5:
             print(d, "weekend, nothing to fetch")
         else:
