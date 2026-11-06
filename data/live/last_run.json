@@ -1,6 +1,6 @@
 {
  "status": "ok",
- "run_at": "2026-11-06 23:18",
+ "run_at": "2026-11-06 23:41",
  "today": "2026-11-06",
  "problems": [],
  "data": {
@@ -55,8 +55,8 @@
  "trade_rows": 123,
  "summary_rows": 75,
  "net_by_index": {
-  "Sensex": 107901,
   "Bank Nifty": 36801,
+  "Sensex": 107901,
   "Nifty 50": 134144
  }
 }
