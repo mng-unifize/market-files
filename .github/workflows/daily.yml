@@ -1,14 +1,17 @@
 name: daily-files
+# Downloads the NSE/BSE end-of-day files in one quick pass and saves what is there. It is safe to start many times:
+# a start after the files are complete exits in seconds. An outside timer starts it every 10 minutes from 19:00 to
+# 21:00 India time (that is what makes it on time); the three schedules below are only a backup, because GitHub can
+# start scheduled runs hours late or skip them.
 on:
   schedule:
-    # 6:45, 7:15 and 7:45 PM India time, Monday to Friday (GitHub runs can start late)
-    - cron: "15 13 * * 1-5"
-    - cron: "45 13 * * 1-5"
-    - cron: "15 14 * * 1-5"
+    - cron: "7 13 * * 1-5"    # 18:37 India time
+    - cron: "52 13 * * 1-5"   # 19:22 India time
+    - cron: "37 14 * * 1-5"   # 20:07 India time
   workflow_dispatch:
     inputs:
       date:
-        description: "One date YYYY-MM-DD (blank = today)"
+        description: "One date YYYY-MM-DD (blank = the day due now)"
         required: false
       since:
         description: "Fill every weekday from this date YYYY-MM-DD"
@@ -21,24 +24,39 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with: { ref: main }   # newest main, not the commit that was current when the schedule fired
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Download exchange files
-        run: |
-          if [ -n "${{ github.event.inputs.since }}" ]; then
-            python scripts/fetch.py --since "${{ github.event.inputs.since }}"
-          elif [ -n "${{ github.event.inputs.date }}" ]; then
-            python scripts/fetch.py --date "${{ github.event.inputs.date }}"
-          else
-            python scripts/fetch.py
-          fi
-      - name: Save to repository
+      - name: Download exchange files and save
+        env:
+          DATE_IN: ${{ github.event.inputs.date }}
+          SINCE_IN: ${{ github.event.inputs.since }}
         run: |
           git config user.name "penny-bot"
           git config user.email "penny-bot@users.noreply.github.com"
-          git add data index.json
-          git diff --cached --quiet || git commit -m "Exchange files $(date -u +%F)"
-          git push
+          save() {
+            git add data index.json
+            git diff --cached --quiet && return 0
+            git commit -q -m "Exchange files $(TZ=Asia/Kolkata date -d '6 hours ago' +%F)"
+            for i in 1 2 3 4; do
+              if git pull --rebase --autostash -X theirs origin main && git push origin HEAD:main; then return 0; fi
+              git rebase --abort 2>/dev/null || true
+              sleep $((5 * i))
+            done
+            echo "::error title=push failed::Exchange files were not saved to the repository"
+            return 1
+          }
+          if [ -n "$SINCE_IN" ]; then
+            python scripts/fetch.py --since "$SINCE_IN"; save
+          elif [ -n "$DATE_IN" ]; then
+            python scripts/fetch.py --date "$DATE_IN"; save
+          else
+            if python scripts/fetch.py --ready; then echo "The day's files are already complete"; exit 0; fi
+            python scripts/fetch.py || true
+            save
+            python scripts/fetch.py --ready || echo "::notice title=files not complete yet::Some exchange files are not published yet; the next start will try again"
+          fi
