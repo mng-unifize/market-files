@@ -1,16 +1,13 @@
 {
   "date": "2026-11-06",
-  "checked_at": "2026-11-06T13:17:22+05:30",
+  "checked_at": "2026-11-06T19:00:47+05:30",
   "files": {
-    "nse_bhavcopy": "missing",
+    "nse_bhavcopy": "ok",
     "nse_flags": "missing",
-    "bse_bhavcopy": "missing"
+    "bse_bhavcopy": "ok"
   },
   "issues": [
-    "No bhavcopy from either exchange: likely a market holiday or files not published yet.",
-    "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
-    "nse_flags: HTTP 404 (not published yet, or a holiday)",
-    "bse_bhavcopy: not a data file"
+    "nse_flags: HTTP 404 (not published yet, or a holiday)"
   ],
   "ready": false
 }
