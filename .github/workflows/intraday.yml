@@ -1,15 +1,19 @@
 name: intraday-candles
+# Saves the day's candles. The evening-paper job also downloads them, so this one is a second, earlier copy.
 on:
   schedule:
-    - cron: "45 10 * * 1-5"   # 16:15 India time, after the 15:30 close
+    - cron: "52 10 * * 1-5"   # 16:22 India time, after the 15:30 close
   workflow_dispatch: {}
 permissions:
   contents: write
+concurrency: { group: intraday-candles, cancel-in-progress: false }
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with: { ref: main }   # newest main, not the commit that was current when the schedule fired
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: python3 fetch_intraday.py
@@ -17,5 +21,12 @@ jobs:
           git config user.name "intraday-bot"
           git config user.email "bot@users.noreply.github.com"
           git add data/intraday
-          git diff --cached --quiet || git commit -m "intraday candles $(date -u +%F)"
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -q -m "intraday candles $(TZ=Asia/Kolkata date -d '6 hours ago' +%F)"
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash -X theirs origin main && git push origin HEAD:main; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((5 * i))
+          done
+          echo "::error title=push failed::Intraday candles were not saved to the repository"
+          exit 1
