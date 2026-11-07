@@ -27,6 +27,9 @@ FLAGS_API = ("https://www.nseindia.com/api/reports?archives=%5B%7B%22name%22%3A%
              "%22%2C%22section%22%3A%22equities%22%7D%5D&date={dmon}&type=equities&mode=single")
 
 
+FLAGS_ARCHIVE = "https://nsearchives.nseindia.com/archives/equities/mkt/REG_IND{dmy2}.csv"
+
+
 def opener():
     jar = http.cookiejar.CookieJar()
     op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
@@ -39,12 +42,12 @@ def opener():
     return op
 
 
-def get(op, url, ref, tries=3):
+def get(op, url, ref, tries=3, timeout=60):
     last = ""
     for i in range(tries):
         try:
             req = urllib.request.Request(url, headers={"Referer": ref})
-            return op.open(req, timeout=60).read(), ""
+            return op.open(req, timeout=timeout).read(), ""
         except urllib.error.HTTPError as e:
             last = f"HTTP {e.code}" + (" (not published yet, or a holiday)" if e.code == 404 else "")
             if e.code == 404:
@@ -83,7 +86,12 @@ def run_day(op, d, want_flags=True):
             files["nse_bhavcopy"] = "missing"; issues.append(f"nse_bhavcopy (required): {why or 'not a data file'}")
 
     if want_flags and files.get("nse_flags") != "ok":
-        b, why = get(op, FLAGS_API.format(dmon=d.strftime("%d-%b-%Y")), "https://www.nseindia.com/all-reports")
+        # Try the archive server first (the same host that serves the bhavcopy, which works from GitHub), then NSE's
+        # reports API, which often times out from GitHub's servers. Short timeouts, so a start never stalls for minutes.
+        b, why = get(op, FLAGS_ARCHIVE.format(dmy2=dmy2), "https://www.nseindia.com/all-reports", tries=1, timeout=20)
+        if not (b and (b[:2] == b"PK" or b"ScripCode" in b[:300])):
+            b, why2 = get(op, FLAGS_API.format(dmon=d.strftime("%d-%b-%Y")), "https://www.nseindia.com/all-reports", tries=2, timeout=30)
+            why = why2 or why
         if b and b[:2] == b"PK":
             try:
                 z = zipfile.ZipFile(io.BytesIO(b))
@@ -109,7 +117,9 @@ def run_day(op, d, want_flags=True):
         issues.insert(0, "No bhavcopy from either exchange: likely a market holiday or files not published yet.")
     status = {"date": d.isoformat(), "checked_at": datetime.now(IST).isoformat(timespec="seconds"),
               "files": files, "issues": issues,
-              "ready": files.get("nse_bhavcopy") == "ok" and (files.get("nse_flags") == "ok" or not want_flags)}
+              # ready = the main files (NSE and BSE bhavcopy) are in. The surveillance flags file is best effort and has its own flag.
+              "ready": files.get("nse_bhavcopy") == "ok" and files.get("bse_bhavcopy") == "ok",
+              "flags_ready": files.get("nse_flags") == "ok" or not want_flags}
     st_path.write_text(json.dumps(status, indent=2))
     return status
 
@@ -125,7 +135,7 @@ def rebuild_index():
     idx = {}
     for st in sorted(DATA.glob("*/status.json")):
         s = json.loads(st.read_text())
-        idx[s["date"]] = {"ready": s.get("ready", False), "files": sorted(p.name for p in st.parent.iterdir() if p.name != "status.json"),
+        idx[s["date"]] = {"ready": s.get("ready", False), "flags_ready": s.get("flags_ready", s.get("files", {}).get("nse_flags") == "ok"), "files": sorted(p.name for p in st.parent.iterdir() if p.name != "status.json"),
                           "issues": s.get("issues", [])}
     (ROOT / "index.json").write_text(json.dumps({"updated": datetime.now(IST).isoformat(timespec="seconds"), "dates": idx}, indent=1))
 
@@ -134,13 +144,16 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--date")
     p.add_argument("--since")
-    p.add_argument("--ready", action="store_true", help="exit 0 if that day's files are complete (or it is a weekend), else 1; fetches nothing")
+    p.add_argument("--ready", action="store_true", help="exit 0 if the main files (NSE and BSE bhavcopy) are in (or it is a weekend), else 1; fetches nothing")
+    p.add_argument("--complete", action="store_true", help="like --ready, but the surveillance flags file must be in too")
     a = p.parse_args()
-    if a.ready:
+    if a.ready or a.complete:
         d = date.fromisoformat(a.date) if a.date else due_day()
         st = DATA / d.isoformat() / "status.json"
-        ok = d.weekday() >= 5 or (st.exists() and json.loads(st.read_text()).get("ready", False))
-        print(d, "ready" if ok else "not ready")
+        s = json.loads(st.read_text()) if st.exists() else {}
+        flags_ok = s.get("flags_ready", s.get("files", {}).get("nse_flags") == "ok")
+        ok = d.weekday() >= 5 or (s.get("ready", False) and (flags_ok or not a.complete))
+        print(d, "complete" if (ok and a.complete) else "ready" if ok else "not ready")
         sys.exit(0 if ok else 1)
     op = opener()
     today = datetime.now(IST).date()
