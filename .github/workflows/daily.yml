@@ -55,8 +55,8 @@ jobs:
           elif [ -n "$DATE_IN" ]; then
             python scripts/fetch.py --date "$DATE_IN"; save
           else
-            if python scripts/fetch.py --ready; then echo "The day's files are already complete"; exit 0; fi
+            if python scripts/fetch.py --complete; then echo "The day's files are already complete"; exit 0; fi
             python scripts/fetch.py || true
             save
-            python scripts/fetch.py --ready || echo "::notice title=files not complete yet::Some exchange files are not published yet; the next start will try again"
+            python scripts/fetch.py --complete || echo "::notice title=files not complete yet::Some exchange files (or the surveillance flags file) are not in yet; the next start will try again"
           fi
