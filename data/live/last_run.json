@@ -1,8 +1,13 @@
 {
- "status": "ok",
- "run_at": "2026-11-06 23:41",
- "today": "2026-11-06",
- "problems": [],
+ "status": "warn",
+ "run_at": "2026-11-09 09:07",
+ "today": "2026-11-09",
+ "problems": [
+  "warn: Nifty 50: newest candle is 2026-11-06 15:30, expected 2026-11-09 (holiday, or the fetch failed)",
+  "warn: Bank Nifty: newest candle is 2026-11-06 15:30, expected 2026-11-09 (holiday, or the fetch failed)",
+  "warn: Sensex: newest candle is 2026-11-06 15:30, expected 2026-11-09 (holiday, or the fetch failed)",
+  "warn: dashboard latest day is 2026-11-06, today is 2026-11-09"
+ ],
  "data": {
   "NSEI": {
    "last_candle": "2026-11-06 15:30",
@@ -42,13 +47,6 @@
    "since": "2026-10-27",
    "net": 364904,
    "limit": -300000
-  },
-  "run_coverage": {
-   "runs_in_window": 75,
-   "slots": 76,
-   "share": 0.99,
-   "longest_gap_min": 10,
-   "good_day": true
   }
  },
  "latest_day": "2026-11-06",
