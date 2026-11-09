@@ -1,0 +1,2 @@
+day,expected,watcher_matched,watcher_missing,watcher_extra,notifications_needed,notifications_sent,ledger_matched,ledger_missing,ledger_extra,all_agree
+2026-11-09,0,0,0,0,0,0,0,0,0,True
