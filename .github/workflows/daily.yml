@@ -22,7 +22,32 @@ concurrency:
   group: daily-files
   cancel-in-progress: false
 jobs:
+  gate:
+    # Holiday gate: scheduled runs stop on the NSE/BSE holidays built into this job. Manual runs always go ahead.
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      holiday: ${{ steps.h.outputs.holiday }}
+    steps:
+      - id: h
+        run: |
+          echo "holiday=false" >> "$GITHUB_OUTPUT"
+          [ "${{ github.event_name }}" = "schedule" ] || exit 0
+          today=$(TZ=Asia/Kolkata date +%F)
+          # NSE and BSE weekday trading holidays, 2026. Same dates as holidays.txt. Update each January.
+          case "$today" in
+            2026-*) ;;
+            *) echo "::warning::Holiday list covers 2026 only, running as a normal trading day"; exit 0 ;;
+          esac
+          for h in 2026-01-15 2026-01-26 2026-03-03 2026-03-26 2026-03-31 2026-04-03 2026-04-14 2026-05-01 2026-05-28 2026-06-26 2026-09-14 2026-10-02 2026-10-20 2026-11-10 2026-11-24 2026-12-25; do
+            if [ "$h" = "$today" ]; then
+              echo "holiday=true" >> "$GITHUB_OUTPUT"
+              echo "Market holiday ($today), skipped" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
   fetch:
+    needs: gate
+    if: needs.gate.outputs.holiday != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
