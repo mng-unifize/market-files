@@ -1,7 +1,13 @@
 name: extra-data
+# Delivery file, bulk and block deals, announcements and pledge data. It is safe to start many times: a start after the day's
+# files are complete stops in seconds. An outside timer starts it every 10 minutes from 21:00 to 22:50 India time (that is what makes
+# it on time; the bulk, block and pledge files are snapshots of the latest day, so it must not run before NSE has posted them);
+# the two schedules below are only a backup, because GitHub can start scheduled runs hours late or skip them.
+# A start at 22:30 or later that still finds the day incomplete fails, so GitHub emails you.
 on:
   schedule:
-    - cron: "30 15 * * 1-5"   # 9:00 pm India time on weekdays, after NSE posts the delivery file
+    - cron: "37 15 * * 1-5"   # 21:07 India time
+    - cron: "7 17 * * 1-5"    # 22:37 India time
   workflow_dispatch:
     inputs:
       from_date:
@@ -19,21 +25,38 @@ jobs:
     timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+        with: { ref: main }   # newest main, not the commit that was current when the schedule fired
+      - id: due
+        env:
+          FROM_DATE: ${{ github.event.inputs.from_date }}
+        run: |
+          if [ -z "$FROM_DATE" ] && python3 scripts/extra_due.py; then echo "done=true" >> "$GITHUB_OUTPUT"; else echo "done=false" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.due.outputs.done != 'true'
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Fetch extra data
+        if: steps.due.outputs.done != 'true'
+        continue-on-error: true
         env:
           FROM_DATE: ${{ github.event.inputs.from_date }}
-          BUDGET_MIN: "300"
         run: |
-          if [ -n "$FROM_DATE" ]; then python scripts/extra_fetch.py --from "$FROM_DATE"; else python scripts/extra_fetch.py; fi
+          if [ -n "$FROM_DATE" ]; then BUDGET_MIN=300 python scripts/extra_fetch.py --from "$FROM_DATE"; else BUDGET_MIN=20 python scripts/extra_fetch.py; fi
       - name: Save to the repository
-        if: always()
+        if: steps.due.outputs.done != 'true'
         run: |
           git config user.name "extra-data-bot"
           git config user.email "extra-data-bot@users.noreply.github.com"
           git add extra
           if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
-          git commit -m "extra data $(date -u +%Y-%m-%d)"
-          for i in 1 2 3; do git pull --rebase && git push && break || sleep 10; done
+          git commit -q -m "extra data $(TZ=Asia/Kolkata date -d '6 hours ago' +%F)"
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash -X theirs origin main && git push origin HEAD:main; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((5 * i))
+          done
+          echo "::error title=push failed::Extra data was not saved to the repository"
+          exit 1
+      - name: Raise the alarm if the day is still incomplete
+        if: steps.due.outputs.done != 'true' && github.event.inputs.from_date == ''
+        run: python3 scripts/extra_due.py --final-after 22:30 || [ "$(TZ=Asia/Kolkata date +%H:%M)" \< "22:30" ]
