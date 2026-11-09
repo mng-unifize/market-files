@@ -15,6 +15,7 @@ and writes nothing into this folder. `--rehearse-day YYYY-MM-DD` replays an earl
 Nothing secret is ever printed or logged."""
 import os, sys, csv, json, time, shutil, threading, tempfile, datetime as dt
 import urllib.request
+import ticket as T
 
 def use_certifi():
     """Point Python's HTTPS (urllib) and requests (used by kiteconnect) at certifi's certificate bundle, unless one is already set.
@@ -32,7 +33,7 @@ PAPER_DIR = os.path.join(HERE, "paper")
 ENV_PATH = "/Users/ng/ibt/.env"
 TOKEN_PATH = "/Users/ng/ibt/kite_token.json"
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
-LIVE = "data/live"; ALERTS = LIVE + "/alerts.csv"; CANDLES = LIVE + "/candles"
+LIVE = "data/live"; ALERTS = LIVE + "/alerts.csv"; CANDLES = LIVE + "/candles"; TICKETS = LIVE + "/tickets.csv"
 HOLIDAY_FILE = "holidays.txt"
 WORK = os.path.join(tempfile.gettempdir(), "ibt_watcher_work")
 PING_FIRST, PING_LAST = "09:05", "16:00"
@@ -158,7 +159,24 @@ def append_row(row):
 
 # ---------- one check ----------
 class State:
-    def __init__(self): self.token = None; self.kite = None; self.tokens = {}; self.warned = set(); self.failed = set()
+    def __init__(self): self.token = None; self.kite = None; self.tokens = {}; self.warned = set(); self.failed = set(); self.futs = None; self.quotes = True
+
+def append_ticket(row):
+    os.makedirs(LIVE, exist_ok=True); first = not os.path.exists(TICKETS)
+    with open(TICKETS, "a", newline="") as f:
+        w = csv.writer(f)
+        if first: w.writerow(T.HDR_T)
+        w.writerow([row[k] for k in T.HDR_T])
+
+def seen_tickets():
+    if not os.path.exists(TICKETS): return set()
+    with open(TICKETS, newline="") as f: return {r["event_id"] for r in csv.DictReader(f)}
+
+def ticket_for(st, kind, nm, side, c, lag_seconds, eid, t):
+    """Builds the order ticket (read-only quote call) and returns (row, lines). Never raises."""
+    L, D = engine()
+    quote = T.get_quote(st.kite, c) if (c and st.quotes) else (None, None, None, "no contract" if not c else "not requested")
+    return T.build(kind, nm, D.NAMES[nm], side, c, T.LOTS_DEFAULT, L.LOTS[nm], quote, STOP_TEXT, lag_seconds, eid, t)
 
 def warn_once(st, key, title, body, notify):
     if key not in st.warned and notify(title, body): st.warned.add(key)
@@ -208,10 +226,11 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
         log("no Kite token for today:", why)
         warn_once(st, "token", "Kite login needed", "No Kite access token for today (%s). Run login.py. No signals are being watched until you do." % why, notify)
         return "no token"
-    if token != st.token: st.token = token; st.kite = make_kite_fn(token); st.tokens = {}
+    if token != st.token: st.token = token; st.kite = make_kite_fn(token); st.tokens = {}; st.futs = None
     kite = st.kite; ok_idx = 0; total_today = 0
     try:
         if not st.tokens: st.tokens = index_tokens(kite)
+        if st.futs is None: st.futs = T.load_futures(kite, L)
         for nm in L.IDX:
             if nm not in st.tokens: log(nm, "not found at Kite"); continue
             rows = {k: v for k, v in L.candles(kite, st.tokens[nm], t).items() if k[11:] >= "09:15"}
@@ -228,31 +247,64 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
     if total_today == 0:
         if h >= HOLIDAY_AFTER and ok_idx == len(L.IDX): log("no candles today, treating as a market holiday, trading logic skipped"); return "holiday"
         log("no candles for today yet"); return "waiting"
-    seen = seen_ids(); new_rows = 0
+    seen = seen_ids(); new_rows = 0; hol = holidays(); futs = st.futs or {}; seen_t = seen_tickets()
     for nm in L.IDX:
         if nm not in st.tokens: continue
         try: events = L.recipe_events(nm, WORK)
         except Exception as e: log(nm, "engine failed:", type(e).__name__, str(e)[:150]); continue
-        last_entry = None
+        last_entry = None; pos = None
         for ev in events:
-            if ev["event"] == "ENTRY": last_entry = ev
+            if ev["event"] == "ENTRY":
+                last_entry = ev; pos = None if T.entry_blocked(D, nm, ev["day"], futs, hol) else ev
+            elif ev["event"] == "EXIT": pos = None
             if ev["day"] != today: continue          # earlier days are history, never alerted
             title, body, row = describe(nm, ev, last_entry, t)
             if row["event_id"] in seen: continue
             if ev["event"] == "SKIP":
                 row["alert"] = "log only"
+            elif ev["event"] == "ENTRY" and T.entry_blocked(D, nm, ev["day"], futs, hol):
+                row["alert"] = "not sent, expiry week (no new entries in the last %d sessions before expiry; paper still takes it)" % T.BLOCK_SESSIONS
+            elif ev["event"] == "EXIT" and last_entry and T.entry_blocked(D, nm, last_entry["day"], futs, hol):
+                row["alert"] = "not sent, its entry was blocked (expiry week), so you hold nothing to close"
             else:
                 fill = dt.datetime.strptime(ev["day"] + " " + ev["fill"], "%Y-%m-%d %H:%M").replace(tzinfo=IST)
                 lag = (t - fill).total_seconds() / 60
                 if fresh_minutes is not None and lag > fresh_minutes:
                     row["alert"] = "not sent, stale (%d min old)%s" % (lag, "; earlier send attempts failed" if row["event_id"] in st.failed else "")
-                elif notify(title, body):
-                    row["alert"] = "sent"
                 else:
-                    st.failed.add(row["event_id"]); log("alert not delivered, will retry next check:", row["event_id"]); continue
+                    lag_s = (t - fill).total_seconds()
+                    if ev["event"] == "ENTRY": c = T.contract_for(nm, ev["day"], futs, hol, D)
+                    else: c = T.held_contract(nm, last_entry["day"], ev["day"], futs, hol, D) if last_entry else None
+                    trow, tlines = ticket_for(st, ev["event"], nm, ev["side"], c, lag_s, row["event_id"], t)
+                    body = body + "\n" + "\n".join(tlines)
+                    if not notify(title, body):
+                        st.failed.add(row["event_id"]); log("alert not delivered, will retry next check:", row["event_id"]); continue
+                    row["alert"] = "sent"
+                    if row["event_id"] not in seen_t: append_ticket(trow); seen_t.add(row["event_id"])
             append_row(row); seen.add(row["event_id"]); new_rows += 1
             log("signal", row["event_id"], "|", row["alert"])
+        try: new_rows += roll_check(st, t, nm, pos, futs, hol, seen_t, notify)
+        except Exception as e: log(nm, "roll check failed:", type(e).__name__, str(e)[:150])
     return "ok (%d new)" % new_rows
+
+def roll_check(st, t, nm, pos, futs, hol, seen_t, notify):
+    """ROLL alert for an open position on the session before expiry (and again on expiry day if still open), from 14:45."""
+    L, D = engine(); today = t.strftime("%Y-%m-%d")
+    if not pos or t.strftime("%H:%M") < T.ROLL_FROM: return 0
+    c = T.contract_for(nm, pos["day"], futs, hol, D)
+    if not c or today not in (T.roll_day(c["expiry"], hol), c["expiry"]): return 0
+    eid = "%s|%s|ROLL" % (nm, today)
+    if eid in seen_t: return 0
+    nxt = [f for f in futs.get(nm, []) if f["expiry"] > c["expiry"]]
+    if not nxt: log(nm, "roll needed but no next-month contract found"); return 0
+    side = pos["side"]; close_side = "SELL" if side == "BUY" else "BUY"; name = D.NAMES[nm]
+    r1, l1 = ticket_for(st, "ROLL-CLOSE", nm, close_side, c, None, eid, t)
+    r2, l2 = ticket_for(st, "ROLL-OPEN", nm, side, nxt[0], None, eid, t)
+    body = ["ROLL %s: your %s position expires %s." % (name, side, c["expiry"]), "Leg 1, close the near month:"] + l1[1:] + ["Leg 2, open the next month (same side):"] + l2[1:] + ["Paper engine signal only. No order was placed."]
+    if not notify("ROLL %s" % name, "\n".join(body)): return 0
+    r1["kind"] = "ROLL"; r1["note"] = "close near month: %s; open next month: %s" % (c["symbol"], nxt[0]["symbol"]); append_ticket(r1); seen_t.add(eid)
+    append_ticket(dict(r2, kind="ROLL", note="open leg"))
+    log("roll alert", eid); return 1
 
 def trading_loop(clock, st, tick=None):
     tick = tick or run_tick
@@ -313,7 +365,8 @@ def rehearse(clock=None, out=print, make_kite_fn=None, day=None):
         if os.path.exists(os.path.join(HERE, HOLIDAY_FILE)): shutil.copy(os.path.join(HERE, HOLIDAY_FILE), tmp)
         os.chdir(tmp); WORK = os.path.join(tmp, "work"); ntfy = ping = blocked
         def capture(title, body): sent.append((title, body)); return True
-        result = run_tick(State(), t, make_kite_fn=make_kite_fn, notify_fn=capture, fresh_minutes=None, token_day=token_day)
+        st0 = State(); st0.quotes = day is None
+        result = run_tick(st0, t, make_kite_fn=make_kite_fn, notify_fn=capture, fresh_minutes=None, token_day=token_day)
         if os.path.exists(ALERTS):
             with open(ALERTS, newline="") as f: rows = list(csv.DictReader(f))
         today = t.strftime("%Y-%m-%d"); L, _ = engine()
@@ -332,10 +385,11 @@ def rehearse(clock=None, out=print, make_kite_fn=None, day=None):
     when = "on " + day if day else "today"
     out("Signals %s (%d):" % (when, len(rows)) if rows else "No signals %s." % when)
     for i, r in enumerate(rows, 1):
-        verdict = "log only" if r["event"] == "SKIP" else "WOULD ALERT"
+        verdict = "log only" if (r["event"] == "SKIP" or r["alert"].startswith("not sent")) else "WOULD ALERT"
         out(" %d. %s | %s %s %s | signal bar %s | fill %s | lot %s | price %s" % (i, verdict, r["event"], r["action"], r["index"], r["signal_bar"], r["fill_time"][11:], r["lot_size"], r["price"]))
         out("    stop: %s | reason: %s" % (r["stop"], r["reason"]))
         if r["closes_entry"]: out("    closes: " + r["closes_entry"])
+        if r["alert"].startswith("not sent"): out("    note: " + r["alert"])
         if r["event_id"] in real_ids: out("    already sent by a real run (it is in the real alerts.csv)")
     if day:
         out("")

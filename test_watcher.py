@@ -238,7 +238,7 @@ class TickTests(Base):
         self.assertEqual(len(self.rows()), len([r for r in self.rows()]))   # whatever the engine decided, rows and alerts agree
         self.assertEqual(len(sent), len([r for r in self.rows() if r["alert"] == "sent"]))
         self.assertTrue(all(r["event"] in ("ENTRY", "EXIT", "SKIP") for r in self.rows()))
-        self.assertTrue(all(x in ("instruments NSE", "instruments BSE", "historical_data") for x in kite.calls))
+        self.assertTrue(all(x in ("instruments NSE", "instruments BSE", "instruments NFO", "instruments BFO", "historical_data") for x in kite.calls))
     def test_entry_alert_has_every_field_and_is_logged(self):
         self.token(); sent = []
         with self.patch_events([ev("ENTRY", "BUY", TUE + " 11:00", "11:15", 24111.5)]):
@@ -345,7 +345,7 @@ class RehearsalTests(Base):
         self.assertEqual(before, self.snapshot()); self.assertFalse(os.path.exists(self.repo + "/data/live/alerts.csv"))
         self.assertEqual(os.getcwd(), cwd); self.assertEqual((watcher.ntfy, watcher.ping), orig)
         self.assertTrue(os.path.isdir(ROOT + "/kite") and os.path.exists(ROOT + "/kite/NSEI_5m.csv"))   # the temporary copy's links never delete real data
-        self.assertTrue(all(x in ("instruments NSE", "instruments BSE", "historical_data") for x in kite.calls))
+        self.assertTrue(all(x in ("instruments NSE", "instruments BSE", "instruments NFO", "instruments BFO", "historical_data") for x in kite.calls))
     def test_never_calls_ntfy_or_ping(self):
         self.token(); n, p = mock.Mock(), mock.Mock()
         with mock.patch.object(watcher, "ntfy", n), mock.patch.object(watcher, "ping", p):
