@@ -1,9 +1,7 @@
 {
  "issues": [
   "bulkhist 2026-11: Expecting value: line 2 column 1 (char 1)",
-  "bulkhist 2026-10: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-11: Expecting value: line 2 column 1 (char 1)",
-  "blockhist 2026-10: Expecting value: line 2 column 1 (char 1)"
+  "blockhist 2026-11: Expecting value: line 2 column 1 (char 1)"
  ],
  "sets": {
   "actions": {
@@ -385,7 +383,7 @@
    },
    "2026-11": {
     "ok": true,
-    "rows": 62
+    "rows": 74
    }
   },
   "announcements": {
@@ -8584,6 +8582,10 @@
    "2026-11-06": {
     "ok": true,
     "rows": 1239
+   },
+   "2026-11-09": {
+    "ok": true,
+    "rows": 221
    }
   },
   "block": {
@@ -8626,6 +8628,10 @@
    "2026-11-06": {
     "ok": true,
     "rows": 20
+   },
+   "2026-11-09": {
+    "ok": true,
+    "rows": 2
    }
   },
   "blockhist": {
@@ -9050,6 +9056,10 @@
    "2026-11-06": {
     "ok": true,
     "rows": 96
+   },
+   "2026-11-09": {
+    "ok": true,
+    "rows": 76
    }
   },
   "bulkhist": {
@@ -17836,6 +17846,10 @@
    "2026-11-06": {
     "ok": true,
     "rows": 3559
+   },
+   "2026-11-09": {
+    "ok": true,
+    "rows": 3551
    }
   },
   "insider": {
@@ -18258,6 +18272,10 @@
     "rows": 1558
    },
    "2026-11-06": {
+    "ok": true,
+    "rows": 1558
+   },
+   "2026-11-09": {
     "ok": true,
     "rows": 1558
    }
@@ -24860,9 +24878,9 @@
    },
    "2026-11": {
     "ok": true,
-    "rows": 13
+    "rows": 20
    }
   }
  },
- "updated": "2026-11-06T21:00:05Z"
+ "updated": "2026-11-09T15:31:33Z"
 }
