@@ -125,10 +125,10 @@ def run_day(op, d, want_flags=True):
 
 
 def due_day(now=None):
-    """The trading day whose files are due right now. A run that starts after midnight India time
-    (GitHub can start runs hours late) still belongs to the day that just closed, not the new calendar day."""
+    """The trading day whose files are due right now. The day flips at 16:00 India time, so a run that starts after midnight
+    (GitHub can start runs hours late) or before the close still belongs to the day that last closed, not the new calendar day."""
     now = now or datetime.now(IST)
-    return (now - timedelta(hours=6)).date()
+    return (now - timedelta(hours=16)).date()
 
 
 def rebuild_index():
@@ -156,7 +156,7 @@ def main():
         print(d, "complete" if (ok and a.complete) else "ready" if ok else "not ready")
         sys.exit(0 if ok else 1)
     op = opener()
-    today = datetime.now(IST).date()
+    today = due_day()   # not the calendar date: a backfill started after midnight must not create the next day's folder
     if a.since:
         d = date.fromisoformat(a.since)
         while d <= today:
