@@ -7,7 +7,7 @@ import json, sys, datetime as dt
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
 
 def due_day(now):
-    n = now - dt.timedelta(hours=6)          # a run just after midnight still belongs to the day that closed
+    n = now - dt.timedelta(hours=16)         # the trading day flips at 16:00 India time: a run after midnight, or before the close, still belongs to the day that last closed
     while n.weekday() >= 5: n -= dt.timedelta(days=1)
     return n.strftime("%Y-%m-%d")
 
