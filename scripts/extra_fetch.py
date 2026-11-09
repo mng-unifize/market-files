@@ -31,6 +31,16 @@ BUDGET = float(os.environ.get("BUDGET_MIN", "300")) * 60
 PAUSE = float(os.environ.get("PAUSE_SEC", "1.0"))
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 T0 = time.time()
+IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
+
+
+def due_day(now=None):
+    """The trading day whose data is due now, by India time. A run just after midnight (GitHub can start runs hours late)
+    still belongs to the day that closed, and a weekend belongs to the last Friday. The bulk, block and pledge files are
+    snapshots of the latest day only and are saved under this date."""
+    n = (now or dt.datetime.now(IST)) - dt.timedelta(hours=6)
+    while n.weekday() >= 5: n -= dt.timedelta(days=1)
+    return n.date()
 
 
 class Blocked(Exception):
@@ -182,7 +192,7 @@ def months(a, b):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--from", dest="frm", default=""); ap.add_argument("--dry-run", action="store_true"); ap.add_argument("--only", default="")
     a = ap.parse_args()
-    today = dt.date.today()
+    today = due_day()
     only = set(x for x in a.only.split(",") if x)
     want = lambda name: not only or name in only
     start = dt.date.fromisoformat(a.frm) if a.frm else today - dt.timedelta(days=7)
