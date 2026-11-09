@@ -9,6 +9,7 @@
     <string>/Users/ng/ibt/market-files/reconcile.py</string>
     <string>--today</string>
     <string>--notify</string>
+    <string>--publish</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/ng/ibt/market-files</string>
   <key>EnvironmentVariables</key>
