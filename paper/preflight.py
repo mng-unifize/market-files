@@ -34,7 +34,8 @@ def main():
         if ftok is not None:
             try:
                 q = kite.quote([f"{L.FUT_EX[nm]}:{sym}"])[f"{L.FUT_EX[nm]}:{sym}"]; d = q.get("depth", {})
-                add(f"quote: {D.NAMES[nm]}", bool(d.get("buy")) and bool(d.get("sell")), "best bid and ask available" if d.get("buy") else "no depth (normal before the open if the market is closed)")
+                has = bool(d.get("buy")) and bool(d.get("sell")); early = now.strftime("%H:%M") < "09:15"   # no bid or ask is normal before the open
+                add(f"quote: {D.NAMES[nm]}", has or early, "best bid and ask available" if has else "no depth yet, fine before the 09:15 open" if early else "no depth after the open")
             except Exception as e: add(f"quote: {D.NAMES[nm]}", False, str(e)[:120])
     return finish(res, today)
 

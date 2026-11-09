@@ -1,9 +1,12 @@
 name: preflight
 # Morning check after your Kite login: token, indexes, futures contracts, lot sizes, candle flow, quotes.
-# Runs by itself at 08:55 India time on weekdays, and on demand. A failure emails you before the market opens.
+# It is safe to start many times: a start after today's check has passed stops in seconds. An outside timer starts it at
+# 09:00, 09:05 and 09:10 India time on weekdays (that is what makes it before the 09:15 open); the two schedules below
+# are only a backup, because GitHub can start scheduled runs hours late or skip them. A failure emails you.
 on:
   schedule:
-    - cron: "25 3 * * 1-5"
+    - cron: "27 3 * * 1-5"   # 08:57 India time
+    - cron: "42 3 * * 1-5"   # 09:12 India time
   workflow_dispatch: {}
 permissions:
   contents: write
@@ -11,22 +14,36 @@ concurrency: { group: preflight, cancel-in-progress: false }
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+        with: { ref: main }   # newest main, not the commit that was current when the schedule fired
+      - id: due
+        run: |
+          if python3 paper/preflight_due.py; then echo "done=true" >> "$GITHUB_OUTPUT"; else echo "done=false" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.due.outputs.done != 'true'
+        uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install kiteconnect
+      - if: steps.due.outputs.done != 'true'
+        run: pip install kiteconnect
       - id: pre
+        if: steps.due.outputs.done != 'true'
         run: python3 paper/preflight.py
         env:
           KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
           KITE_ACCESS_TOKEN: ${{ secrets.KITE_ACCESS_TOKEN }}
       - name: Commit result
-        if: always()
+        if: always() && steps.due.outputs.done != 'true'
         run: |
           git config user.name "paper-bot"
           git config user.email "bot@users.noreply.github.com"
           git add data/live/preflight.json
-          git diff --cached --quiet || git commit -m "preflight $(date -u +%F)"
-          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
+          git diff --cached --quiet && exit 0
+          git commit -q -m "preflight $(TZ=Asia/Kolkata date +%F)"
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash -X theirs origin main && git push origin HEAD:main; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((5 * i))
+          done
+          echo "::error title=push failed::Preflight result was not saved to the repository"
+          exit 1
