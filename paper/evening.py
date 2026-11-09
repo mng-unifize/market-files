@@ -221,7 +221,7 @@ def write_dash_live(out):
 
 def main():
     os.makedirs(LIVE, exist_ok=True)
-    _n = dt.datetime.now(IST) - dt.timedelta(hours=6)   # a run just after midnight still belongs to the day that closed
+    _n = dt.datetime.now(IST) - dt.timedelta(hours=16)   # the trading day flips at 16:00 India time: a run after midnight, or before the close, still belongs to the day that last closed
     while _n.weekday() >= 5: _n -= dt.timedelta(days=1)   # weekends: expect the Friday data
     today = _n.strftime("%Y-%m-%d")
     problems = []; info = {}; status_extra = {}; trades_for_dash = []

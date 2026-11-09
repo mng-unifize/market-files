@@ -11,7 +11,7 @@ IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
 NEEDED = ("delivery", "announcements", "bulk", "block", "pledge")
 
 def due_day(now):
-    n = now - dt.timedelta(hours=6)
+    n = now - dt.timedelta(hours=16)   # the trading day flips at 16:00 India time
     while n.weekday() >= 5: n -= dt.timedelta(days=1)
     return n.date()
 

@@ -38,7 +38,7 @@ def due_day(now=None):
     """The trading day whose data is due now, by India time. A run just after midnight (GitHub can start runs hours late)
     still belongs to the day that closed, and a weekend belongs to the last Friday. The bulk, block and pledge files are
     snapshots of the latest day only and are saved under this date."""
-    n = (now or dt.datetime.now(IST)) - dt.timedelta(hours=6)
+    n = (now or dt.datetime.now(IST)) - dt.timedelta(hours=16)   # the trading day flips at 16:00 India time
     while n.weekday() >= 5: n -= dt.timedelta(days=1)
     return n.date()
 
