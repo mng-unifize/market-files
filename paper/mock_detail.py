@@ -15,10 +15,10 @@ KEEP_BAR_DAYS = 16
 CFG = {"NSEI": (15, 9, 21, ["low volatility", "entries on Monday"]),
        "BSESN": (15, 9, 21, ["entries on Monday", "low volatility", "inside bar"]),
        "NSEBANK": (5, 20, 50, ["entries on Monday", "doji candle", "choppy (last trade under 30 min)"])}
-RULE_WORDS = {"monthly loss stop": "monthly loss stop (this month is already down Rs 63,000 on paper, so no new trades until next month)", "low volatility": "low volatility", "entries on Monday": "Monday entries", "inside bar": "inside bar", "doji candle": "doji candle",
+RULE_WORDS = {"monthly loss stop": "monthly loss stop (this month is already down Rs 50,000 on paper, so no new trades until next month)", "low volatility": "low volatility", "entries on Monday": "Monday entries", "inside bar": "inside bar", "doji candle": "doji candle",
               "choppy (last trade under 30 min)": "choppy market (previous trade closed within 30 minutes on the same day)"}
 APPROACH = "Hold overnight with skip rules"
-STOP_LOSS = {"NSEBANK": 63000}   # Bank Nifty only: no new trades for the rest of a month once the month is down this much on paper
+STOP_LOSS = {"NSEI": 50000, "NSEBANK": 50000, "BSESN": 50000}   # all three indexes (owner decision 9 Nov 2026, was Bank Nifty at 63000 only): no new trades in that index for the rest of a month once the month is down this much on paper; signals resume next month
 CAPITAL_START = 500000
 VAR = [(APPROACH, None)]
 
