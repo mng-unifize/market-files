@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.ibt.fills</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/ng/ibt-env/bin/python</string>
+    <string>/Users/ng/ibt/market-files/fill_logger.py</string>
+    <string>--today</string>
+    <string>--notify</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/ng/ibt/market-files</string>
+  <key>EnvironmentVariables</key>
+  <dict><key>PYTHONUNBUFFERED</key><string>1</string></dict>
+  <!-- Monday to Friday at 17:50 Mac local time (India time). Read only: it only reads Kite's trade book and order list. -->
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>50</integer></dict>
+    <dict><key>Weekday</key><integer>2</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>50</integer></dict>
+    <dict><key>Weekday</key><integer>3</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>50</integer></dict>
+    <dict><key>Weekday</key><integer>4</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>50</integer></dict>
+    <dict><key>Weekday</key><integer>5</integer><key>Hour</key><integer>17</integer><key>Minute</key><integer>50</integer></dict>
+  </array>
+  <key>StandardOutPath</key><string>/Users/ng/ibt/fills.log</string>
+  <key>StandardErrorPath</key><string>/Users/ng/ibt/fills.log</string>
+</dict>
+</plist>

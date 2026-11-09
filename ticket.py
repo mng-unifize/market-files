@@ -1,12 +1,15 @@
 """Order tickets, the expiry-week rule and the roll alert for watcher.py. Pure logic plus two read-only Kite calls (instruments, quote). Places no orders.
 
 Rules (backtested 2026-11-09, see expiry_backtest.py):
-  1. No new entry on the last 2 trading sessions up to and including expiry day. The alert is logged as "not sent, expiry week".
+  1. OPTIONAL, currently off for all indexes (BLOCK_ON): no new entry on the last 2 trading sessions up to and including expiry day. The alert is logged as "not sent, expiry week".
   2. A trade entered in the last 4 calendar days before expiry goes on the next-month contract (same as the dashboard's contract()).
   3. A trade still open on the session before expiry gets a ROLL alert at 14:45: close the near month, open the next month, same side and lots.
 Limit price = best ask plus an allowance (BUY) or best bid minus an allowance (SELL), rounded to the contract tick. A marketable limit, never a market order."""
 import math, datetime as dt
 
+# Per index switch for the expiry-week entry block. All OFF (owner decision 9 Nov 2026): the 5 year backtest showed expiry-week entries never produced large losses,
+# so the block protected nothing, and on Sensex it would have removed profit. The mechanism stays so it can be turned on per index (the November expiry check task reports on it).
+BLOCK_ON = {"NSEI": False, "NSEBANK": False, "BSESN": False}
 BLOCK_SESSIONS = 2          # entry blocked on this many sessions up to and including expiry day
 NEXT_MONTH_DAYS = 4         # an entry this close to expiry uses the next-month contract
 SLIP_PCT = 0.0005           # 0.05 percent allowance on the limit price
@@ -53,6 +56,7 @@ def near_expiry(D, nm, day, futs, holidays):
 
 def entry_blocked(D, nm, day, futs, holidays):
     """True when `day` is one of the last BLOCK_SESSIONS sessions up to and including the expiry of the near-month contract."""
+    if not BLOCK_ON.get(nm, True): return False
     e = near_expiry(D, nm, day, futs, holidays)
     return bool(e) and sessions(day, e, holidays) <= BLOCK_SESSIONS
 

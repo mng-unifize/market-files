@@ -1,17 +1,20 @@
 """Tests for ticket.py and the watcher's expiry-week block, order ticket and roll alert. Dummy data, no network, no orders.
 Run from this folder:  ~/ibt-env/bin/python -m unittest -v test_ticket"""
-import os, csv, unittest
+import os, csv, unittest, unittest.mock
 import test_watcher as TW
 from test_watcher import Base, FakeKite, ev, ist, watcher, setUpModule, tearDownModule
 import ticket as T
 
 HOL = {"2026-11-24"}
+DEFAULT_BLOCK = dict(T.BLOCK_ON)   # the shipped setting, read before the tests switch the block on to test its mechanics
 def fut(sym, exp, ex="NFO", lot=65, tick=0.1, tok=1): return dict(symbol=sym, token=tok, expiry=exp, lot=lot, tick=tick, ex=ex)
 FUTS = {"NSEI": [fut("NIFTY26NOVFUT", "2026-11-23"), fut("NIFTY26DECFUT", "2026-12-29")],
         "BSESN": [fut("SENSEX26NOVFUT", "2026-11-26", "BFO", 20, 0.2), fut("SENSEX26DECFUT", "2026-12-31", "BFO", 20, 0.2)]}
 
 class Pure(unittest.TestCase):
-    def setUp(self): _, self.D = watcher.engine()
+    def setUp(self):
+        _, self.D = watcher.engine(); p = unittest.mock.patch.dict(T.BLOCK_ON, {k: True for k in T.BLOCK_ON}); p.start(); self.addCleanup(p.stop)
+    def test_shipped_setting_is_unblocked_for_every_index(self): self.assertEqual(DEFAULT_BLOCK, {"NSEI": False, "NSEBANK": False, "BSESN": False})
     def test_limit_price_buy_above_ask_sell_below_bid_on_the_tick(self):
         self.assertEqual(T.limit_price("BUY", 24000.0, 24000.5, 0.1), 24012.6)
         self.assertEqual(T.limit_price("SELL", 24000.0, 24000.5, 0.1), 23988.0)
@@ -58,6 +61,8 @@ class QKite(FakeKite):
         return {k: dict(last_price=24100.0, depth=dict(buy=[dict(price=24099.5, quantity=65)], sell=[dict(price=24100.5, quantity=65)])) for k in keys}
 
 class TicketTick(Base):
+    def setUp(self):
+        super().setUp(); p = unittest.mock.patch.dict(T.BLOCK_ON, {k: True for k in T.BLOCK_ON}); p.start(); self.addCleanup(p.stop)
     def go(self, t, events, kite=None, st=None, sent=None):
         st = st or watcher.State(); kite = kite or QKite(t.strftime("%Y-%m-%d")); sent = sent if sent is not None else []
         L, D = watcher.engine()
@@ -72,6 +77,11 @@ class TicketTick(Base):
         for need in ("NIFTY26NOVFUT", "expires 2026-11-23", "BUY 1 lot (65 units)", "Limit 24112.60", "bid 24099.50, ask 24100.50", "Candle closed 20 seconds ago"): self.assertIn(need, body)
         r = self.tickets(); self.assertEqual((len(r), r[0]["contract"], r[0]["limit"], r[0]["seconds_after_candle"], r[0]["qty"]), (1, "NIFTY26NOVFUT", "24112.6", "20", "65"))
         self.assertNotIn("order", [c for c in kite.calls if c.startswith("order")])
+    def test_with_the_block_off_an_expiry_week_entry_is_alerted_on_the_next_month_contract(self):
+        self.token("2026-11-20")
+        with unittest.mock.patch.dict(T.BLOCK_ON, {"NSEI": False}):
+            _, _, _, sent = self.go(ist("2026-11-20 11:15:20"), [ev("ENTRY", "BUY", "2026-11-20 11:00", "11:15", 24100.0, day="2026-11-20")])
+        self.assertEqual(len(sent), 1); self.assertIn("NIFTY26DECFUT", sent[0][1])
     def test_entry_in_expiry_week_is_logged_not_alerted(self):
         self.token("2026-11-20")
         _, _, _, sent = self.go(ist("2026-11-20 11:15:20"), [ev("ENTRY", "BUY", "2026-11-20 11:00", "11:15", 24100.0, day="2026-11-20")])
