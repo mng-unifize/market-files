@@ -1,6 +1,6 @@
 {
  "status": "warn",
- "run_at": "2026-11-10 17:51",
+ "run_at": "2026-11-11 00:12",
  "today": "2026-11-10",
  "problems": [
   "warn: Nifty 50: newest candle is 2026-11-09 15:30, expected 2026-11-10 (holiday, or the fetch failed)",
