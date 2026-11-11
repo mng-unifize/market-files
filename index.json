@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T02:28:40+05:30",
+ "updated": "2026-11-11T19:01:04+05:30",
  "dates": {
   "2024-07-08": {
    "ready": true,
@@ -5572,6 +5572,17 @@
     "nse_bhavcopy (required): HTTP 404 (not published yet, or a holiday)",
     "nse_flags: HTTP 404 (not published yet, or a holiday)",
     "bse_bhavcopy: not a data file"
+   ]
+  },
+  "2026-11-11": {
+   "ready": true,
+   "flags_ready": false,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20261111_F_0000.csv.gz",
+    "BhavCopy_NSE_CM_0_0_0_20261111_F_0000.csv.zip"
+   ],
+   "issues": [
+    "nse_flags: HTTP 404 (not published yet, or a holiday)"
    ]
   }
  }
