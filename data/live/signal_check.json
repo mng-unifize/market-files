@@ -1,30 +1,30 @@
 {
- "day": "2026-11-09",
- "checked_at_ist": "2026-11-09 20:46",
+ "day": "2026-11-11",
+ "checked_at_ist": "2026-11-11 17:45",
  "base": "dashboard data built after the close from full day candles",
  "expected": {
-  "total": 0,
-  "entries": 0,
-  "exits": 0,
+  "total": 6,
+  "entries": 3,
+  "exits": 3,
   "skips": 0
  },
  "watcher": {
   "source": "Mac watcher alerts (alerts.csv)",
-  "matched": 0,
+  "matched": 6,
   "missing": [],
   "extra": [],
-  "notifications_needed": 0,
-  "notifications_sent": 0,
+  "notifications_needed": 6,
+  "notifications_sent": 6,
   "not_sent": []
  },
  "github_paper": {
   "source": "GitHub paper recorder (ledger.csv)",
   "readable": true,
-  "matched": 0,
+  "matched": 6,
   "missing": [],
   "extra": []
  },
  "all_agree": true,
- "days_checked": 1,
- "days_clean": 1
+ "days_checked": 2,
+ "days_clean": 2
 }
