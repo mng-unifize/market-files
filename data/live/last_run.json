@@ -1,32 +1,27 @@
 {
- "status": "warn",
- "run_at": "2026-11-11 01:08",
- "today": "2026-11-10",
- "problems": [
-  "warn: Nifty 50: newest candle is 2026-11-09 15:30, expected 2026-11-10 (holiday, or the fetch failed)",
-  "warn: Bank Nifty: newest candle is 2026-11-09 15:30, expected 2026-11-10 (holiday, or the fetch failed)",
-  "warn: Sensex: newest candle is 2026-11-09 15:30, expected 2026-11-10 (holiday, or the fetch failed)",
-  "warn: dashboard latest day is 2026-11-09, today is 2026-11-10"
- ],
+ "status": "ok",
+ "run_at": "2026-11-11 16:00",
+ "today": "2026-11-11",
+ "problems": [],
  "data": {
   "NSEI": {
-   "last_candle": "2026-11-09 15:30",
+   "last_candle": "2026-11-11 15:30",
    "source_of_last": "yahoo",
-   "candles_on_last_day": 76,
+   "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-11-09 15:30",
+   "last_candle": "2026-11-11 15:30",
    "source_of_last": "yahoo",
-   "candles_on_last_day": 76,
+   "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-11-09 15:30",
+   "last_candle": "2026-11-11 15:30",
    "source_of_last": "yahoo",
-   "candles_on_last_day": 76,
+   "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 26
   },
@@ -34,9 +29,9 @@
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
-   "events": 19,
-   "non_skip": 9,
-   "expected": 19,
+   "events": 25,
+   "non_skip": 15,
+   "expected": 25,
    "missed": 0,
    "extra": 0,
    "price_or_side_differs": 0,
@@ -45,16 +40,23 @@
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": 391758,
+   "net": 413775,
    "limit": -300000
+  },
+  "run_coverage": {
+   "runs_in_window": 76,
+   "slots": 76,
+   "share": 1.0,
+   "longest_gap_min": 5,
+   "good_day": true
   }
  },
- "latest_day": "2026-11-09",
- "trade_rows": 128,
- "summary_rows": 81,
+ "latest_day": "2026-11-11",
+ "trade_rows": 134,
+ "summary_rows": 84,
  "net_by_index": {
-  "Bank Nifty": 68099,
-  "Nifty 50": 135073,
-  "Sensex": 114168
+  "Bank Nifty": 83366,
+  "Sensex": 123016,
+  "Nifty 50": 132975
  }
 }
