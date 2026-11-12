@@ -1,25 +1,25 @@
 {
  "status": "ok",
- "run_at": "2026-11-11 16:00",
- "today": "2026-11-11",
+ "run_at": "2026-11-12 16:00",
+ "today": "2026-11-12",
  "problems": [],
  "data": {
   "NSEI": {
-   "last_candle": "2026-11-11 15:30",
+   "last_candle": "2026-11-12 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-11-11 15:30",
+   "last_candle": "2026-11-12 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-11-11 15:30",
+   "last_candle": "2026-11-12 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
@@ -29,9 +29,9 @@
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
-   "events": 25,
-   "non_skip": 15,
-   "expected": 25,
+   "events": 36,
+   "non_skip": 23,
+   "expected": 36,
    "missed": 0,
    "extra": 0,
    "price_or_side_differs": 0,
@@ -40,7 +40,7 @@
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": 413775,
+   "net": 386376,
    "limit": -300000
   },
   "run_coverage": {
@@ -51,12 +51,12 @@
    "good_day": true
   }
  },
- "latest_day": "2026-11-11",
- "trade_rows": 134,
- "summary_rows": 84,
+ "latest_day": "2026-11-12",
+ "trade_rows": 143,
+ "summary_rows": 87,
  "net_by_index": {
-  "Bank Nifty": 83366,
-  "Sensex": 123016,
-  "Nifty 50": 132975
+  "Sensex": 101251,
+  "Bank Nifty": 88881,
+  "Nifty 50": 121826
  }
 }
