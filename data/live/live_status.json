@@ -1,59 +1,43 @@
 {
- "run_at": "2026-11-12 12:25",
+ "run_at": "2026-11-12 12:30",
  "mode": "record",
  "problems": [],
  "new_events": [
   [
-   "NSEI|2026-11-12 09:15|EXIT",
-   "2026-11-12 12:25",
+   "NSEI|2026-11-12 12:15|EXIT",
+   "2026-11-12 12:30",
    "EXIT",
    "Nifty 50",
-   "BUY",
-   "09:30"
+   "SELL",
+   "12:30"
   ],
   [
-   "NSEI|2026-11-12 09:15|ENTRY",
-   "2026-11-12 12:25",
-   "ENTRY",
+   "NSEI|2026-11-12 12:15|SKIP",
+   "2026-11-12 12:30",
+   "SKIP",
    "Nifty 50",
-   "BUY",
-   "09:30"
+   "SELL",
+   "12:30"
   ],
   [
-   "NSEBANK|2026-11-12 09:20|EXIT",
-   "2026-11-12 12:25",
-   "EXIT",
-   "Bank Nifty",
-   "BUY",
-   "09:25"
-  ],
-  [
-   "NSEBANK|2026-11-12 09:20|ENTRY",
-   "2026-11-12 12:25",
-   "ENTRY",
-   "Bank Nifty",
-   "BUY",
-   "09:25"
-  ],
-  [
-   "BSESN|2026-11-12 09:30|EXIT",
-   "2026-11-12 12:25",
+   "BSESN|2026-11-12 12:15|EXIT",
+   "2026-11-12 12:30",
    "EXIT",
    "Sensex",
-   "BUY",
-   "09:45"
+   "SELL",
+   "12:30"
   ],
   [
-   "BSESN|2026-11-12 09:30|ENTRY",
-   "2026-11-12 12:25",
-   "ENTRY",
+   "BSESN|2026-11-12 12:15|SKIP",
+   "2026-11-12 12:30",
+   "SKIP",
    "Sensex",
-   "BUY",
-   "09:45"
+   "SELL",
+   "12:30"
   ]
  ],
  "notes": [],
- "NSEI_candles_today": 38,
- "NSEBANK_candles_today": 38,
- "BSESN_candles_today": 38
+ "NSEI_candles_today": 39,
+ "NSEBANK_candles_today": 39,
+ "BSESN_candles_today": 39
 }
