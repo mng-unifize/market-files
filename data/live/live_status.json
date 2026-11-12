@@ -1,17 +1,8 @@
 {
- "run_at": "2026-11-12 15:30",
+ "run_at": "2026-11-12 15:35",
  "mode": "record",
  "problems": [],
- "new_events": [
-  [
-   "NSEI|2026-11-12 15:15|SKIP",
-   "2026-11-12 15:30",
-   "SKIP",
-   "Nifty 50",
-   "BUY",
-   "15:30"
-  ]
- ],
+ "new_events": [],
  "notes": [],
  "NSEI_candles_today": 75,
  "NSEBANK_candles_today": 75,
