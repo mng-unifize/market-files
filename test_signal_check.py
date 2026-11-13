@@ -53,8 +53,14 @@ class SC(unittest.TestCase):
         s, _ = rc.write_signal_status(self.st()); self.assertEqual(s["days_checked"], 1)
         self.alerts([]); bad = rc.signal_status(DAY, BASE, ledger_remote=False); s, _ = rc.write_signal_status(bad); self.assertEqual((s["days_checked"], s["days_clean"]), (1, 0))
         self.assertEqual(json.load(open(rc.SC_JSON))["day"], DAY); self.assertEqual(len(paths), 2)
+    def test_publish_ignores_a_path_that_does_not_exist(self):
+        import subprocess; seen = []
+        def fake(cmd, **kw): seen.append(cmd); return subprocess.CompletedProcess(cmd, 0, "", "")
+        with mock.patch("subprocess.run", fake): rc.publish([rc.SC_JSON, os.path.join(rc.HERE, "data/live/no_such_file.csv")], DAY)
+        add = [c for c in seen if "add" in c][0]; self.assertNotIn("data/live/no_such_file.csv", add)
     def test_publish_touches_only_the_two_files_and_reports_failure(self):
         calls = []
+        for p in (rc.SC_JSON, rc.SC_LOG): os.makedirs(os.path.dirname(p), exist_ok=True); open(p, "a").close()
         def fake(cmd, **kw):
             calls.append((cmd, kw.get("env", {}).get("GIT_AUTHOR_NAME"))); rc_ = 1 if (cmd[3] == "diff") else 0
             return subprocess.CompletedProcess(cmd, rc_, "", "")

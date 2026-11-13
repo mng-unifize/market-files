@@ -222,6 +222,8 @@ class EndToEnd(Base):
         self.exit_entry(); ctx = self.ctx(seed=self.SHORT); X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])
         d = X.summary_dict("2026-11-13"); self.assertEqual((d["orders"], d["filled"], d["expected_orders"]), (1, 1, 2)); self.assertEqual(d["missing_orders"], ["NSEI|2026-11-13 09:15|ENTRY"]); self.assertIn("NO ORDER LOGGED", X.summary_text(d))
         self.assertEqual(X.write_summary("2026-11-13")[0], "data/live/order_summary.json"); self.assertEqual(X.write_summary("2026-11-14"), []); out = []; X.report(out=out.append); self.assertTrue(any("Slippage" in x for x in out))
+    def test_write_summary_skips_a_missing_orders_file(self):
+        self.exit_entry(); self.assertEqual(X.write_summary("2026-11-13"), ["data/live/order_summary.json"])
     def test_summary_stopped_flag(self):
         self.exit_entry(); X.run_batch(self.ctx(fn=lambda t: book(25030.0 + 100 * t), seed=self.SHORT, nofb=True), ["NSEI|2026-11-13 09:15|EXIT"]); d = X.summary_dict("2026-11-13"); self.assertTrue(d["stopped"]); self.assertEqual(d["not_filled"], 1)
 

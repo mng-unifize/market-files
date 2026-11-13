@@ -164,7 +164,7 @@ def publish(paths, day):
     """Commits and pushes only the given files, with a fixed author so it never depends on git config. Returns a short result text. Never raises."""
     import subprocess
     env = dict(os.environ, GIT_AUTHOR_NAME="IBT signal check", GIT_AUTHOR_EMAIL="manoj.ng@unifize.com", GIT_COMMITTER_NAME="IBT signal check", GIT_COMMITTER_EMAIL="manoj.ng@unifize.com")
-    rel = [os.path.relpath(p, HERE) for p in paths]
+    rel = [os.path.relpath(p, HERE) for p in paths if os.path.exists(p)]     # git add aborts everything if one path is missing
     def git(*a):
         try: return subprocess.run(["git", "-C", HERE, *a], capture_output=True, text=True, env=env, timeout=120)
         except Exception as e: return subprocess.CompletedProcess(a, 1, "", "%s" % type(e).__name__)

@@ -375,7 +375,7 @@ def write_summary(day, path=OUT, out_path=SUMMARY, alerts=ALERTS, tickets=TICKET
     if d is None: return []
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w") as fh: json.dump(d, fh, indent=1)
-    return [out_path, path]
+    return [out_path] + ([path] if os.path.exists(path) else [])
 
 def summary_text(d):
     tag = "REHEARSAL" if d["mode"] == "shadow" else "LIVE"
