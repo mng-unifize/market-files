@@ -226,6 +226,13 @@ def run_today(notify, do_publish=False):
         problems = ["Signal check %s: the sources do not agree." % day] + ["watcher missing: " + x for x in w["missing"]] + ["watcher extra: " + x for x in w["extra"]] + ["not sent to phone: " + x for x in w["not_sent"]] + \
                    ["GitHub paper missing: " + x for x in g["missing"]] + ["GitHub paper extra: " + x for x in g["extra"]] + ([] if g["readable"] else ["GitHub paper ledger could not be read"])
         if notify: notify_text("Signal check: mismatch", "\n".join(problems))
+    try:                                                       # the order executor's day report rides along; it can never break the signal check
+        import order_exec; extra = order_exec.write_summary(day)
+        if extra:
+            paths = paths + [os.path.join(HERE, p) for p in extra]; print("order report: %s" % extra[0])
+            if notify:
+                d = order_exec.summary_dict(day); notify_text("Orders today (%s)" % ("rehearsal" if d["mode"] == "shadow" else "live"), order_exec.summary_text(d))
+    except Exception as e: print("order report skipped:", type(e).__name__)
     if do_publish:
         res = publish(paths, day); print("publish:", res)
         if res not in ("published", "nothing new to publish") and notify: notify_text("Signal check: could not publish", "The result for %s was saved on the Mac but not pushed to GitHub (%s). The daily overview will show it as not checked. Run git pull --rebase and git push." % (day, res))

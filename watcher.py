@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Signal watcher for this Mac. Alerts only: it never places, changes or cancels orders, and has no code that could.
+After each alert it starts order_exec.py in the background: in rehearsal mode (the default) it logs what an automatic order sender would have done and places no orders; live ordering needs two deliberate acts, see order_exec.py.
 
 Started by launchd at 09:05 India time on weekdays. It runs until the last check at 15:30 and the last heartbeat at 16:00.
   1. Secrets: /Users/ng/ibt/.env (python-dotenv). The day's Kite access token: /Users/ng/ibt/kite_token.json (written by login.py).
@@ -13,7 +14,7 @@ Holidays: dates in holidays.txt skip the trading logic. An unlisted holiday is d
 Rehearsal: `python watcher.py --rehearse` runs one full check now and prints what it would have alerted. It sends nothing, pings nothing,
 and writes nothing into this folder. `--rehearse-day YYYY-MM-DD` replays an earlier weekday the same way and compares the result with the GitHub ledger.
 Nothing secret is ever printed or logged."""
-import os, sys, csv, json, time, shutil, threading, tempfile, datetime as dt
+import os, sys, csv, json, time, shutil, threading, tempfile, subprocess, datetime as dt
 import urllib.request
 import ticket as T
 
@@ -33,7 +34,7 @@ PAPER_DIR = os.path.join(HERE, "paper")
 ENV_PATH = "/Users/ng/ibt/.env"
 TOKEN_PATH = "/Users/ng/ibt/kite_token.json"
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
-LIVE = "data/live"; ALERTS = LIVE + "/alerts.csv"; CANDLES = LIVE + "/candles"; TICKETS = LIVE + "/tickets.csv"
+LIVE = "data/live"; SHADOW_LOG = "data/live/order_exec.log"; ALERTS = LIVE + "/alerts.csv"; CANDLES = LIVE + "/candles"; TICKETS = LIVE + "/tickets.csv"
 HOLIDAY_FILE = "holidays.txt"
 WORK = os.path.join(tempfile.gettempdir(), "ibt_watcher_work")
 PING_FIRST, PING_LAST = "09:05", "16:00"
@@ -178,6 +179,16 @@ def ticket_for(st, kind, nm, side, c, lag_seconds, eid, t):
     quote = T.get_quote(st.kite, c) if (c and st.quotes) else (None, None, None, "no contract" if not c else "not requested")
     return T.build(kind, nm, D.NAMES[nm], side, c, T.LOTS_DEFAULT, L.LOTS[nm], quote, STOP_TEXT, lag_seconds, eid, t)
 
+def launch_shadow(queue):
+    """Start order_exec.py in the background for the new tickets, one process per index (its EXIT then its ENTRY, in order; a roll is its own id). Never raises, never waits.
+    Set ORDER_EXEC=0 in the environment to switch it off."""
+    if os.environ.get("ORDER_EXEC", "1") == "0": return
+    for nm, ids in queue.items():
+        try:
+            os.makedirs(LIVE, exist_ok=True)
+            subprocess.Popen([sys.executable, os.path.join(HERE, "order_exec.py"), "--events"] + ids, cwd=HERE, stdout=open(SHADOW_LOG, "a"), stderr=subprocess.STDOUT, start_new_session=True)
+        except Exception as e: log("order process start failed:", type(e).__name__)
+
 def warn_once(st, key, title, body, notify):
     if key not in st.warned and notify(title, body): st.warned.add(key)
 
@@ -247,7 +258,7 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
     if total_today == 0:
         if h >= HOLIDAY_AFTER and ok_idx == len(L.IDX): log("no candles today, treating as a market holiday, trading logic skipped"); return "holiday"
         log("no candles for today yet"); return "waiting"
-    seen = seen_ids(); new_rows = 0; hol = holidays(); futs = st.futs or {}; seen_t = seen_tickets()
+    seen = seen_ids(); new_rows = 0; hol = holidays(); futs = st.futs or {}; seen_t = seen_tickets(); shadow_queue = {}
     for nm in L.IDX:
         if nm not in st.tokens: continue
         try: events = L.recipe_events(nm, WORK)
@@ -280,14 +291,15 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
                     if not notify(title, body):
                         st.failed.add(row["event_id"]); log("alert not delivered, will retry next check:", row["event_id"]); continue
                     row["alert"] = "sent"
-                    if row["event_id"] not in seen_t: append_ticket(trow); seen_t.add(row["event_id"])
+                    if row["event_id"] not in seen_t: append_ticket(trow); seen_t.add(row["event_id"]); shadow_queue.setdefault(nm, []).append(row["event_id"])
             append_row(row); seen.add(row["event_id"]); new_rows += 1
             log("signal", row["event_id"], "|", row["alert"])
-        try: new_rows += roll_check(st, t, nm, pos, futs, hol, seen_t, notify)
+        try: new_rows += roll_check(st, t, nm, pos, futs, hol, seen_t, notify, launch=launch_shadow if (notify_fn is None and make_kite_fn is None) else None)
         except Exception as e: log(nm, "roll check failed:", type(e).__name__, str(e)[:150])
+    if notify_fn is None and make_kite_fn is None and shadow_queue: launch_shadow(shadow_queue)      # real runs only, never a rehearsal or a test
     return "ok (%d new)" % new_rows
 
-def roll_check(st, t, nm, pos, futs, hol, seen_t, notify):
+def roll_check(st, t, nm, pos, futs, hol, seen_t, notify, launch=None):
     """ROLL alert for an open position on the session before expiry (and again on expiry day if still open), from 14:45."""
     L, D = engine(); today = t.strftime("%Y-%m-%d")
     if not pos or t.strftime("%H:%M") < T.ROLL_FROM: return 0
@@ -304,7 +316,9 @@ def roll_check(st, t, nm, pos, futs, hol, seen_t, notify):
     if not notify("ROLL %s" % name, "\n".join(body)): return 0
     r1["kind"] = "ROLL"; r1["note"] = "close near month: %s; open next month: %s" % (c["symbol"], nxt[0]["symbol"]); append_ticket(r1); seen_t.add(eid)
     append_ticket(dict(r2, kind="ROLL", note="open leg"))
-    log("roll alert", eid); return 1
+    log("roll alert", eid)
+    if launch: launch({nm: [eid]})
+    return 1
 
 def trading_loop(clock, st, tick=None):
     tick = tick or run_tick
