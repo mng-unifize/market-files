@@ -30,7 +30,7 @@ DONE_OK = ("FILLED", "REPRICED_FILLED", "FALLBACK_FILLED")
 PREFIX = {"NSEI": "NIFTY", "NSEBANK": "BANKNIFTY", "BSESN": "SENSEX"}
 HDR = ["event_id", "run_at_ist", "mode", "kind", "index", "side", "contract", "qty", "status", "block_reasons", "signal_bar", "candle_close_time", "sent_after_close_s", "fill_after_close_s",
        "limit_first", "limit_final", "attempts", "bid_at_send", "ask_at_send", "order_id", "fill_price", "ref_fut_close", "ref_source", "slip_points", "slip_pct", "slip_rupees",
-       "slip_vs_mid_pct", "daily_pnl_before", "pnl_basis", "daily_pnl_index", "position_check", "would_be_order", "note"]
+       "slip_vs_mid_pct", "trade_entry_px", "trade_gross", "trade_charges", "trade_net", "daily_pnl_before", "pnl_basis", "daily_pnl_index", "position_check", "would_be_order", "note"]
 
 def order_mode(env=None, today=None, go_live="data/live/GO_LIVE"):
     """(mode, note). Live needs IBT_ORDER_MODE=live AND a GO_LIVE file that contains today's date."""
@@ -234,6 +234,27 @@ def say(ctx, mode, title, body, priority="default"):
     try: ctx.notify("[%s] %s" % ("LIVE" if mode == "live" else "REHEARSAL", title), body, priority)
     except Exception as e: print("phone message failed:", type(e).__name__)
 
+def trade_pnl(ctx, eid, exit_px, qty, now):
+    """Profit or loss of the trade this EXIT closes. Entry price: the logged fill, else the ticket touch (BUY at ask, SELL at bid). Charges: the same model as the backtests.
+    Returns (dict, "") or (None, reason). Never raises: a failure here must not touch the order flow."""
+    try:
+        import mock_trades as MT
+        code = eid.split("|")[0]; al = next((r for r in rows(ctx.alerts) if r["event_id"] == eid), None); cid = al["closes_entry"] if al else ""
+        if not cid: return None, "no linked entry"
+        ent = next((r for r in rows(ctx.alerts) if r["event_id"] == cid), None); tkt = next((r for r in rows(ctx.tickets) if r["event_id"] == cid and r["kind"] == "ENTRY"), None)
+        side = (ent or {}).get("action") or (tkt or {}).get("side")
+        if not side: return None, "entry %s is from before order records began" % cid.split("|")[1]
+        fill = next((r for r in rows(ctx.out) if r["event_id"] == cid and r["status"] in DONE_OK and r["fill_price"]), None)
+        if fill: p0 = float(fill["fill_price"]); src = "fill"
+        elif tkt: p0 = float(tkt["ask"] if side == "BUY" else tkt["bid"]); src = "ticket touch"
+        else: return None, "no entry price recorded"
+        d = 1 if side == "BUY" else -1; gross = d * (exit_px - p0) * qty; d_in = cid.split("|")[1][:10]; d_out = now.strftime("%Y-%m-%d")
+        ch = MT.tcost(p0, exit_px, qty, d, d_in, d_out, code == "BSESN")
+        return dict(p0=p0, src=src, gross=gross, charges=ch, net=gross - ch, d_in=d_in, days=(dt.date.fromisoformat(d_out) - dt.date.fromisoformat(d_in)).days, side=side), ""
+    except Exception as e: return None, "%s: %s" % (type(e).__name__, str(e)[:60])
+
+def rs(x): return ("+" if x >= 0 else "-") + "Rs " + format(abs(int(round(x))), ",")
+
 def one_order(ctx, key, label, tk, eid, batch_failed):
     now = ctx.now_fn(); mode = ctx.broker.mode; code = eid.split("|")[0]
     kind = "ENTRY" if label in ("ENTRY", "ROLL-OPEN") else "EXIT"; side = tk["side"]; qty = int(tk["qty"]); lots = int(tk["lots"])
@@ -274,6 +295,10 @@ def one_order(ctx, key, label, tk, eid, batch_failed):
         if close_t: row["fill_after_close_s"] = round((now - close_t).total_seconds() + (res["fill_s"] or 0))
         if ref: pts = d * (fp - ref); row.update(slip_points=round(pts, 2), slip_pct=round(pts / ref * 100, 4), slip_rupees=round(pts * qty))
         if mid: row["slip_vs_mid_pct"] = round(d * (fp - mid) / mid * 100, 4)
+    pnl_t = None; pnl_why = ""
+    if label == "EXIT" and res["status"] in DONE_OK and res["fill_price"] is not None:
+        pnl_t, pnl_why = trade_pnl(ctx, eid, res["fill_price"], qty, now)
+        if pnl_t: row.update(trade_entry_px=round(pnl_t["p0"], 2), trade_gross=round(pnl_t["gross"]), trade_charges=round(pnl_t["charges"]), trade_net=round(pnl_t["net"]))
     problems = []
     if res["status"] in DONE_OK:
         if label == "ROLL-CLOSE": row["position_check"] = "n/a mid-roll"
@@ -292,11 +317,21 @@ def one_order(ctx, key, label, tk, eid, batch_failed):
         say(ctx, mode, "STOPPED after %s %s" % (tk["index"], label), "\n".join(problems) + hand, "high")
         return row, False
     cost = "cost %.4f%% (Rs %s)" % (float(row["slip_pct"]), format(int(row["slip_rupees"]), ",")) if row["slip_pct"] != "" else "cost not measured"
-    if res.get("fallback"): note = "EXIT FALLBACK USED: the normal orders did not fill in 20 s, so the exit went out as one wide limit order. Position is correct. "
-    else: note = ""
-    say(ctx, mode, "%s %s %s" % (res["status"].replace("_", " "), tk["index"], label), note + "%s %d lot %s at %.2f (limit %.2f, %s), %s%s. Position check: %s." % (
-        side, lots, tk["contract"], res["fill_price"], res["limit_final"], "re-priced" if res["attempts"] > 1 else "first limit", cost,
-        (", %d s after the candle closed" % row["fill_after_close_s"]) if row["fill_after_close_s"] != "" else "", row["position_check"]), "high" if res.get("fallback") else "default")
+    note = "EXIT FALLBACK USED: the normal orders did not fill in 20 s, so the exit went out as one wide limit order. Position is correct.\n" if res.get("fallback") else ""
+    body = "%s %d lot %s at %.2f (limit %.2f, %s), %s%s. Position check: %s." % (side, lots, tk["contract"], res["fill_price"], res["limit_final"], "re-priced" if res["attempts"] > 1 else "first limit", cost,
+        (", %d s after the candle closed" % row["fill_after_close_s"]) if row["fill_after_close_s"] != "" else "", row["position_check"])
+    title = "%s %s %s" % (res["status"].replace("_", " "), tk["index"], label)
+    if label == "EXIT":
+        if pnl_t:
+            try: day_pnl = S.daily_pnl_futures(now.strftime("%Y-%m-%d"), tickets=ctx.tickets, alerts=ctx.alerts, shadow=ctx.out, prev_close_fn=prev_close_fn(ctx.kite, ctx.futs), last_fn=last_fn(ctx.kite, ctx.futs))[0]
+            except Exception: day_pnl = None
+            title = "EXIT %s: %s net" % (tk["index"], rs(pnl_t["net"]))
+            body = ("Trade: %s on %s at %.2f (%s), closed at %.2f. %s points x %d = %s before charges, charges %s, NET %s, held %d day(s).\n" % (
+                "bought" if pnl_t["side"] == "BUY" else "sold", pnl_t["d_in"], pnl_t["p0"], pnl_t["src"], res["fill_price"], format((1 if pnl_t["side"] == "BUY" else -1) * (res["fill_price"] - pnl_t["p0"]), "+.2f"), qty,
+                rs(pnl_t["gross"]), rs(-pnl_t["charges"]).replace("-", ""), rs(pnl_t["net"]), pnl_t["days"]) + (
+                "Day total so far, all indexes, marked to market before charges: %s.\n" % rs(day_pnl) if day_pnl is not None else "") + "Roll costs are not included.\n" + body)
+        else: body = "Profit or loss not available: %s.\n%s" % (pnl_why, body)
+    say(ctx, mode, title, note + body, "high" if res.get("fallback") else "default")
     return row, True
 
 def run_batch(ctx, ids):
@@ -324,7 +359,7 @@ def summary_dict(day, path=OUT, alerts=ALERTS, tickets=TICKETS):
     stop = open(S.STOP_FILE).read().strip() if os.path.exists(S.STOP_FILE) else ""
     mode = last.get("mode") or "shadow"
     return dict(day=day, generated_at=dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), mode=mode, mode_text="rehearsal, no real orders placed" if mode == "shadow" else "LIVE orders", assumed_slip_pct=ASSUMED_PCT,
-                orders=len(R), filled=len(done), repriced=sum(r["status"] == "REPRICED_FILLED" for r in R), fallbacks=sum(r["status"] == "FALLBACK_FILLED" for r in R), blocked=sum(r["status"] == "BLOCKED" for r in R), not_filled=sum(r["status"] == "NOT_FILLED" for r in R),
+                orders=len(R), filled=len(done), closed_trades=sum(1 for r in R if r.get("trade_net") not in ("", None)), closed_net=round(sum(f(r, "trade_net") or 0 for r in R)), repriced=sum(r["status"] == "REPRICED_FILLED" for r in R), fallbacks=sum(r["status"] == "FALLBACK_FILLED" for r in R), blocked=sum(r["status"] == "BLOCKED" for r in R), not_filled=sum(r["status"] == "NOT_FILLED" for r in R),
                 partial=sum(r["status"] == "PARTIAL" for r in R), rejected=sum(r["status"] == "REJECTED" for r in R), expected_orders=len(exp), missing_orders=[x for x in exp if x not in {r["event_id"] for r in R}],
                 position_mismatches=sum(1 for r in R if r.get("position_check") not in ("", "ok", "n/a mid-roll")), stopped=bool(stop), stop_reason=stop[:200],
                 avg_slip_pct=round(sum(sl) / len(sl), 4) if sl else None, worst_slip_pct=round(max(sl), 4) if sl else None, avg_slip_rupees=round(sum(rs) / len(rs)) if rs else None,
@@ -347,6 +382,7 @@ def summary_text(d):
     lines = ["%s orders today: %d placed, %d filled, %d blocked, %d not filled or rejected (expected %d)." % (tag, d["orders"], d["filled"], d["blocked"], d["not_filled"] + d["rejected"] + d["partial"], d["expected_orders"])]
     if d["avg_slip_pct"] is not None: lines.append("Average cost %.4f%% a side against the %.2f%% assumed, Rs %s in total, %s s to fill on average." % (d["avg_slip_pct"], d["assumed_slip_pct"], format(d["total_slip_rupees"], ","), d["avg_seconds_to_fill"]))
     if d["daily_pnl_futures"] is not None: lines.append("Day profit or loss on futures prices: Rs %s (stop at Rs 40,000 loss)." % format(round(d["daily_pnl_futures"]), ","))
+    if d.get("closed_trades"): lines.append("Closed trades today: %d, net after charges %s." % (d["closed_trades"], rs(d["closed_net"])))
     if d.get("fallbacks"): lines.append("%d exit(s) needed the fallback order. Check the limit logic." % d["fallbacks"])
     if d["missing_orders"]: lines.append("NO ORDER LOGGED FOR: " + ", ".join(d["missing_orders"]))
     if d["stopped"]: lines.append("Automation is STOPPED: " + d["stop_reason"])

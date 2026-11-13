@@ -44,8 +44,8 @@ class Base(unittest.TestCase):
             for r in rows: w.writerow(r)
     def tk(self, eid, kind, side, bid=25000.0, ask=25001.0, limit=25013.7, contract="NIFTY26NOVFUT", index="Nifty 50", qty=65, at="2026-11-13 09:30:20", note=""):
         return [eid, at, kind, index, side, contract, "2026-11-23", 1, qty, bid, ask, ask, limit, "n", 20, "ok", note]
-    def al(self, eid, event, action, bar, price, index="Nifty 50", at="2026-11-13 09:30:20", st="sent"):
-        return [eid, at, event, index, action, bar, "", 65, price, "", "", "", st]
+    def al(self, eid, event, action, bar, price, index="Nifty 50", at="2026-11-13 09:30:20", st="sent", closes=""):
+        return [eid, at, event, index, action, bar, "", 65, price, "", "", closes, st]
 
 class Flow(Base):
     def run_flow(self, fn, side, limit, qty=65, seed=None):
@@ -177,7 +177,7 @@ class EndToEnd(Base):
     SHORT = {"NIFTY26NOVFUT": -65}
     def exit_entry(self):
         self.alerts([self.al("NSEI|2026-11-12 14:45|ENTRY", "ENTRY", "SELL", "2026-11-12 14:45", "25200", at="2026-11-12 15:00:20"),
-                     self.al("NSEI|2026-11-13 09:15|EXIT", "EXIT", "BUY", "2026-11-13 09:15", "25000"), self.al("NSEI|2026-11-13 09:15|ENTRY", "ENTRY", "BUY", "2026-11-13 09:15", "25000")])
+                     self.al("NSEI|2026-11-13 09:15|EXIT", "EXIT", "BUY", "2026-11-13 09:15", "25000", closes="NSEI|2026-11-12 14:45|ENTRY"), self.al("NSEI|2026-11-13 09:15|ENTRY", "ENTRY", "BUY", "2026-11-13 09:15", "25000")])
         self.tickets([self.tk("NSEI|2026-11-12 14:45|ENTRY", "ENTRY", "SELL", at="2026-11-12 15:00:20"), self.tk("NSEI|2026-11-13 09:15|EXIT", "EXIT", "BUY"), self.tk("NSEI|2026-11-13 09:15|ENTRY", "ENTRY", "BUY")])
     def test_entry_logged_with_slippage_and_phone_message(self):
         self.entry_only(); ctx = self.ctx(seed={}); r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"])[0]
@@ -236,6 +236,38 @@ class FakeLiveKite:
     def modify_order(self, **kw): self.calls.append(("modify", kw))
     def cancel_order(self, **kw): self.calls.append(("cancel", kw))
     def positions(self): return {"net": [dict(tradingsymbol="NIFTY26NOVFUT", quantity=65), dict(tradingsymbol="RELIANCE", quantity=10), dict(tradingsymbol="BANKNIFTY26NOVFUT", quantity=0)]}
+
+class Pnl2(EndToEnd):
+    """Profit or loss in the exit message."""
+    def test_exit_message_carries_net_pnl_and_row_columns(self):
+        self.exit_entry(); ctx = self.ctx(seed=self.SHORT); rs = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])
+        r = rs[0]; self.assertEqual(r["trade_entry_px"], 25000.0); self.assertEqual(int(r["trade_gross"]), -65); self.assertGreater(int(r["trade_charges"]), 0); self.assertEqual(int(r["trade_net"]), int(r["trade_gross"]) - int(r["trade_charges"]))
+        t, b, p = self.sent[0]; t = t.split("] ", 1)[1]; self.assertTrue(t.startswith("EXIT Nifty 50: -Rs ")); self.assertTrue(t.endswith(" net")); self.assertIn("NET -Rs", b); self.assertIn("sold on 2026-11-12 at 25000.00 (ticket touch)", b); self.assertIn("Day total so far", b); self.assertIn("held 1 day(s)", b); self.assertEqual(p, "default"); self.assertEqual(len(self.sent), 1)
+    def test_profit_is_positive(self):
+        self.exit_entry(); ctx = self.ctx(fn=lambda t: book(24950.0, 24949.0), seed=self.SHORT); rs = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])
+        self.assertGreater(int(rs[0]["trade_net"]), 0); self.assertTrue(self.sent[0][0].split("] ", 1)[1].startswith("EXIT Nifty 50: +Rs "))
+    def test_long_trade_math(self):
+        self.alerts([self.al("NSEI|2026-11-12 14:45|ENTRY", "ENTRY", "BUY", "2026-11-12 14:45", "25000", at="2026-11-12 15:00:20"), self.al("NSEI|2026-11-13 09:15|EXIT", "EXIT", "SELL", "2026-11-13 09:15", "25000", closes="NSEI|2026-11-12 14:45|ENTRY")])
+        self.tickets([self.tk("NSEI|2026-11-12 14:45|ENTRY", "ENTRY", "BUY", 25000.0, 25010.0, at="2026-11-12 15:00:20"), self.tk("NSEI|2026-11-13 09:15|EXIT", "EXIT", "SELL", limit=25190.0)])
+        ctx = self.ctx(fn=lambda t: book(25202.0, 25200.0), seed={"NIFTY26NOVFUT": 65}); r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])[0]; self.assertEqual(int(r["trade_gross"]), round((25200.0 - 25010.0) * 65))
+    def test_logged_entry_fill_beats_ticket_touch(self):
+        self.exit_entry()
+        with open("data/live/orders.csv", "w", newline="") as f:
+            w = csv.writer(f); w.writerow(X.HDR); r = {k: "" for k in X.HDR}; r.update(event_id="NSEI|2026-11-12 14:45|ENTRY", status="FILLED", fill_price="24990.0", run_at_ist="2026-11-12 15:00:30"); w.writerow([r[k] for k in X.HDR])
+        ctx = self.ctx(seed=self.SHORT); r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])[0]; self.assertEqual(r["trade_entry_px"], 24990.0); self.assertIn("(fill)", self.sent[0][1])
+    def test_entry_before_records_says_so_and_still_sends(self):
+        self.alerts([self.al("NSEI|2026-11-13 09:15|EXIT", "EXIT", "BUY", "2026-11-13 09:15", "25000", closes="NSEI|2026-10-28 12:45|ENTRY")]); self.tickets([self.tk("NSEI|2026-11-13 09:15|EXIT", "EXIT", "BUY")])
+        ctx = self.ctx(seed=self.SHORT); r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])[0]; self.assertEqual(r["status"], "FILLED"); self.assertEqual(r["trade_net"], ""); self.assertTrue(self.sent[0][0].split("] ", 1)[1].startswith("FILLED Nifty 50 EXIT")); self.assertIn("Profit or loss not available", self.sent[0][1])
+    def test_pnl_failure_never_breaks_the_order(self):
+        self.exit_entry(); orig = X.trade_pnl; X.trade_pnl = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("x"))
+        try:
+            ctx = self.ctx(seed=self.SHORT)
+            with self.assertRaises(RuntimeError): X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])
+        finally: X.trade_pnl = orig
+    def test_entries_and_roll_close_carry_no_pnl(self):
+        self.entry_only(); ctx = self.ctx(seed={}); r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"])[0]; self.assertEqual(r["trade_net"], ""); self.assertTrue(self.sent[0][0].split("] ", 1)[1].startswith("FILLED Nifty 50 ENTRY"))
+    def test_summary_totals_closed_trades(self):
+        self.exit_entry(); ctx = self.ctx(seed=self.SHORT); X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"]); d = X.summary_dict("2026-11-13"); self.assertEqual(d["closed_trades"], 1); self.assertLess(d["closed_net"], 0); self.assertIn("Closed trades today: 1", X.summary_text(d))
 
 class Live(Base):
     def test_place_and_complete(self):
