@@ -271,6 +271,21 @@ class Pnl2(EndToEnd):
     def test_summary_totals_closed_trades(self):
         self.exit_entry(); ctx = self.ctx(seed=self.SHORT); X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"]); d = X.summary_dict("2026-11-13"); self.assertEqual(d["closed_trades"], 1); self.assertLess(d["closed_net"], 0); self.assertIn("Closed trades today: 1", X.summary_text(d))
 
+class OverviewFields(EndToEnd):
+    def test_summary_has_orders_triggers_and_message_count(self):
+        self.exit_entry(); X.run_batch(self.ctx(fn=lambda t: book(25030.0 + 100 * t), seed=self.SHORT), ["NSEI|2026-11-13 09:15|EXIT"])
+        d = X.summary_dict("2026-11-13"); self.assertEqual(d["phone_messages"], 2); self.assertEqual(d["orders_detail"][0]["kind"], "EXIT"); self.assertIn("trade_net", d["orders_detail"][0])
+        self.assertEqual(d["triggers"][0]["what"], "Exit fallback used"); self.assertTrue(d["triggers"][0]["when"])
+    def test_blocked_order_is_a_trigger_with_reason(self):
+        self.exit_entry(); open(S.STOP_FILE, "w").write("x"); X.run_batch(self.ctx(seed=self.SHORT), ["NSEI|2026-11-13 09:15|EXIT"]); d = X.summary_dict("2026-11-13")
+        self.assertTrue(any(t["what"] == "Order blocked" and "kill switch" in t["detail"] for t in d["triggers"])); self.assertTrue(any(t["what"] == "STOP file is present" for t in d["triggers"]))
+    def test_overview_object_is_what_the_page_shows(self):
+        self.exit_entry(); X.run_batch(self.ctx(seed=self.SHORT), ["NSEI|2026-11-13 09:15|EXIT"]); X.write_summary("2026-11-13"); o = json.load(open("data/live/order_summary.json"))["overview"]
+        self.assertEqual(set(o), {"mode", "mode_text", "summary", "orders", "triggers"}); r = o["orders"][0]; self.assertEqual((r["index"], r["kind"], r["status"]), ("Nifty 50", "EXIT", "FILLED")); self.assertEqual(len(r["time"]), 5); self.assertIn("%", r["cost"]); self.assertIsInstance(r["net"], (int, float, str))
+        self.assertIn("Closed trades: 1", o["summary"]); self.assertIn("No order logged for 1 expected", o["summary"])
+    def test_quiet_day_has_no_triggers(self):
+        self.exit_entry(); X.run_batch(self.ctx(seed=self.SHORT), ["NSEI|2026-11-13 09:15|EXIT"]); self.assertEqual(X.summary_dict("2026-11-13")["triggers"], [])
+
 class Live(Base):
     def test_place_and_complete(self):
         k = FakeLiveKite(); b = LB.KiteBroker(k); o = b.place(C, "BUY", 65, 25013.7, "NSEI|2026-11-13 09:15|ENTRY"); self.assertEqual(o.id, "OID1")

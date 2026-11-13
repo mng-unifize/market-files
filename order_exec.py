@@ -367,12 +367,46 @@ def summary_dict(day, path=OUT, alerts=ALERTS, tickets=TICKETS):
                 daily_pnl_futures=f(last, "daily_pnl_before") if R else None, daily_pnl_index=f(last, "daily_pnl_index") if R else None, pnl_basis=last.get("pnl_basis"),
                 loss_stop_tripped=any("daily loss stop" in (r.get("block_reasons") or "") for r in R), kill_switch_seen=any("kill switch" in (r.get("block_reasons") or "") for r in R),
                 blocked_reasons=[r["block_reasons"] for r in R if r["status"] == "BLOCKED"],
-                orders_detail=[{k: r[k] for k in ("event_id", "index", "kind", "side", "status", "limit_first", "fill_price", "ref_fut_close", "slip_pct", "slip_rupees", "sent_after_close_s", "fill_after_close_s", "position_check")} for r in R])
+                orders_detail=[{k: r.get(k, "") for k in ("event_id", "run_at_ist", "index", "kind", "side", "contract", "status", "block_reasons", "limit_first", "limit_final", "fill_price", "ref_fut_close", "slip_pct", "slip_rupees", "sent_after_close_s", "fill_after_close_s", "position_check", "trade_entry_px", "trade_gross", "trade_charges", "trade_net", "note")} for r in R],
+                triggers=triggers_of(R, stop), phone_messages=len(R) + (1 if R else 0))
+
+def triggers_of(R, stop):
+    """Plain list of every safety trigger that fired: fallback exits, blocks, failed orders, position mismatches, order cap, loss stop, the STOP file."""
+    t = []
+    for r in R:
+        w = r["run_at_ist"][11:16]; who = "%s %s %s" % (r["index"], r["kind"], r["side"]); st = r["status"]
+        if st == "FALLBACK_FILLED": t.append(dict(when=w, what="Exit fallback used", detail="%s: the normal orders did not fill in 20 seconds, so the exit went out as one wide limit order. It filled." % who))
+        elif st == "BLOCKED": t.append(dict(when=w, what="Order blocked", detail="%s: %s" % (who, r.get("block_reasons", ""))))
+        elif st in ("NOT_FILLED", "PARTIAL", "REJECTED"): t.append(dict(when=w, what="Order " + st.replace("_", " ").lower() + ", automation stopped", detail=who))
+        pc = r.get("position_check") or ""
+        if pc not in ("", "ok", "n/a mid-roll"): t.append(dict(when=w, what="Position mismatch, automation stopped", detail="%s: %s" % (who, pc)))
+    if stop: t.append(dict(when="", what="STOP file is present", detail=stop[:200] + " Resume only by deleting data/live/STOP on the Mac."))
+    return t
+
+def overview_obj(d):
+    """The exact object the daily overview page shows in its Automatic orders panel. Built here so the nightly task copies it and never rewrites numbers."""
+    rows_ = []
+    for r in d["orders_detail"]:
+        def num(k):
+            try: return float(r[k])
+            except (TypeError, ValueError): return None
+        sp, sr = num("slip_pct"), num("slip_rupees")
+        rows_.append(dict(time=(r.get("run_at_ist") or "")[11:16], index=r["index"], kind=r["kind"], side=r["side"], status=r["status"], price=r.get("fill_price") or "",
+                          cost=("%.4f%% (Rs %s)" % (sp, format(int(sr), ",")) if sp is not None and sr is not None else ""), seconds=r.get("fill_after_close_s") if r.get("fill_after_close_s") not in (None,) else "",
+                          net=r.get("trade_net") if r.get("trade_net") not in (None,) else "", check=(r.get("block_reasons") if r["status"] == "BLOCKED" else r.get("position_check")) or ""))
+    parts = ["%s: %d order(s), %d filled, %d blocked, %d not filled or rejected (expected %d)." % ("Rehearsal" if d["mode"] == "shadow" else "Live", d["orders"], d["filled"], d["blocked"], d["not_filled"] + d["rejected"] + d["partial"], d["expected_orders"])]
+    if d["avg_slip_pct"] is not None: parts.append("Average cost %.4f%% a side against the %.2f%% assumed." % (d["avg_slip_pct"], d["assumed_slip_pct"]))
+    if d.get("closed_trades"): parts.append("Closed trades: %d, net after charges %s." % (d["closed_trades"], rs(d["closed_net"])))
+    if d["daily_pnl_futures"] is not None: parts.append("Day total on futures prices: %s (entries stop at a Rs 40,000 loss)." % rs(d["daily_pnl_futures"]))
+    if d["missing_orders"]: parts.append("No order logged for %d expected signal(s)." % len(d["missing_orders"]))
+    parts.append("About %d phone messages sent." % d["phone_messages"])
+    return dict(mode=d["mode"], mode_text=d["mode_text"], summary=" ".join(parts), orders=rows_, triggers=d["triggers"])
 
 def write_summary(day, path=OUT, out_path=SUMMARY, alerts=ALERTS, tickets=TICKETS):
     """Writes the JSON for the daily overview. Returns the files to publish (empty when there were no signals and no orders)."""
     d = summary_dict(day, path, alerts, tickets)
     if d is None: return []
+    d["overview"] = overview_obj(d)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w") as fh: json.dump(d, fh, indent=1)
     return [out_path] + ([path] if os.path.exists(path) else [])
