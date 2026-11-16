@@ -1,6 +1,6 @@
 {
- "day": "2026-11-13",
- "generated_at": "2026-11-13 23:27:17",
+ "day": "2026-11-16",
+ "generated_at": "2026-11-16 17:45:08",
  "mode": "shadow",
  "mode_text": "rehearsal, no real orders placed",
  "assumed_slip_pct": 0.01,
@@ -14,11 +14,10 @@
  "not_filled": 0,
  "partial": 0,
  "rejected": 0,
- "expected_orders": 3,
+ "expected_orders": 2,
  "missing_orders": [
-  "NSEI|2026-11-13 09:15|ENTRY",
-  "NSEBANK|2026-11-13 09:30|EXIT",
-  "NSEBANK|2026-11-13 09:30|ENTRY"
+  "NSEBANK|2026-11-16 09:15|EXIT",
+  "NSEI|2026-11-16 09:30|EXIT"
  ],
  "position_mismatches": 0,
  "stopped": false,
@@ -35,5 +34,14 @@
  "loss_stop_tripped": false,
  "kill_switch_seen": false,
  "blocked_reasons": [],
- "orders_detail": []
+ "orders_detail": [],
+ "triggers": [],
+ "phone_messages": 0,
+ "overview": {
+  "mode": "shadow",
+  "mode_text": "rehearsal, no real orders placed",
+  "summary": "Rehearsal: 0 order(s), 0 filled, 0 blocked, 0 not filled or rejected (expected 2). No order logged for 2 expected signal(s). About 0 phone messages sent.",
+  "orders": [],
+  "triggers": []
+ }
 }
