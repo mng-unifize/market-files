@@ -17,6 +17,7 @@ Nothing secret is ever printed or logged."""
 import os, sys, csv, json, time, shutil, threading, tempfile, subprocess, datetime as dt
 import urllib.request
 import ticket as T
+import stretch_shadow as SS
 
 def use_certifi():
     """Point Python's HTTPS (urllib) and requests (used by kiteconnect) at certifi's certificate bundle, unless one is already set.
@@ -294,6 +295,7 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
                     row["alert"] = "sent"
                     if row["event_id"] not in seen_t: append_ticket(trow); seen_t.add(row["event_id"]); shadow_queue.setdefault(nm, []).append(row["event_id"])
             append_row(row); seen.add(row["event_id"]); new_rows += 1
+            if real and ev["event"] == "ENTRY": SS.log_entry(LIVE, nm, ev, row["event_id"])   # shadow flag, observer only, never raises
             log("signal", row["event_id"], "|", row["alert"])
         try: new_rows += roll_check(st, t, nm, pos, futs, hol, seen_t, notify, launch=launch_shadow if real else None)
         except Exception as e: log(nm, "roll check failed:", type(e).__name__, str(e)[:150])
