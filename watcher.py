@@ -228,6 +228,7 @@ def describe(nm, ev, last_entry, t):
     return title, "\n".join(lines), row
 
 def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUTES, token_day=None):
+    real = notify_fn is None and make_kite_fn is None      # decided BEFORE the defaults below replace the None values
     make_kite_fn = make_kite_fn or make_kite; notify = notify_fn or send_alert
     L, D = engine()
     today = t.strftime("%Y-%m-%d"); h = t.strftime("%H:%M"); final = h >= FINAL_TICK
@@ -294,9 +295,9 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
                     if row["event_id"] not in seen_t: append_ticket(trow); seen_t.add(row["event_id"]); shadow_queue.setdefault(nm, []).append(row["event_id"])
             append_row(row); seen.add(row["event_id"]); new_rows += 1
             log("signal", row["event_id"], "|", row["alert"])
-        try: new_rows += roll_check(st, t, nm, pos, futs, hol, seen_t, notify, launch=launch_shadow if (notify_fn is None and make_kite_fn is None) else None)
+        try: new_rows += roll_check(st, t, nm, pos, futs, hol, seen_t, notify, launch=launch_shadow if real else None)
         except Exception as e: log(nm, "roll check failed:", type(e).__name__, str(e)[:150])
-    if notify_fn is None and make_kite_fn is None and shadow_queue: launch_shadow(shadow_queue)      # real runs only, never a rehearsal or a test
+    if real and shadow_queue: launch_shadow(shadow_queue)      # real runs only, never a rehearsal or a test
     return "ok (%d new)" % new_rows
 
 def roll_check(st, t, nm, pos, futs, hol, seen_t, notify, launch=None):

@@ -246,6 +246,17 @@ class TickTests(Base):
         self.assertEqual(len(sent), 1); title, body = sent[0]
         for need in ("ENTRY BUY", "Nifty", "Lot size: 65", "24111.50", "Stop: none, exits on opposite crossover", "Reason:", "No order was placed"): self.assertIn(need, title + "\n" + body)
         r = self.rows(); self.assertEqual(len(r), 1); self.assertEqual((r[0]["event"], r[0]["lot_size"], r[0]["stop"], r[0]["alert"]), ("ENTRY", "65", watcher.STOP_TEXT, "sent"))
+    def test_real_run_starts_the_order_sender_and_a_test_run_never_does(self):
+        self.token(); launched = []; kite = FakeKite(TUE)
+        with self.patch_events([ev("ENTRY", "BUY", TUE + " 11:00", "11:15", 24111.5)]):
+            with mock.patch.object(watcher, "launch_shadow", lambda q: launched.append(q)), mock.patch.object(watcher, "make_kite", lambda tok: kite), mock.patch.object(watcher, "send_alert", lambda t, b: True):
+                watcher.run_tick(watcher.State(), ist(TUE + " 11:15:20"))
+        self.assertEqual(len(launched), 1); self.assertEqual(list(launched[0]), ["NSEI"])
+        launched.clear()
+        with self.patch_events([ev("ENTRY", "BUY", TUE + " 11:00", "11:15", 24111.5)]):
+            with mock.patch.object(watcher, "launch_shadow", lambda q: launched.append(q)):
+                self.tick(ist(TUE + " 11:15:20"))
+        self.assertEqual(launched, [])
     def test_exit_alert_says_paper_engine_position_and_names_the_entry(self):
         self.token(); sent = []
         events = [ev("ENTRY", "BUY", "2026-11-09 10:15", "10:30", 24000.5, day="2026-11-09"), ev("EXIT", "SELL", TUE + " 11:00", "11:15", 24100.25)]
