@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-16",
+  "checked_at": "2026-11-16T19:02:45+05:30",
+  "files": {
+    "nse_bhavcopy": "missing",
+    "nse_flags": "missing",
+    "bse_bhavcopy": "ok"
+  },
+  "issues": [
+    "nse_bhavcopy (required): HTTP 403",
+    "nse_flags: HTTP 403"
+  ],
+  "ready": false,
+  "flags_ready": false
+}

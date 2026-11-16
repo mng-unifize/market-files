@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-13T20:20:48+05:30",
+ "updated": "2026-11-16T19:02:46+05:30",
  "dates": {
   "2024-07-08": {
    "ready": true,
@@ -5603,6 +5603,17 @@
     "REG_IND131126.csv"
    ],
    "issues": []
+  },
+  "2026-11-16": {
+   "ready": false,
+   "flags_ready": false,
+   "files": [
+    "BhavCopy_BSE_CM_0_0_0_20261116_F_0000.csv.gz"
+   ],
+   "issues": [
+    "nse_bhavcopy (required): HTTP 403",
+    "nse_flags: HTTP 403"
+   ]
   }
  }
 }
