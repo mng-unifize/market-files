@@ -5,3 +5,4 @@ day,expected,watcher_matched,watcher_missing,watcher_extra,notifications_needed,
 2026-11-13,3,3,0,0,3,3,3,0,0,True
 2026-11-16,9,9,0,0,2,2,9,0,0,True
 2026-11-17,0,0,0,0,0,0,0,0,0,True
+2026-11-18,7,7,0,0,6,6,7,0,0,True
