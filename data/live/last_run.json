@@ -1,10 +1,8 @@
 {
- "status": "warn",
- "run_at": "2026-11-18 16:00",
+ "status": "ok",
+ "run_at": "2026-11-18 16:11",
  "today": "2026-11-18",
- "problems": [
-  "warn: 12 earlier trade rows changed and 0 vanished since the last run (first: ['2026-10-05|Bank Nifty|3', '2026-10-05|Bank Nifty|4', '2026-10-05|Bank Nifty|5']). This happens when official Kite candles replace Yahoo candles; review it."
- ],
+ "problems": [],
  "data": {
   "NSEI": {
    "last_candle": "2026-11-18 15:30",
@@ -27,7 +25,7 @@
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 26
   },
-  "changed_past_rows": 12,
+  "changed_past_rows": 0,
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
@@ -57,8 +55,8 @@
  "trade_rows": 160,
  "summary_rows": 99,
  "net_by_index": {
+  "Bank Nifty": 40526,
   "Nifty 50": 113610,
-  "Sensex": 100790,
-  "Bank Nifty": 40526
+  "Sensex": 100790
  }
 }
