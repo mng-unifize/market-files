@@ -127,6 +127,7 @@ def by_year(m,T):
         if t["pnl"]>0:r[0]+=t["pnl"]
         else:r[1]+=t["pnl"]
     return [ (round(y[k][0]),round(y[k][1]),round(y[k][0]+y[k][1]),y[k][2]) for k in range(m.nyears)]
+MONDAY_BUY_FROM="2026-11-23"   # first Monday on which Bank Nifty BUY entries are allowed (read at call time)
 def rules_(m,train):
     q=lambda f,p:sorted(t[f] for t in train)[int(len(train)*p)]
     R={"engulfing candle":lambda t:t["eng"],"inside bar":lambda t:t["inside"],"doji candle":lambda t:t["doji"],
@@ -135,6 +136,9 @@ def rules_(m,train):
        "ADX under 15":lambda t:t["adx"]<15,"ADX under 20":lambda t:t["adx"]<20,"against daily trend":lambda t:t["dtrend"]<0,
        "against 2-day trend":lambda t:t["htf"]==0,"gap against trade over 0.5%":lambda t:t["gap"]<-0.5,"gap with trade over 0.5%":lambda t:t["gap"]>0.5}
     for w,nm in enumerate(("Monday","Tuesday","Wednesday","Thursday","Friday")):R["entries on "+nm]=lambda t,w=w:t["wd"]==w
+    # Bank Nifty Monday rule (owner decision 18 Nov 2026): Monday entries skipped until MONDAY_BUY_FROM; from that date only Monday SELL entries are skipped
+    R["entries on Monday until 23 Nov"]=lambda t:t["wd"]==0 and t["d"]<MONDAY_BUY_FROM
+    R["entries on Monday sell"]=lambda t:t["wd"]==0 and t["dir"]==-1 and t["d"]>=MONDAY_BUY_FROM
     for f,lab in (("dist21","price close to 21-line"),("sprd","narrow average spread"),("slope","flat average slope")):
         th=q(f,0.25);R["weak momentum: "+lab]=lambda t,f=f,th=th:t[f]<th
     th=q("volr",0.25);R["low volatility"]=lambda t,th=th:t["volr"]<th
