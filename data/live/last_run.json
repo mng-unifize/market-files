@@ -1,37 +1,39 @@
 {
- "status": "ok",
- "run_at": "2026-11-17 16:00",
- "today": "2026-11-17",
- "problems": [],
+ "status": "warn",
+ "run_at": "2026-11-18 16:00",
+ "today": "2026-11-18",
+ "problems": [
+  "warn: 12 earlier trade rows changed and 0 vanished since the last run (first: ['2026-10-05|Bank Nifty|3', '2026-10-05|Bank Nifty|4', '2026-10-05|Bank Nifty|5']). This happens when official Kite candles replace Yahoo candles; review it."
+ ],
  "data": {
   "NSEI": {
-   "last_candle": "2026-11-17 15:30",
+   "last_candle": "2026-11-18 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-11-17 15:30",
+   "last_candle": "2026-11-18 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-11-17 15:30",
+   "last_candle": "2026-11-18 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 26
   },
-  "changed_past_rows": 0,
+  "changed_past_rows": 12,
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
-   "events": 48,
-   "non_skip": 28,
-   "expected": 48,
+   "events": 55,
+   "non_skip": 34,
+   "expected": 55,
    "missed": 0,
    "extra": 0,
    "price_or_side_differs": 0,
@@ -40,23 +42,23 @@
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": 344422,
+   "net": 329344,
    "limit": -300000
   },
   "run_coverage": {
    "runs_in_window": 76,
    "slots": 76,
    "share": 1.0,
-   "longest_gap_min": 5,
+   "longest_gap_min": 6,
    "good_day": true
   }
  },
- "latest_day": "2026-11-17",
- "trade_rows": 155,
- "summary_rows": 96,
+ "latest_day": "2026-11-18",
+ "trade_rows": 160,
+ "summary_rows": 99,
  "net_by_index": {
-  "Sensex": 101251,
-  "Nifty 50": 110201,
-  "Bank Nifty": 58552
+  "Nifty 50": 113610,
+  "Sensex": 100790,
+  "Bank Nifty": 40526
  }
 }
