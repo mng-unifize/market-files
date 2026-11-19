@@ -1,0 +1,34 @@
+name: kite-1-minute-index-history
+on:
+  workflow_dispatch:
+    inputs:
+      request_token:
+        description: "Paste the whole address from the browser after Zerodha login (or just the request_token value)"
+        required: true
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install kiteconnect
+      - run: python3 fetch_kite_history.py
+        env:
+          KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
+          KITE_API_SECRET: ${{ secrets.KITE_API_SECRET }}
+          KITE_REQUEST_TOKEN: ${{ github.event.inputs.request_token }}
+          FETCH_1M: "1"
+          ONLY: "NSEI,NSEBANK,BSESN"
+          START_YEAR: "2024"
+          START_MONTH: "11"
+          OUTDIR: "data/kite-1m"
+      - run: |
+          git config user.name "intraday-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/kite-1m
+          git diff --cached --quiet || git commit -m "kite 1-minute index history $(date -u +%F)"
+          git push
