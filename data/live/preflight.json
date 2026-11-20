@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-19 09:04",
+ "run_at": "2026-11-20 09:01",
  "status": "pass",
  "checks": [
   {
@@ -15,7 +15,7 @@
   {
    "check": "future found: Nifty 50",
    "result": "PASS",
-   "detail": "NIFTY26NOVFUT"
+   "detail": "NIFTY26DECFUT"
   },
   {
    "check": "lot size: Nifty 50",
@@ -25,17 +25,17 @@
   {
    "check": "expiry: Nifty 50",
    "result": "PASS",
-   "detail": "NIFTY26NOVFUT expires 2026-11-23 (4 days)"
+   "detail": "NIFTY26DECFUT expires 2026-12-29 (39 days)"
   },
   {
    "check": "index candles: Nifty 50",
    "result": "PASS",
-   "detail": "225 candles over 3 days, newest 2026-11-18 15:25"
+   "detail": "300 candles over 4 days, newest 2026-11-19 15:25"
   },
   {
    "check": "future candles: Nifty 50",
    "result": "PASS",
-   "detail": "225 candles over 3 days, newest 2026-11-18 15:25"
+   "detail": "300 candles over 4 days, newest 2026-11-19 15:25"
   },
   {
    "check": "quote: Nifty 50",
@@ -50,7 +50,7 @@
   {
    "check": "future found: Bank Nifty",
    "result": "PASS",
-   "detail": "BANKNIFTY26NOVFUT"
+   "detail": "BANKNIFTY26DECFUT"
   },
   {
    "check": "lot size: Bank Nifty",
@@ -60,17 +60,17 @@
   {
    "check": "expiry: Bank Nifty",
    "result": "PASS",
-   "detail": "BANKNIFTY26NOVFUT expires 2026-11-23 (4 days)"
+   "detail": "BANKNIFTY26DECFUT expires 2026-12-29 (39 days)"
   },
   {
    "check": "index candles: Bank Nifty",
    "result": "PASS",
-   "detail": "225 candles over 3 days, newest 2026-11-18 15:25"
+   "detail": "300 candles over 4 days, newest 2026-11-19 15:25"
   },
   {
    "check": "future candles: Bank Nifty",
    "result": "PASS",
-   "detail": "225 candles over 3 days, newest 2026-11-18 15:25"
+   "detail": "300 candles over 4 days, newest 2026-11-19 15:25"
   },
   {
    "check": "quote: Bank Nifty",
@@ -95,17 +95,17 @@
   {
    "check": "expiry: Sensex",
    "result": "PASS",
-   "detail": "SENSEX26NOVFUT expires 2026-11-26 (7 days)"
+   "detail": "SENSEX26NOVFUT expires 2026-11-26 (6 days)"
   },
   {
    "check": "index candles: Sensex",
    "result": "PASS",
-   "detail": "225 candles over 3 days, newest 2026-11-18 15:25"
+   "detail": "300 candles over 4 days, newest 2026-11-19 15:25"
   },
   {
    "check": "future candles: Sensex",
    "result": "PASS",
-   "detail": "225 candles over 3 days, newest 2026-11-18 15:25"
+   "detail": "300 candles over 4 days, newest 2026-11-19 15:25"
   },
   {
    "check": "quote: Sensex",
