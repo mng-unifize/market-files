@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.ibt.bnbackup</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/ng/ibt-env/bin/python</string>
+    <string>/Users/ng/ibt/market-files/2026-11-22-order_exec_bn.py</string>
+    <string>--backup</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/ng/ibt/market-files</string>
+  <key>EnvironmentVariables</key>
+  <dict><key>PYTHONUNBUFFERED</key><string>1</string></dict>
+  <!-- Monday to Friday at 15:00 Mac local time (India time). Does nothing unless data/live/GO_LIVE_BANKNIFTY is dated today and no live Bank Nifty order was placed today. -->
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>15</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Weekday</key><integer>2</integer><key>Hour</key><integer>15</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Weekday</key><integer>3</integer><key>Hour</key><integer>15</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Weekday</key><integer>4</integer><key>Hour</key><integer>15</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Weekday</key><integer>5</integer><key>Hour</key><integer>15</integer><key>Minute</key><integer>0</integer></dict>
+  </array>
+  <key>StandardOutPath</key><string>/Users/ng/ibt/bnbackup.log</string>
+  <key>StandardErrorPath</key><string>/Users/ng/ibt/bnbackup.log</string>
+</dict>
+</plist>

@@ -127,6 +127,7 @@ def by_year(m,T):
         if t["pnl"]>0:r[0]+=t["pnl"]
         else:r[1]+=t["pnl"]
     return [ (round(y[k][0]),round(y[k][1]),round(y[k][0]+y[k][1]),y[k][2]) for k in range(m.nyears)]
+AUGUST_SKIP_FROM="2027-08-01"   # owner decision 22 Nov 2026: skip new entries in August from this date, all three indexes (August lost in 4 of 5 backtest years: small sample, review after Aug 2027)
 MONDAY_BUY_FROM="2026-11-23"   # first Monday on which Bank Nifty BUY entries are allowed (read at call time)
 def rules_(m,train):
     q=lambda f,p:sorted(t[f] for t in train)[int(len(train)*p)]
@@ -139,6 +140,7 @@ def rules_(m,train):
     # Bank Nifty Monday rule (owner decision 18 Nov 2026): Monday entries skipped until MONDAY_BUY_FROM; from that date only Monday SELL entries are skipped
     R["entries on Monday until 23 Nov"]=lambda t:t["wd"]==0 and t["d"]<MONDAY_BUY_FROM
     R["entries on Monday sell"]=lambda t:t["wd"]==0 and t["dir"]==-1 and t["d"]>=MONDAY_BUY_FROM
+    R["entries in August from 2027"]=lambda t:t["d"]>=AUGUST_SKIP_FROM and t["d"][5:7]=="08"
     for f,lab in (("dist21","price close to 21-line"),("sprd","narrow average spread"),("slope","flat average slope")):
         th=q(f,0.25);R["weak momentum: "+lab]=lambda t,f=f,th=th:t[f]<th
     th=q("volr",0.25);R["low volatility"]=lambda t,th=th:t["volr"]<th

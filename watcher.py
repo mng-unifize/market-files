@@ -188,6 +188,8 @@ def launch_shadow(queue):
         try:
             os.makedirs(LIVE, exist_ok=True)
             subprocess.Popen([sys.executable, os.path.join(HERE, "order_exec.py"), "--events"] + ids, cwd=HERE, stdout=open(SHADOW_LOG, "a"), stderr=subprocess.STDOUT, start_new_session=True)
+            if any(i.startswith("NSEBANK|") for i in ids) and os.path.exists(os.path.join(HERE, "data/live/GO_LIVE_BANKNIFTY")):      # Bank Nifty live copy: re-checks its own gates, does nothing unless dated today
+                subprocess.Popen([sys.executable, os.path.join(HERE, "2026-11-22-order_exec_bn.py"), "--events"] + ids, cwd=HERE, stdout=open(SHADOW_LOG, "a"), stderr=subprocess.STDOUT, start_new_session=True)
         except Exception as e: log("order process start failed:", type(e).__name__)
 
 def warn_once(st, key, title, body, notify):
