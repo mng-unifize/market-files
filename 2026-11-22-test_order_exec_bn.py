@@ -10,6 +10,7 @@ class T_(TO.Base):
     def ctx(self, start="2026-11-24 10:46:00", seed=None, fn=None):
         self.t0 = dt.datetime.fromisoformat(start); k = TO.FakeKite(fn or (lambda t: TO.book(62000.0)), self.ck); br = X.ShadowBroker(k, FUTS, seed=seed or {}); br.mode = "live"
         os.makedirs("data/live/bn_live", exist_ok=True)
+        if not os.path.exists(BN.GO_FILE): open(BN.GO_FILE, "w").write("2026-11-24\n2026-11-25\n")      # gate dates used by the tests
         return X.Ctx(k, FUTS, br, lambda: self.t0 + dt.timedelta(seconds=self.ck.t), self.ck.now, self.ck.sleep, lambda t, b, p="default": self.sent.append((t, b, p)) or True, "", "", lambda c: 5,
                      alerts=BN.ALERTS_F, tickets=BN.TICKETS_F, out=BN.OUT)
     def bn_rows(self, specs):          # specs: (bar, kind, side, closes)
@@ -50,8 +51,17 @@ class T_(TO.Base):
         self.bn_rows([("2026-11-24 10:30", "ENTRY", "BUY", ""), ("2026-11-25 11:00", "EXIT", "SELL", "NSEBANK|2026-11-24 10:30|ENTRY"), ("2026-11-25 11:00", "ENTRY", "SELL", ""), ("2026-11-25 11:05", "ENTRY", "BUY", "")])
         self.t0 = dt.datetime(2026, 11, 25, 11, 16)
         BN.run_events(c, ["NSEBANK|2026-11-25 11:00|EXIT", "NSEBANK|2026-11-25 11:00|ENTRY"])
-        k = [(x["kind"], x["status"]) for x in self.rows()]; self.assertEqual(k, [("ENTRY", "FILLED"), ("EXIT", "FILLED"), ("ENTRY", "FILLED")]); self.assertEqual(BN.live_state()["side"], "SELL")
-        BN.run_events(c, ["NSEBANK|2026-11-25 11:05|ENTRY"]); self.assertEqual(self.rows()[-1]["status"], "SKIPPED"); self.assertIn("already open", self.rows()[-1]["block_reasons"])
+        k = [(x["kind"], x["status"]) for x in self.rows()]; self.assertEqual(k, [("ENTRY", "FILLED"), ("EXIT", "FILLED"), ("ENTRY", "SKIPPED")]); self.assertIsNone(BN.live_state())
+        self.assertIn("already taken", self.rows()[-1]["block_reasons"]); self.assertEqual(c.broker.positions(), {})      # one live test trade in total: no reversal entry after the exit
+    def test_exit_allowed_on_non_gate_day_but_entry_is_not(self):
+        open(BN.GO_FILE, "w").write("2026-11-24\n"); self.bn_rows([("2026-11-24 10:30", "ENTRY", "BUY", "")]); c = self.ctx(); BN.run_events(c, ["NSEBANK|2026-11-24 10:30|ENTRY"]); self.assertEqual(BN.live_state()["side"], "BUY")
+        self.bn_rows([("2026-11-24 10:30", "ENTRY", "BUY", ""), ("2026-11-25 11:00", "EXIT", "SELL", "NSEBANK|2026-11-24 10:30|ENTRY")]); self.t0 = dt.datetime(2026, 11, 25, 11, 16)
+        BN.run_events(c, ["NSEBANK|2026-11-25 11:00|EXIT"]); self.assertEqual(self.rows()[-1]["status"], "FILLED"); self.assertIsNone(BN.live_state())
+    def test_entry_on_non_gate_day_is_skipped_when_flat(self):
+        open(BN.GO_FILE, "w").write("2026-11-24\n"); self.bn_rows([("2026-11-25 10:30", "ENTRY", "BUY", "")]); c = self.ctx(start="2026-11-25 10:46:00"); BN.run_events(c, ["NSEBANK|2026-11-25 10:30|ENTRY"])
+        self.assertEqual(self.rows()[-1]["status"], "SKIPPED"); self.assertIn("not a live entry day", self.rows()[-1]["block_reasons"]); self.assertEqual(c.broker.positions(), {})
+    def test_main_exit_runs_on_non_gate_day_but_backup_does_not(self):
+        self.assertEqual(BN.main(["--backup"]), 0); self.assertFalse(os.path.exists(BN.OUT))
     def test_other_indexes_never_traded(self):
         c = self.ctx(); BN.run_events(c, ["NSEI|2026-11-24 10:30|ENTRY"]); self.assertEqual(self.rows(), []); self.assertEqual(c.broker.positions(), {})
     def test_stray_kite_position_stops_everything(self):

@@ -1,10 +1,10 @@
 """Bank Nifty live order runner, one lot. A separate copy of the order flow in order_exec.py: it reuses order_exec.py's checks, price ladder, logging and
 messages unchanged, but trades ONLY Bank Nifty and starts from a clean baseline. order_exec.py itself is untouched and keeps rehearsing all three indexes.
 
-Gates (all must hold or nothing is sent): LIVE_ENABLED below is True, AND data/live/GO_LIVE_BANKNIFTY contains today's date, AND the usual safety checks pass
+Gates (all must hold or nothing is sent): LIVE_ENABLED below is True, AND for an ENTRY or the backup, data/live/GO_LIVE_BANKNIFTY contains today's date (an EXIT or roll of an open live position is allowed on any day), AND the usual safety checks pass
 (kill switch, daily loss stop, one lot cap, order cap, price band, spread, market hours).
 Baseline: signals before BASELINE are ignored. An EXIT is sent only if this runner holds a live position, so the old paper position is never sold by mistake.
-An ENTRY is sent only when this runner is flat. Own log: data/live/orders_bn_live.csv (same columns as orders.csv, includes slippage against the candle close).
+An ENTRY is sent only when this runner is flat, and only ONCE in total (one live test trade). Own log: data/live/orders_bn_live.csv (same columns as orders.csv, includes slippage against the candle close).
 
 Run by watcher.py after each Bank Nifty alert:   order_exec_bn.py --events <event ids>
 Run at 15:00 by a scheduled job:                  order_exec_bn.py --backup     (only if no live Bank Nifty order was placed today)
@@ -66,9 +66,11 @@ def make_legs(orig):
     def legs(ctx, eid):
         if eid.split("|")[0] != CODE: return []
         out = []; st = live_state(ctx.out); roll = eid.endswith("|ROLL"); bar = "" if roll else eid.split("|")[1]
+        day_ok = go_ok(ctx.now_fn().strftime("%Y-%m-%d"))[0]; done = any(r["kind"] == "ENTRY" and r["status"] in X.DONE_OK for r in _read(ctx.out))
         for key, label, tk in orig(ctx, eid):
-            if label == "ENTRY":
-                why = "before the live baseline %s" % BASELINE if bar < BASELINE else ("a live position is already open" if st else "")
+            if label == "ENTRY":      # ONE live test trade in total, and only on a day listed in the gate file. EXIT and ROLL of an open live position are always allowed.
+                why = ("before the live baseline %s" % BASELINE if bar < BASELINE else "a live position is already open" if st else
+                       "the one live test trade is already taken" if done else "" if day_ok else "not a live entry day (the gate file does not list today)")
             elif label == "EXIT": why = "" if st else "no live position to close (the position is from before the live baseline)"
             else: why = "" if st else "no live position to roll"
             if why: _skip(ctx, key, label, tk, why)
@@ -171,7 +173,9 @@ def main(argv):
         ok, why = go_ok(today); print("go-live file today:", "yes" if ok else "no (%s)" % why); print("baseline:", BASELINE); print("live position:", live_state() or "flat")
         print("rows today:", [(r["kind"], r["status"], r["fill_price"], r["slip_pct"]) for r in _read(OUT) if r["run_at_ist"][:10] == today]); return 0
     ok, why = go_ok(today)
-    if not ok: print("order_exec_bn: not live today (%s)" % why); return 0
+    if not LIVE_ENABLED: print("order_exec_bn: LIVE_ENABLED is False"); return 0
+    if "--backup" in argv and not ok: print("order_exec_bn: backup not run (%s)" % why); return 0
+    if not ok and live_state() is None: print("order_exec_bn: not live today (%s)" % why); return 0     # not a gate day and nothing open: do nothing
     if "--events" in argv: ids = [i for i in argv[argv.index("--events") + 1:] if i.startswith(CODE + "|")]
     elif "--backup" in argv: ids = []
     else: print(__doc__); return 2
