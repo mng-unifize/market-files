@@ -1,0 +1,53 @@
+{
+ "as_of": "2026-11-21",
+ "lots": {
+  "NSEBANK": {
+   "contract": "BANKNIFTY26DECFUT",
+   "expiry": "2026-12-29",
+   "lot_size": 30,
+   "buy_total": 221191.2,
+   "sell_total": 219663,
+   "span": 182335.2,
+   "exposure": 38856,
+   "plan": {
+    "kite_margin_one_lot": 221191,
+    "with_buffer": 276489,
+    "cash_at_least": 183244,
+    "pledge_at_most_counted": 138244,
+    "free_margin_to_show": 316489
+   }
+  },
+  "NSEI": {
+   "contract": "NIFTY26DECFUT",
+   "expiry": "2026-12-29",
+   "lot_size": 65,
+   "buy_total": 191367.15,
+   "sell_total": 190045.05,
+   "span": 157697.15,
+   "exposure": 33670,
+   "plan": {
+    "kite_margin_one_lot": 191367,
+    "with_buffer": 239209,
+    "cash_at_least": 164604,
+    "pledge_at_most_counted": 119604,
+    "free_margin_to_show": 279209
+   }
+  },
+  "BSESN": {
+   "contract": "SENSEX26DECFUT",
+   "expiry": "2026-12-31",
+   "lot_size": 20,
+   "buy_total": 191614,
+   "sell_total": 190291,
+   "span": 157886,
+   "exposure": 33728,
+   "plan": {
+    "kite_margin_one_lot": 191614,
+    "with_buffer": 239518,
+    "cash_at_least": 164759,
+    "pledge_at_most_counted": 119759,
+    "free_margin_to_show": 279518
+   }
+  }
+ }
+}
