@@ -1,6 +1,6 @@
 {
  "status": "warn",
- "run_at": "2026-11-25 02:51",
+ "run_at": "2026-11-25 03:48",
  "today": "2026-11-24",
  "problems": [
   "warn: Nifty 50: newest candle is 2026-11-23 15:30, expected 2026-11-24 (holiday, or the fetch failed)",
@@ -54,7 +54,7 @@
  "summary_rows": 108,
  "net_by_index": {
   "Nifty 50": 129180,
-  "Bank Nifty": 79981,
-  "Sensex": 117494
+  "Sensex": 117494,
+  "Bank Nifty": 79981
  }
 }
