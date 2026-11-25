@@ -1,11 +1,116 @@
 {
- "run_at": "2026-11-25 09:01",
- "status": "fail",
+ "run_at": "2026-11-25 09:06",
+ "status": "pass",
  "checks": [
   {
    "check": "token and login",
-   "result": "FAIL",
-   "detail": "Incorrect `api_key` or `access_token`."
+   "result": "PASS",
+   "detail": "Kite accepted the token"
+  },
+  {
+   "check": "index found: Nifty 50",
+   "result": "PASS",
+   "detail": "token 256265"
+  },
+  {
+   "check": "future found: Nifty 50",
+   "result": "PASS",
+   "detail": "NIFTY26DECFUT"
+  },
+  {
+   "check": "lot size: Nifty 50",
+   "result": "PASS",
+   "detail": "Kite says 65, our engine uses 65"
+  },
+  {
+   "check": "expiry: Nifty 50",
+   "result": "PASS",
+   "detail": "NIFTY26DECFUT expires 2026-12-29 (34 days)"
+  },
+  {
+   "check": "index candles: Nifty 50",
+   "result": "PASS",
+   "detail": "150 candles over 2 days, newest 2026-11-23 15:25"
+  },
+  {
+   "check": "future candles: Nifty 50",
+   "result": "PASS",
+   "detail": "150 candles over 2 days, newest 2026-11-23 15:25"
+  },
+  {
+   "check": "quote: Nifty 50",
+   "result": "PASS",
+   "detail": "best bid and ask available"
+  },
+  {
+   "check": "index found: Bank Nifty",
+   "result": "PASS",
+   "detail": "token 260105"
+  },
+  {
+   "check": "future found: Bank Nifty",
+   "result": "PASS",
+   "detail": "BANKNIFTY26DECFUT"
+  },
+  {
+   "check": "lot size: Bank Nifty",
+   "result": "PASS",
+   "detail": "Kite says 30, our engine uses 30"
+  },
+  {
+   "check": "expiry: Bank Nifty",
+   "result": "PASS",
+   "detail": "BANKNIFTY26DECFUT expires 2026-12-29 (34 days)"
+  },
+  {
+   "check": "index candles: Bank Nifty",
+   "result": "PASS",
+   "detail": "150 candles over 2 days, newest 2026-11-23 15:25"
+  },
+  {
+   "check": "future candles: Bank Nifty",
+   "result": "PASS",
+   "detail": "150 candles over 2 days, newest 2026-11-23 15:25"
+  },
+  {
+   "check": "quote: Bank Nifty",
+   "result": "PASS",
+   "detail": "best bid and ask available"
+  },
+  {
+   "check": "index found: Sensex",
+   "result": "PASS",
+   "detail": "token 265"
+  },
+  {
+   "check": "future found: Sensex",
+   "result": "PASS",
+   "detail": "SENSEX26DECFUT"
+  },
+  {
+   "check": "lot size: Sensex",
+   "result": "PASS",
+   "detail": "Kite says 20, our engine uses 20"
+  },
+  {
+   "check": "expiry: Sensex",
+   "result": "PASS",
+   "detail": "SENSEX26DECFUT expires 2026-12-31 (36 days)"
+  },
+  {
+   "check": "index candles: Sensex",
+   "result": "PASS",
+   "detail": "150 candles over 2 days, newest 2026-11-23 15:25"
+  },
+  {
+   "check": "future candles: Sensex",
+   "result": "PASS",
+   "detail": "150 candles over 2 days, newest 2026-11-23 15:25"
+  },
+  {
+   "check": "quote: Sensex",
+   "result": "PASS",
+   "detail": "best bid and ask available"
   }
  ]
 }
