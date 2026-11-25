@@ -9,3 +9,4 @@ day,expected,watcher_matched,watcher_missing,watcher_extra,notifications_needed,
 2026-11-19,5,5,0,0,5,5,5,0,0,True
 2026-11-20,0,0,0,0,0,0,0,0,0,True
 2026-11-23,6,6,0,0,3,3,6,0,0,True
+2026-11-25,5,3,2,0,3,3,5,0,0,False
