@@ -1,30 +1,25 @@
 {
- "status": "warn",
- "run_at": "2026-11-25 03:48",
- "today": "2026-11-24",
- "problems": [
-  "warn: Nifty 50: newest candle is 2026-11-23 15:30, expected 2026-11-24 (holiday, or the fetch failed)",
-  "warn: Bank Nifty: newest candle is 2026-11-23 15:30, expected 2026-11-24 (holiday, or the fetch failed)",
-  "warn: Sensex: newest candle is 2026-11-23 15:30, expected 2026-11-24 (holiday, or the fetch failed)",
-  "warn: dashboard latest day is 2026-11-23, today is 2026-11-24"
- ],
+ "status": "ok",
+ "run_at": "2026-11-25 16:00",
+ "today": "2026-11-25",
+ "problems": [],
  "data": {
   "NSEI": {
-   "last_candle": "2026-11-23 15:30",
+   "last_candle": "2026-11-25 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-11-23 15:30",
+   "last_candle": "2026-11-25 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-11-23 15:30",
+   "last_candle": "2026-11-25 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
@@ -34,9 +29,9 @@
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
-   "events": 66,
-   "non_skip": 42,
-   "expected": 66,
+   "events": 71,
+   "non_skip": 47,
+   "expected": 71,
    "missed": 0,
    "extra": 0,
    "price_or_side_differs": 0,
@@ -45,16 +40,23 @@
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": 401073,
+   "net": 380781,
    "limit": -300000
+  },
+  "run_coverage": {
+   "runs_in_window": 76,
+   "slots": 76,
+   "share": 1.0,
+   "longest_gap_min": 6,
+   "good_day": true
   }
  },
- "latest_day": "2026-11-23",
- "trade_rows": 174,
- "summary_rows": 108,
+ "latest_day": "2026-11-25",
+ "trade_rows": 178,
+ "summary_rows": 111,
  "net_by_index": {
-  "Nifty 50": 129180,
-  "Sensex": 117494,
-  "Bank Nifty": 79981
+  "Nifty 50": 134300,
+  "Bank Nifty": 51237,
+  "Sensex": 120826
  }
 }

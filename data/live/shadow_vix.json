@@ -1,56 +1,60 @@
 {
  "rule": "skip entry if last VIX close is more than 5% above the mean of the previous 5 closes",
  "scored_from": "2026-10-26",
- "latest_vix_day": "2026-11-23",
- "vix_rows_added": 0,
+ "latest_vix_day": "2026-11-25",
+ "vix_rows_added": 1,
  "by_index": {
   "Nifty 50": {
-   "trades": 23,
-   "flagged": 4,
+   "trades": 24,
+   "flagged": 5,
    "unknown": 0,
-   "net_all": 118739,
-   "net_flagged": -22721,
+   "net_all": 123859,
+   "net_flagged": -17601,
    "flagged_days": [
     "2026-10-26",
     "2026-11-08",
     "2026-11-09",
-    "2026-11-23"
+    "2026-11-23",
+    "2026-11-25"
    ],
    "net_if_skipped": 141460
   },
   "Bank Nifty": {
-   "trades": 18,
-   "flagged": 3,
+   "trades": 20,
+   "flagged": 5,
    "unknown": 0,
-   "net_all": 130926,
-   "net_flagged": -12526,
+   "net_all": 102182,
+   "net_flagged": -41270,
    "flagged_days": [
     "2026-11-08",
     "2026-11-09",
-    "2026-11-23"
+    "2026-11-23",
+    "2026-11-25",
+    "2026-11-25"
    ],
    "net_if_skipped": 143452
   },
   "Sensex": {
-   "trades": 21,
-   "flagged": 4,
+   "trades": 22,
+   "flagged": 5,
    "unknown": 0,
-   "net_all": 134306,
-   "net_flagged": -15433,
+   "net_all": 137638,
+   "net_flagged": -12101,
    "flagged_days": [
     "2026-10-26",
     "2026-11-08",
     "2026-11-09",
-    "2026-11-23"
+    "2026-11-23",
+    "2026-11-25"
    ],
    "net_if_skipped": 149739
   }
  },
  "total": {
-  "trades": 62,
-  "flagged": 11,
-  "net_all": 383971,
-  "net_flagged": -50680,
+  "trades": 66,
+  "flagged": 15,
+  "net_all": 363679,
+  "net_flagged": -70972,
   "net_if_skipped": 434651,
   "verdict": "rule helped"
  },
