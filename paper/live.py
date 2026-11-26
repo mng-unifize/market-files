@@ -180,9 +180,42 @@ def main():
             if first: w.writerow(HDR)
             w.writerows(new)
         if not os.path.exists(f"{LIVE}/live_start.txt"): open(f"{LIVE}/live_start.txt", "w").write(start)
+        try: status["backup_alerts_sent"] = send_backup(backup_messages(new, today, now))
+        except Exception as e: print("backup alert error:", type(e).__name__)
     if final or status["problems"] or (record and new): write_status(status, record)
     out("changed", "true" if (record and new) or final else "false")
     print(json.dumps(status, indent=1)); return 0
+
+def backup_messages(new, today, now):
+    """Phone messages for fresh Bank Nifty entry and exit signals (a backup copy of what the Mac watcher sends). Pure: returns [(title, body)]."""
+    out = []
+    for r in new:
+        eid, event, index, side, bar, fill, price, sym, fp = r[0], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9]
+        if index != "Bank Nifty" or event not in ("ENTRY", "EXIT") or not str(bar).startswith(today): continue
+        try: lag = (now - dt.datetime.strptime(today + " " + fill, "%Y-%m-%d %H:%M").replace(tzinfo=IST)).total_seconds() / 60
+        except Exception: continue
+        if lag > 15: continue
+        body = ("BACKUP COPY from GitHub. Your Mac sends its own alert and places the order.\n%s %s %s, candle %s, filled at %s.\nIndex price %s%s.\n"
+                "ACT ONLY IF the Mac alert or the live order did not come within 2 minutes. Then %s 1 lot %s by hand in the Kite app, limit near the touch.\n"
+                "Ignore an ENTRY if the Mac says no new entries in expiry week.") % (event, side, index, bar, fill, price, (", future " + str(fp)) if fp != "" else "", side, sym or "the Bank Nifty future")
+        out.append(("[BACKUP] %s %s Bank Nifty" % (event, side), body))
+    return out
+
+def send_backup(msgs, post=None):
+    """Sends the backup messages to the phone topic in NTFY_TOPIC (a GitHub secret). Never raises: a failure must not stop the recording."""
+    topic = os.environ.get("NTFY_TOPIC", "").strip()
+    if not topic or not msgs: return 0
+    import urllib.request
+    base = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/"); url = topic if topic.startswith("http") else base + "/" + topic; n = 0
+    for title, body in msgs:
+        try:
+            if post: post(url, title, body)
+            else:
+                req = urllib.request.Request(url, data=body.encode("utf-8"), method="POST", headers={"Title": title, "Priority": "high"})
+                urllib.request.urlopen(req, timeout=15).read()
+            n += 1
+        except Exception as e: print("backup alert failed:", type(e).__name__)
+    return n
 
 def write_status(status, record):
     os.makedirs(LIVE, exist_ok=True)

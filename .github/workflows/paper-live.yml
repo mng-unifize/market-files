@@ -56,3 +56,4 @@ jobs:
           KITE_API_KEY: ${{ secrets.KITE_API_KEY }}
           KITE_ACCESS_TOKEN: ${{ secrets.KITE_ACCESS_TOKEN }}
           PAPER_RECORD: ${{ vars.PAPER_RECORD }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}   # phone topic for the backup Bank Nifty alerts; add it under Settings, Secrets and variables, Actions
