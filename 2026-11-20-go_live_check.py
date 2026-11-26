@@ -11,7 +11,8 @@ HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE); sys.path.inse
 L = "data/live/"; MARGIN_PCT = 0.11; BUFFER = 100000; # Owner waiver, 26 Nov 2026: rehearsal failures on these days came from the automatic stop file blocking the rehearsal (fixed 26 Nov) and from two Bank Nifty signals the Mac missed
 # on 25 Nov 13:10 (cause still being traced). Only BLOCKED, NOT_FILLED, REJECTED, PARTIAL and position-mismatch rows on these days are waived. Missing orders are never waived.
 WAIVED_DAYS = {"2026-11-25": "stop file blocked the rehearsal", "2026-11-26": "rehearsal book drifted after the missed 25 Nov 13:10 signals"}
-SLIP_MAX = 0.03; ORDER_N = 20; DAYS_OK = 5
+SLIP_MAX = 0.04   # owner decision 26 Nov 2026: raised from 0.03; the backtest breaks even near 0.055 and the live tripwire pauses entries there
+ORDER_N = 20; DAYS_OK = 5
 
 def rows(p):
     try:
@@ -90,7 +91,7 @@ def g_health(alerts, orders):
 def g_slip(orders):
     f = [float(r["slip_pct"]) for r in orders if r["slip_pct"] not in ("", None) and r["status"] in ("FILLED", "REPRICED_FILLED", "FALLBACK_FILLED")][-ORDER_N:]
     if not f: return "PENDING", "no filled orders"
-    avg = sum(f) / len(f); txt = "average %.4f%% per side over the last %d orders (limit %.2f%%, plan 0.01%%)" % (avg, len(f), SLIP_MAX)
+    avg = sum(f) / len(f); txt = "average %.4f%% per side over the last %d orders (limit %.2f%%, backtest breaks even near 0.055%%)" % (avg, len(f), SLIP_MAX)
     if len(f) < ORDER_N: return "PENDING", txt + ", need %d" % ORDER_N
     return ("PASS" if avg <= SLIP_MAX else "FAIL"), txt
 
