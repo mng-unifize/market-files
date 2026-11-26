@@ -20,6 +20,10 @@
     <dict><key>Weekday</key><integer>4</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>5</integer></dict>
     <dict><key>Weekday</key><integer>5</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>5</integer></dict>
   </array>
+  <!-- Restart after a crash or a kill (not after a normal finish), and start at login: on 25 Nov the watcher died at 10:55 and nothing restarted it until the next morning. -->
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><dict><key>SuccessfulExit</key><false/></dict>
+  <key>ThrottleInterval</key><integer>60</integer>
   <key>StandardOutPath</key><string>/Users/ng/ibt/watcher.log</string>
   <key>StandardErrorPath</key><string>/Users/ng/ibt/watcher.log</string>
 </dict>

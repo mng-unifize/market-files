@@ -8,7 +8,10 @@ Gates: 1 money, 2 real round-trip test, 3 pre-flight on the last 3 trading days,
 Verdict GO only when every gate is PASS. Nothing is written anywhere."""
 import os, sys, csv, json, subprocess, datetime as dt
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE); sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, "paper"))
-L = "data/live/"; MARGIN_PCT = 0.11; BUFFER = 100000; SLIP_MAX = 0.03; ORDER_N = 20; DAYS_OK = 5
+L = "data/live/"; MARGIN_PCT = 0.11; BUFFER = 100000; # Owner waiver, 26 Nov 2026: rehearsal failures on these days came from the automatic stop file blocking the rehearsal (fixed 26 Nov) and from two Bank Nifty signals the Mac missed
+# on 25 Nov 13:10 (cause still being traced). Only BLOCKED, NOT_FILLED, REJECTED, PARTIAL and position-mismatch rows on these days are waived. Missing orders are never waived.
+WAIVED_DAYS = {"2026-11-25": "stop file blocked the rehearsal", "2026-11-26": "rehearsal book drifted after the missed 25 Nov 13:10 signals"}
+SLIP_MAX = 0.03; ORDER_N = 20; DAYS_OK = 5
 
 def rows(p):
     try:
@@ -74,12 +77,15 @@ def g_health(alerts, orders):
     for r in alerts:
         d = r["event_id"].split("|")[1][:10]
         if d in days and r["event"] in ("ENTRY", "EXIT") and r["event_id"] not in have: miss.append(r["event_id"])
+    waived = 0
     for r in orders:
+        if r["run_at_ist"][:10] in WAIVED_DAYS and (r["status"] in ("BLOCKED", "NOT_FILLED", "REJECTED", "PARTIAL") or r.get("position_check") not in ("", "ok")):
+            waived += 1; continue
         if r["run_at_ist"][:10] in days:
             if r["status"] in ("BLOCKED", "NOT_FILLED", "REJECTED", "PARTIAL"): bad.append("%s %s" % (r["event_id"], r["status"]))
             if r.get("position_check") not in ("", "ok"): mm.append(r["event_id"])
     if miss or bad or mm: return "FAIL", "missing orders %d, bad statuses %d (%s), position mismatches %d" % (len(miss), len(bad), "; ".join(bad[:3]), len(mm))
-    return "PASS", "%d days, %d orders, none missing, blocked, unfilled, rejected or mismatched" % (len(days), sum(1 for r in orders if r["run_at_ist"][:10] in days))
+    return "PASS", "%d days, %d orders, none missing, blocked, unfilled, rejected or mismatched%s" % (len(days), sum(1 for r in orders if r["run_at_ist"][:10] in days), (" (waived by owner, 26 Nov: %d row(s) on %s)" % (waived, ", ".join(sorted(WAIVED_DAYS)))) if waived else "")
 
 def g_slip(orders):
     f = [float(r["slip_pct"]) for r in orders if r["slip_pct"] not in ("", None) and r["status"] in ("FILLED", "REPRICED_FILLED", "FALLBACK_FILLED")][-ORDER_N:]

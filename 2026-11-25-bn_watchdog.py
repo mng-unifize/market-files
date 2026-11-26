@@ -13,10 +13,14 @@ STATE = "data/live/watchdog_state.json"; FAIL_LOG = "data/live/notify_failures.l
 GRACE_MIN = 4; FIRST, LAST = "09:15", "15:40"; BACKUP_DONE_BY = "15:13"
 QUIET = ("SKIPPED",)
 
-def problems(now, gate_today, live_open, stop_text, alerts_rows, out_rows):
+ALIVE = "data/live/watcher_alive.txt"; ALIVE_MAX_MIN = 8; ALIVE_FROM, ALIVE_TO = "09:20", "15:35"
+
+def problems(now, gate_today, live_open, stop_text, alerts_rows, out_rows, alive_age_min=None):
     """Pure logic. Returns a list of (key, title, body). now is a datetime; rows are dicts."""
     P = []; today = now.strftime("%Y-%m-%d")
     if stop_text: P.append(("STOP|" + stop_text[:80], "AUTOMATION STOPPED", stop_text[:300] + "\nCheck the Kite app and fix by hand. To resume: delete data/live/STOP on the Mac."))
+    if alive_age_min is not None and ALIVE_FROM <= now.strftime("%H:%M") <= ALIVE_TO and alive_age_min > ALIVE_MAX_MIN:
+        P.append((today + "|watcher-stalled", "WATCHER STOPPED", "The signal watcher on the Mac has not checked in for %d minutes (limit %d). Signals are NOT being watched, so exits can be missed. Check the Mac, then run: launchctl kickstart -k gui/$(id -u)/com.ibt.watcher" % (alive_age_min, ALIVE_MAX_MIN)))
     byid = {}
     for r in out_rows: byid.setdefault(r.get("event_id", ""), []).append(r)
     if gate_today or live_open:
@@ -66,7 +70,9 @@ def main(argv):
     if not W.load_env(): print("no environment"); return 2
     today = now.strftime("%Y-%m-%d")
     stop_text = open(STOP).read().strip() if os.path.exists(STOP) else ""
-    P = problems(now, BN.go_ok(today)[0], bool(BN.live_state()), stop_text, _read(BN.ALERTS_F), _read(BN.OUT))
+    try: age = (time.time() - os.path.getmtime(ALIVE)) / 60
+    except OSError: age = 999.0     # no heartbeat file at all after 09:20 means the watcher is not running
+    P = problems(now, BN.go_ok(today)[0], bool(BN.live_state()), stop_text, _read(BN.ALERTS_F), _read(BN.OUT), alive_age_min=round(age))
     try: st = json.load(open(STATE))
     except Exception: st = {}
     sent = set(st.get("sent", [])) if st.get("day") == today else set()

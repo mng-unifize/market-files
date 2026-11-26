@@ -167,15 +167,24 @@ def make_kite(token):
 
 def is_token_error(e): return type(e).__name__ == "TokenException" or "access_token" in str(e).lower() or "TokenException" in str(e)
 
+ALIVE_FILE = LIVE + "/watcher_alive.txt"
+
+def touch_alive(now=None):
+    """Writes the time to data/live/watcher_alive.txt at every heartbeat, so the live watchdog can tell within minutes if the watcher died. Never raises."""
+    try:
+        os.makedirs(LIVE, exist_ok=True)
+        with open(ALIVE_FILE, "w") as f: f.write((now or dt.datetime.now(IST)).strftime("%Y-%m-%d %H:%M:%S") + "\n")
+    except Exception: pass
+
 def heartbeat(url, clock, ping_fn=None):
     ping_fn = ping_fn or ping
     t = clock.now()
     if t.weekday() >= 5 or t > at(t, PING_LAST): return
-    if t >= at(t, PING_FIRST): ping_fn(url)          # started late: ping at once
+    if t >= at(t, PING_FIRST): ping_fn(url); touch_alive(t)          # started late: ping at once
     while True:
         nxt = next_ping(clock.now())
         if nxt is None: return
-        clock.sleep_until(nxt); ping_fn(url)
+        clock.sleep_until(nxt); ping_fn(url); touch_alive(clock.now())
 
 # ---------- engine (paper/live.py, unchanged) ----------
 _E = {}
