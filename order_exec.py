@@ -266,12 +266,16 @@ def one_order(ctx, key, label, tk, eid, batch_failed):
                candle_close_time=close_t.strftime("%H:%M") if close_t else "")
     done = {r["event_id"] for r in rows(ctx.out)}; today_rows = [r for r in rows(ctx.out) if r["run_at_ist"][:10] == day]
     placed_today = sum(1 for r in today_rows if r["status"] in PLACED)
-    stop, why_stop, warn = S.kill_switch(ctx.topic, ctx.base, now=now)
+    shadow = mode == "shadow"; stop, why_stop, warn = S.kill_switch(ctx.topic, ctx.base, now=now, shadow=shadow)
+    # A live EXIT is never blocked by an AUTOMATIC stop: an automatic stop exists to stop new risk, and an exit only reduces it. A phone STOP or a STOP file made by hand still blocks everything.
+    exit_through = bool(stop) and not shadow and label == "EXIT" and S.stop_is_auto(why_stop)
+    if exit_through: warn = (warn + " | " if warn else "") + "exit sent although an automatic STOP was on"
     pnl_idx, _ = S.daily_pnl(day)
     pnl, _, basis = S.daily_pnl_futures(day, tickets=ctx.tickets, alerts=ctx.alerts, shadow=ctx.out, prev_close_fn=prev_close_fn(ctx.kite, ctx.futs), last_fn=last_fn(ctx.kite, ctx.futs))
     kinds = set(basis.values()); row.update(daily_pnl_before=round(pnl), daily_pnl_index=round(pnl_idx), pnl_basis=("futures" if kinds <= {"futures"} else ("index" if kinds == {"index"} else "mixed")))
     b, a, last = ctx.broker.depth(c) if c else ([], [], None); bid = b[0][0] if b else None; ask = a[0][0] if a else None
-    ok, why = S.pre_trade_checks(kind, key, lots, qty, S.LOTS.get(code), float(tk["limit"]) if tk["limit"] else None, bid, ask, last, now, done, stop, why_stop, pnl, placed_today)
+    ok, why = S.pre_trade_checks(kind, key, lots, qty, S.LOTS.get(code), float(tk["limit"]) if tk["limit"] else None, bid, ask, last, now, done, stop and not exit_through, why_stop, pnl, placed_today,
+                               slip_trip=(S.slip_tripwire(rows(ctx.out), S.read_since()) if mode == "live" else None))
     if not c: ok = False; why = why + ["contract not found at Kite"]
     rdy, rwhy = ctx.broker.ready()
     if not rdy: ok = False; why = why + ["broker not ready: " + rwhy]
@@ -279,7 +283,7 @@ def one_order(ctx, key, label, tk, eid, batch_failed):
     if not ok:
         row.update(status="BLOCKED", block_reasons="; ".join(why)); write(row, ctx.out)
         serious = kind == "EXIT" or any(x.startswith(("duplicate", "order cap")) for x in why)
-        if any(x.startswith(("duplicate", "order cap")) for x in why): S.latch_stop("; ".join(why)[:150], now)
+        if any(x.startswith(("duplicate", "order cap")) for x in why): S.latch_stop("; ".join(why)[:150], now, shadow=shadow)
         hand = "\nDO THIS BY HAND NOW: %s %d lot %s, limit about %s." % (side, lots, tk["contract"], tk["limit"] or "market view") if kind == "EXIT" else ""
         say(ctx, mode, "BLOCKED %s %s" % (tk["index"], label), "No order was sent:\n" + "\n".join(why) + hand, "high" if serious else "default")
         return row, False
@@ -310,14 +314,17 @@ def one_order(ctx, key, label, tk, eid, batch_failed):
     else:
         problems.append("%s: %s %d lot %s was %s%s" % (label, side, lots, tk["contract"], res["status"].replace("_", " ").lower(), (" (" + res["reason"] + ")") if res["reason"] else ""))
     if warn: row["note"] = warn
+    if res["status"] not in DONE_OK and res.get("reason"): row["note"] = ((warn + " | ") if warn else "") + "reason: " + str(res["reason"])[:300]      # the phone watchdog shows this
     write(row, ctx.out)
     if problems:
-        S.latch_stop("; ".join(problems)[:150], now)
-        hand = "\nAutomation is STOPPED. Check the Kite app and fix by hand. To resume: delete data/live/STOP on the Mac."
+        S.latch_stop("; ".join(problems)[:150], now, shadow=shadow)
+        hand = ("\nREHEARSAL ONLY is stopped (live trading is not affected). To resume the rehearsal: delete data/live/STOP_SHADOW on the Mac." if shadow else
+                "\nAutomation is STOPPED. Check the Kite app and fix by hand. To resume: delete data/live/STOP on the Mac.")
         say(ctx, mode, "STOPPED after %s %s" % (tk["index"], label), "\n".join(problems) + hand, "high")
         return row, False
     cost = "cost %.4f%% (Rs %s)" % (float(row["slip_pct"]), format(int(row["slip_rupees"]), ",")) if row["slip_pct"] != "" else "cost not measured"
     note = "EXIT FALLBACK USED: the normal orders did not fill in 20 s, so the exit went out as one wide limit order. Position is correct.\n" if res.get("fallback") else ""
+    if exit_through: note = "NOTE: an automatic STOP is on, and this exit was sent anyway because an automatic stop never blocks an exit.\n" + note
     body = "%s %d lot %s at %.2f (limit %.2f, %s), %s%s. Position check: %s." % (side, lots, tk["contract"], res["fill_price"], res["limit_final"], "re-priced" if res["attempts"] > 1 else "first limit", cost,
         (", %d s after the candle closed" % row["fill_after_close_s"]) if row["fill_after_close_s"] != "" else "", row["position_check"])
     title = "%s %s %s" % (res["status"].replace("_", " "), tk["index"], label)
@@ -356,8 +363,9 @@ def summary_dict(day, path=OUT, alerts=ALERTS, tickets=TICKETS):
         except (TypeError, ValueError): return None
     sl = [f(r, "slip_pct") for r in done if f(r, "slip_pct") is not None]; rs = [f(r, "slip_rupees") for r in done if f(r, "slip_rupees") is not None]
     fs = [f(r, "fill_after_close_s") for r in done if f(r, "fill_after_close_s") is not None]; last = R[-1] if R else {}
-    stop = open(S.STOP_FILE).read().strip() if os.path.exists(S.STOP_FILE) else ""
     mode = last.get("mode") or "shadow"
+    stop_path = S.STOP_SHADOW if mode == "shadow" and not os.path.exists(S.STOP_FILE) and os.path.exists(S.STOP_SHADOW) else S.STOP_FILE
+    stop = open(stop_path).read().strip() if os.path.exists(stop_path) else ""
     return dict(day=day, generated_at=dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), mode=mode, mode_text="rehearsal, no real orders placed" if mode == "shadow" else "LIVE orders", assumed_slip_pct=ASSUMED_PCT,
                 orders=len(R), filled=len(done), closed_trades=sum(1 for r in R if r.get("trade_net") not in ("", None)), closed_net=round(sum(f(r, "trade_net") or 0 for r in R)), repriced=sum(r["status"] == "REPRICED_FILLED" for r in R), fallbacks=sum(r["status"] == "FALLBACK_FILLED" for r in R), blocked=sum(r["status"] == "BLOCKED" for r in R), not_filled=sum(r["status"] == "NOT_FILLED" for r in R),
                 partial=sum(r["status"] == "PARTIAL" for r in R), rejected=sum(r["status"] == "REJECTED" for r in R), expected_orders=len(exp), missing_orders=[x for x in exp if x not in {r["event_id"] for r in R}],
@@ -368,9 +376,9 @@ def summary_dict(day, path=OUT, alerts=ALERTS, tickets=TICKETS):
                 loss_stop_tripped=any("daily loss stop" in (r.get("block_reasons") or "") for r in R), kill_switch_seen=any("kill switch" in (r.get("block_reasons") or "") for r in R),
                 blocked_reasons=[r["block_reasons"] for r in R if r["status"] == "BLOCKED"],
                 orders_detail=[{k: r.get(k, "") for k in ("event_id", "run_at_ist", "index", "kind", "side", "contract", "status", "block_reasons", "limit_first", "limit_final", "fill_price", "ref_fut_close", "slip_pct", "slip_rupees", "sent_after_close_s", "fill_after_close_s", "position_check", "trade_entry_px", "trade_gross", "trade_charges", "trade_net", "note")} for r in R],
-                triggers=triggers_of(R, stop), phone_messages=len(R) + (1 if R else 0))
+                triggers=triggers_of(R, stop, stop_path), phone_messages=len(R) + (1 if R else 0))
 
-def triggers_of(R, stop):
+def triggers_of(R, stop, stop_path=S.STOP_FILE):
     """Plain list of every safety trigger that fired: fallback exits, blocks, failed orders, position mismatches, order cap, loss stop, the STOP file."""
     t = []
     for r in R:
@@ -380,7 +388,7 @@ def triggers_of(R, stop):
         elif st in ("NOT_FILLED", "PARTIAL", "REJECTED"): t.append(dict(when=w, what="Order " + st.replace("_", " ").lower() + ", automation stopped", detail=who))
         pc = r.get("position_check") or ""
         if pc not in ("", "ok", "n/a mid-roll"): t.append(dict(when=w, what="Position mismatch, automation stopped", detail="%s: %s" % (who, pc)))
-    if stop: t.append(dict(when="", what="STOP file is present", detail=stop[:200] + " Resume only by deleting data/live/STOP on the Mac."))
+    if stop: t.append(dict(when="", what="STOP file is present", detail=stop[:200] + " Resume only by deleting %s on the Mac." % stop_path))
     return t
 
 def overview_obj(d):

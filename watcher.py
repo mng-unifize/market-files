@@ -41,6 +41,9 @@ WORK = os.path.join(tempfile.gettempdir(), "ibt_watcher_work")
 PING_FIRST, PING_LAST = "09:05", "16:00"
 FIRST_TICK, FINAL_TICK = "09:20", "15:30"
 HOLIDAY_AFTER = "09:45"
+FAST_LEAD_S = 2            # fast path: first look at the Bank Nifty candle this many seconds after the 5-minute mark (was a fixed 20)
+FAST_DEADLINE_S = 20       # give up waiting for a stable candle at mark + 20 s and carry on as before
+FAST_LOG = LIVE + "/fast_trigger.csv"
 FRESH_MINUTES = 15          # an older signal is logged but not alerted, so you never act on a stale message
 REQUIRED = ("KITE_API_KEY", "NTFY_TOPIC", "HC_PING_URL")
 STOP_TEXT = "none, exits on opposite crossover"
@@ -83,6 +86,52 @@ def next_tick(t):
     if cand <= t: cand += dt.timedelta(minutes=5)
     return cand if cand <= at(t, FINAL_TICK) + dt.timedelta(seconds=20) else None
 
+def next_fast_tick(t):
+    """Fast path schedule: 5-minute mark plus FAST_LEAD_S seconds, or None. Same window as next_tick."""
+    if t.weekday() >= 5: return None
+    first = at(t, FIRST_TICK) + dt.timedelta(seconds=FAST_LEAD_S)
+    if t < first: return first
+    cand = t.replace(minute=t.minute - t.minute % 5, second=0, microsecond=0) + dt.timedelta(seconds=FAST_LEAD_S)
+    if cand <= t: cand += dt.timedelta(minutes=5)
+    return cand if cand <= at(t, FINAL_TICK) + dt.timedelta(seconds=FAST_LEAD_S) else None
+
+def wait_for_bar(fetch, bar_ts, now_fn, sleep_fn, deadline, reads=2, step=0.3):
+    """Fetch candles until the bar `bar_ts` has the same close in `reads` consecutive reads, or until `deadline`. Returns (rows, info). Never raises on a late candle: it just returns what it has."""
+    t0 = now_fn(); prev = None; same = 0; n = 0; first_seen = None; rows = {}
+    while True:
+        rows = fetch(); n += 1; got = rows.get(bar_ts)
+        if got is not None:
+            if first_seen is None: first_seen = (now_fn() - t0).total_seconds()
+            same = same + 1 if (prev is not None and str(got[4]) == str(prev[4])) else 1
+            prev = got
+            if same >= reads: break
+        if now_fn() >= deadline: break
+        sleep_fn(step)
+    return rows, dict(reads=n, first_seen_s=round(first_seen, 2) if first_seen is not None else "", stable_s=round((now_fn() - t0).total_seconds(), 2), stable=int(same >= reads), found=int(prev is not None))
+
+def log_fast(row):
+    try:
+        os.makedirs(LIVE, exist_ok=True); first = not os.path.exists(FAST_LOG)
+        keys = ["mark", "woke_at", "reads", "first_seen_s", "stable_s", "stable", "found", "drift"]
+        with open(FAST_LOG, "a", newline="") as f:
+            w = csv.writer(f)
+            if first: w.writerow(keys)
+            w.writerow([row.get(k, "") for k in keys])
+    except Exception: pass
+
+def warm_up(st, t, make_kite_fn=None):
+    """Loads today's Kite token, the index tokens and the futures list ahead of the first signal, so the 09:20 check does not pay for them. Never raises."""
+    try:
+        make_kite_fn = make_kite_fn or make_kite; L, _ = engine()
+        token, why = load_token(t.strftime("%Y-%m-%d"))
+        if not token: return False
+        if token != st.token: st.token = token; st.kite = make_kite_fn(token); st.tokens = {}; st.futs = None
+        if not st.tokens: st.tokens = index_tokens(st.kite)
+        if st.futs is None: st.futs = T.load_futures(st.kite, L)
+        return True
+    except Exception as e:
+        log("warm-up failed (will retry):", type(e).__name__, str(e)[:100]); return False
+
 # ---------- outside world ----------
 def ping(url):
     try:
@@ -99,9 +148,18 @@ def ntfy(title, body, priority="high"):
     with urllib.request.urlopen(req, timeout=15) as r: return 200 <= r.status < 300
 
 def send_alert(title, body, priority="high"):
-    try: return bool(ntfy(title, body, priority))
-    except Exception as e:
-        log("ntfy send failed:", type(e).__name__, str(e)[:100]); return False
+    """Phone message. Retried 3 times; a final failure is written to data/live/notify_failures.log so a missed message can be found afterwards."""
+    for i in range(3):
+        try:
+            if ntfy(title, body, priority): return True
+        except Exception as e:
+            log("ntfy send failed (try %d):" % (i + 1), type(e).__name__, str(e)[:100])
+        if i < 2: time.sleep(2 * (i + 1))
+    try:
+        os.makedirs(LIVE, exist_ok=True)
+        with open(os.path.join(HERE, LIVE, "notify_failures.log"), "a") as f: f.write("%s %s\n" % (dt.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S"), title))
+    except Exception: pass
+    return False
 
 def make_kite(token):
     from kiteconnect import KiteConnect
@@ -230,10 +288,11 @@ def describe(nm, ev, last_entry, t):
                lot_size=lot, price=price, stop=STOP_TEXT, reason=reason, closes_entry=closes, alert="")
     return title, "\n".join(lines), row
 
-def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUTES, token_day=None):
+def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUTES, token_day=None, only=None, skip=None, poll=None):
+    """only / skip: restrict the check to some indexes (the fast path does Bank Nifty first, the others after). poll: dict(now_fn, sleep_fn, deadline) turns on waiting for a stable candle for Bank Nifty."""
     real = notify_fn is None and make_kite_fn is None      # decided BEFORE the defaults below replace the None values
     make_kite_fn = make_kite_fn or make_kite; notify = notify_fn or send_alert
-    L, D = engine()
+    L, D = engine(); IDX = [n for n in L.IDX if (only is None or n in only) and (skip is None or n not in skip)]
     today = t.strftime("%Y-%m-%d"); h = t.strftime("%H:%M"); final = h >= FINAL_TICK
     if today in holidays(): log("listed market holiday, trading logic skipped"); return "holiday"
     token, why = load_token(token_day or today)      # a replay of an earlier day still needs today's token
@@ -246,11 +305,21 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
     try:
         if not st.tokens: st.tokens = index_tokens(kite)
         if st.futs is None: st.futs = T.load_futures(kite, L)
-        for nm in L.IDX:
+        for nm in IDX:
             if nm not in st.tokens: log(nm, "not found at Kite"); continue
-            rows = {k: v for k, v in L.candles(kite, st.tokens[nm], t).items() if k[11:] >= "09:15"}
+            if poll and nm == "NSEBANK" and not final:
+                mark = t.replace(minute=t.minute - t.minute % 5, second=0, microsecond=0); bar = (mark - dt.timedelta(minutes=5)).strftime("%Y-%m-%d %H:%M")
+                fetch = lambda: {k: v for k, v in L.candles(kite, st.tokens[nm], poll["now_fn"]()).items() if k[11:] >= "09:15"}
+                rows, info = wait_for_bar(fetch, bar, poll["now_fn"], poll["sleep_fn"], poll["deadline"]); info.update(mark=mark.strftime("%H:%M"), woke_at=t.strftime("%H:%M:%S"))
+            else: rows = {k: v for k, v in L.candles(kite, st.tokens[nm], t).items() if k[11:] >= "09:15"}; info = None
             keep = rows if final else L.trim_incomplete(rows, D.CFG[nm][0])
-            path = "%s/%s_5m.csv" % (CANDLES, nm); merged = L.load_rows(path); merged.update(keep); L.save_rows(path, merged)
+            path = "%s/%s_5m.csv" % (CANDLES, nm); merged = L.load_rows(path)
+            if nm == "NSEBANK":      # drift check: did a candle we already stored change when read again?
+                try: drift = [k for k in keep if k in merged and str(merged[k][4]) != str(keep[k][4]) and float(merged[k][4]) != float(keep[k][4])]
+                except Exception: drift = []
+                if drift: log("candle changed after first read:", ",".join(drift)); log_fast(dict(mark=drift[-1][11:], woke_at=t.strftime("%H:%M:%S"), drift=",".join(d[11:] for d in drift)))
+                if info and poll: log_fast(info)
+            merged.update(keep); L.save_rows(path, merged)
             ok_idx += 1; total_today += sum(1 for k in rows if k[:10] == today)
     except Exception as e:
         log("candle fetch failed:", type(e).__name__, str(e)[:150])
@@ -258,12 +327,12 @@ def run_tick(st, t, make_kite_fn=None, notify_fn=None, fresh_minutes=FRESH_MINUT
             st.token = None
             warn_once(st, "rejected", "Kite login needed", "Kite rejected today's access token. Run login.py again.", notify)
         return "error"
-    if ok_idx < len(L.IDX): log("only %d of %d indexes fetched" % (ok_idx, len(L.IDX)))
+    if ok_idx < len(IDX): log("only %d of %d indexes fetched" % (ok_idx, len(IDX)))
     if total_today == 0:
-        if h >= HOLIDAY_AFTER and ok_idx == len(L.IDX): log("no candles today, treating as a market holiday, trading logic skipped"); return "holiday"
+        if h >= HOLIDAY_AFTER and ok_idx == len(IDX): log("no candles today, treating as a market holiday, trading logic skipped"); return "holiday"
         log("no candles for today yet"); return "waiting"
     seen = seen_ids(); new_rows = 0; hol = holidays(); futs = st.futs or {}; seen_t = seen_tickets(); shadow_queue = {}
-    for nm in L.IDX:
+    for nm in IDX:
         if nm not in st.tokens: continue
         try: events = L.recipe_events(nm, WORK)
         except Exception as e: log(nm, "engine failed:", type(e).__name__, str(e)[:150]); continue
@@ -325,7 +394,7 @@ def roll_check(st, t, nm, pos, futs, hol, seen_t, notify, launch=None):
     if launch: launch({nm: [eid]})
     return 1
 
-def trading_loop(clock, st, tick=None):
+def trading_loop(clock, st, tick=None, fast=False):
     tick = tick or run_tick
     def safe(t):
         try: log("check:", tick(st, t))
@@ -333,10 +402,30 @@ def trading_loop(clock, st, tick=None):
     t = clock.now()
     if t.weekday() >= 5: return
     if t >= at(t, FIRST_TICK) + dt.timedelta(seconds=20) and t <= at(t, PING_LAST): safe(t)   # started late: catch up at once
+    if fast: return fast_loop(clock, st, tick, safe)
     while True:
         nxt = next_tick(clock.now())
         if nxt is None: return
         clock.sleep_until(nxt); safe(clock.now())
+
+def fast_loop(clock, st, tick, safe):
+    """Bank Nifty first and early: wake FAST_LEAD_S after the mark, wait for a stable candle (up to FAST_DEADLINE_S), handle Bank Nifty and launch its order, then
+    wait until mark + 20 s and handle Nifty 50 and Sensex exactly as before. Warm-up keeps the Kite lists ready so the first check of the day is not slow."""
+    def sleep_s(x): time.sleep(x)
+    while True:
+        warm_up(st, clock.now())
+        nxt = next_fast_tick(clock.now())
+        if nxt is None: return
+        while (nxt - clock.now()).total_seconds() > 0:
+            clock.sleep_until(min(nxt, clock.now() + dt.timedelta(seconds=20)))
+            if not st.tokens or st.futs is None: warm_up(st, clock.now())
+        t = clock.now(); mark = nxt.replace(second=0, microsecond=0)
+        poll = dict(now_fn=clock.now, sleep_fn=sleep_s, deadline=mark + dt.timedelta(seconds=FAST_DEADLINE_S))
+        try: log("fast check (Bank Nifty):", tick(st, t, only=("NSEBANK",), poll=poll))
+        except Exception as e: log("fast check crashed, continuing:", type(e).__name__, str(e)[:150])
+        clock.sleep_until(mark + dt.timedelta(seconds=20))
+        try: log("check (other indexes):", tick(st, clock.now(), skip=("NSEBANK",)))
+        except Exception as e: log("check crashed, continuing:", type(e).__name__, str(e)[:150])
 
 def ledger_report(day, replayed_ids):
     """Compares a replayed day with the GitHub paper ledger (your local copy of data/live/ledger.csv). Same event ids, so it is an exact comparison."""
@@ -441,7 +530,7 @@ def main():
     if not load_env(): return 2
     hb = threading.Thread(target=heartbeat, args=(os.environ["HC_PING_URL"].strip(), clock), daemon=True); hb.start()
     log("watcher started")
-    trading_loop(clock, State())
+    trading_loop(clock, State(), fast=os.environ.get("FAST_TRIGGER", "1") != "0")      # FAST_TRIGGER=0 in the environment restores the old fixed 20 second schedule
     hb.join(); log("watcher finished for the day"); return 0
 
 if __name__ == "__main__": sys.exit(main())

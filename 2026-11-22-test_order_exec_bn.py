@@ -5,8 +5,16 @@ import test_orders as TO, order_exec as X, safety as S, ticket as T
 spec = importlib.util.spec_from_file_location("bn", os.path.join(HERE, "2026-11-22-order_exec_bn.py")); BN = importlib.util.module_from_spec(spec); spec.loader.exec_module(BN)
 CBN = dict(symbol="BANKNIFTY26DECFUT", token=9, expiry="2026-12-29", lot=30, tick=0.05, ex="NFO")
 FUTS = {"NSEBANK": [CBN], "NSEI": [TO.C]}
+BN.BASELINE = "2026-11-24 09:15"          # tests use 24 Nov dates; the real baseline is 25 Nov
 
 class T_(TO.Base):
+    def test_rejected_order_does_not_block_backup(self):
+        c = self.ctx(start="2026-11-24 15:00:05"); BN.run_backup(c)
+        t = open(BN.OUT).read().replace(",FILLED,", ",REJECTED,"); open(BN.OUT, "w").write(t); self.assertIsNone(BN.live_state())
+        c2 = self.ctx(start="2026-11-24 15:00:05"); self.assertEqual(BN.run_backup(c2), "backup round trip done")        # a rejected order opened nothing, so the backup may still run
+    def test_ipv4_only(self):
+        import socket, urllib3.util.connection as c
+        self.assertEqual(c.allowed_gai_family(), socket.AF_INET)
     def ctx(self, start="2026-11-24 10:46:00", seed=None, fn=None):
         self.t0 = dt.datetime.fromisoformat(start); k = TO.FakeKite(fn or (lambda t: TO.book(62000.0)), self.ck); br = X.ShadowBroker(k, FUTS, seed=seed or {}); br.mode = "live"
         os.makedirs("data/live/bn_live", exist_ok=True)

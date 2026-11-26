@@ -140,6 +140,8 @@ def rules_(m,train):
     # Bank Nifty Monday rule (owner decision 18 Nov 2026): Monday entries skipped until MONDAY_BUY_FROM; from that date only Monday SELL entries are skipped
     R["entries on Monday until 23 Nov"]=lambda t:t["wd"]==0 and t["d"]<MONDAY_BUY_FROM
     R["entries on Monday sell"]=lambda t:t["wd"]==0 and t["dir"]==-1 and t["d"]>=MONDAY_BUY_FROM
+    # Bank Nifty 9:15 rule (owner decision 26 Nov 2026): a signal on the 9:15 candle would be traded at 9:20, the worst-filled slot (minute 0 = entry bar is the first bar of the day)
+    R["9:15 candle signal"]=lambda t:t["minute"]<5
     R["entries in August from 2027"]=lambda t:t["d"]>=AUGUST_SKIP_FROM and t["d"][5:7]=="08"
     for f,lab in (("dist21","price close to 21-line"),("sprd","narrow average spread"),("slope","flat average slope")):
         th=q(f,0.25);R["weak momentum: "+lab]=lambda t,f=f,th=th:t[f]<th

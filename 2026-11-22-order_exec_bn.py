@@ -12,10 +12,14 @@ Check state any time:                             order_exec_bn.py --status"""
 import os, sys, csv, time, datetime as dt
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, "paper"))
 import order_exec as X, safety as S, ticket as T
+import socket
+try:   # IPv4 ONLY: Kite accepts orders only from the whitelisted IPv4 address; on 25 Nov 2026 the Mac used its IPv6 address and the first live order was rejected
+    import urllib3.util.connection as _u3c; _u3c.allowed_gai_family = lambda: socket.AF_INET
+except Exception as _e: print("order_exec_bn: WARNING could not force IPv4 (%s)" % type(_e).__name__)
 
 LIVE_ENABLED = True                      # set False to switch this runner off completely
 CODE = "NSEBANK"; INDEX_NAME = "Bank Nifty"; PREFIX = "BANKNIFTY"
-BASELINE = "2026-11-24 09:15"            # signals with a candle start before this are ignored
+BASELINE = "2026-11-25 09:15"            # signals with a candle start before this are ignored
 GO_FILE = "data/live/GO_LIVE_BANKNIFTY"; OUT = "data/live/orders_bn_live.csv"
 ALERTS_F = "data/live/bn_live/alerts.csv"; TICKETS_F = "data/live/bn_live/tickets.csv"
 BACKUP_WINDOW = ("15:00", "15:12"); LIMIT_PCT = 0.0005; CANDLE_MIN = 5
@@ -32,8 +36,9 @@ def _read(path):
     try: return list(csv.DictReader(open(path)))
     except OSError: return []
 
-def filtered_files(alerts_src="data/live/alerts.csv", tickets_src="data/live/tickets.csv", alerts_f=ALERTS_F, tickets_f=TICKETS_F, baseline=BASELINE):
+def filtered_files(alerts_src="data/live/alerts.csv", tickets_src="data/live/tickets.csv", alerts_f=ALERTS_F, tickets_f=TICKETS_F, baseline=None):
     """Copies of the alert and ticket logs holding only Bank Nifty signals from the baseline on, so the position check starts clean."""
+    baseline = baseline or BASELINE
     os.makedirs(os.path.dirname(alerts_f), exist_ok=True)
     ar = [r for r in _read(alerts_src) if r.get("index") == INDEX_NAME and r.get("signal_bar", "") >= baseline]
     keep = {r["event_id"] for r in ar}
@@ -131,7 +136,7 @@ def run_backup(ctx):
     """15:00 backup: if no live Bank Nifty order was placed today, buy 1 lot just after a 5-minute candle closes and sell just after the next close. Returns a text."""
     now = ctx.now_fn(); day = now.strftime("%Y-%m-%d"); hm = now.strftime("%H:%M")
     if not (BACKUP_WINDOW[0] <= hm <= BACKUP_WINDOW[1]): return "outside the backup window %s to %s: nothing done" % BACKUP_WINDOW
-    if any(r["run_at_ist"][:10] == day and r["status"] in X.PLACED for r in _read(ctx.out)): return "a live Bank Nifty order was already placed today: backup not needed"
+    if any(r["run_at_ist"][:10] == day and r["status"] in X.PLACED and r["status"] != "REJECTED" for r in _read(ctx.out)): return "a live Bank Nifty order was already placed today: backup not needed"
     if live_state(ctx.out): return "a live Bank Nifty position is open: backup not run"
     bad = position_gate(ctx)
     if bad: S.latch_stop("Bank Nifty position mismatch before backup: " + bad[:100], now); say(ctx, "STOPPED before backup", bad, "high"); return "position mismatch: " + bad

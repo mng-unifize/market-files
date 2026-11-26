@@ -34,6 +34,7 @@ def check(today, kite, stop_exists, go_ok_fn, free_margin_fn, future_fn, need):
 def main(argv):
     import watcher as W
     today = dt.date.today().isoformat()
+    if dt.date.today().weekday() >= 5 or today in W.holidays(): print("market holiday or weekend: no check"); return 0
     if not W.load_env(): print("no environment"); return 2
     tok, why = W.load_token(today)
     if not tok:

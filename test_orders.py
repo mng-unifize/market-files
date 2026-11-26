@@ -189,17 +189,17 @@ class EndToEnd(Base):
         self.assertEqual([r["status"] for r in rs], ["FILLED", "FILLED"]); self.assertEqual([r["position_check"] for r in rs], ["ok", "ok"]); self.assertEqual(ctx.broker.positions(), {"NIFTY26NOVFUT": 65}); self.assertEqual(len(self.sent), 2)
     def test_not_filled_stops_everything_and_blocks_the_entry(self):
         self.exit_entry(); ctx = self.ctx(fn=lambda t: book(25030.0 + 100 * t), seed=self.SHORT, nofb=True); rs = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT", "NSEI|2026-11-13 09:15|ENTRY"])
-        self.assertEqual([r["status"] for r in rs], ["NOT_FILLED", "BLOCKED"]); self.assertTrue(os.path.exists(S.STOP_FILE)); self.assertEqual(self.sent[0][2], "high"); self.assertIn("STOPPED", self.sent[0][0]); self.assertIn("delete data/live/STOP", self.sent[0][1])
+        self.assertEqual([r["status"] for r in rs], ["NOT_FILLED", "BLOCKED"]); self.assertTrue(os.path.exists(S.STOP_SHADOW)); self.assertFalse(os.path.exists(S.STOP_FILE)); self.assertEqual(self.sent[0][2], "high"); self.assertIn("STOPPED", self.sent[0][0]); self.assertIn("delete data/live/STOP", self.sent[0][1])
         self.assertIn("earlier order", rs[1]["block_reasons"])
     def test_duplicate_latches_stop(self):
         self.entry_only(); ctx = self.ctx(seed={}); X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"]); os.remove("data/live/STOP") if os.path.exists("data/live/STOP") else None
-        r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"])[0]; self.assertEqual(r["status"], "BLOCKED"); self.assertIn("duplicate", r["block_reasons"]); self.assertTrue(os.path.exists(S.STOP_FILE))
+        r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"])[0]; self.assertEqual(r["status"], "BLOCKED"); self.assertIn("duplicate", r["block_reasons"]); self.assertTrue(os.path.exists(S.STOP_SHADOW)); self.assertFalse(os.path.exists(S.STOP_FILE))
     def test_order_cap_latches_stop(self):
         self.entry_only(); ctx = self.ctx(seed={})
         with open("data/live/orders.csv", "w", newline="") as f:
             w = csv.writer(f); w.writerow(X.HDR)
             for i in range(8): r = {k: "" for k in X.HDR}; r.update(event_id="old%d" % i, status="FILLED", run_at_ist="2026-11-13 09:00:00"); w.writerow([r[k] for k in X.HDR])
-        r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"])[0]; self.assertEqual(r["status"], "BLOCKED"); self.assertIn("order cap", r["block_reasons"]); self.assertTrue(os.path.exists(S.STOP_FILE)); self.assertEqual(self.sent[-1][2], "high")
+        r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"])[0]; self.assertEqual(r["status"], "BLOCKED"); self.assertIn("order cap", r["block_reasons"]); self.assertTrue(os.path.exists(S.STOP_SHADOW)); self.assertFalse(os.path.exists(S.STOP_FILE)); self.assertEqual(self.sent[-1][2], "high")
     def test_kill_switch_blocks_exit_and_says_do_it_by_hand(self):
         self.exit_entry(); open(S.STOP_FILE, "w").write("x"); ctx = self.ctx(seed=self.SHORT); r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|EXIT"])[0]
         self.assertEqual(r["status"], "BLOCKED"); self.assertIn("DO THIS BY HAND", self.sent[0][1]); self.assertEqual(self.sent[0][2], "high")
@@ -210,7 +210,7 @@ class EndToEnd(Base):
         self.assertEqual([r["status"] for r in rs], ["FILLED", "BLOCKED"]); self.assertIn("daily loss stop", rs[1]["block_reasons"]); self.assertFalse(os.path.exists(S.STOP_FILE))
     def test_position_mismatch_latches_stop(self):
         self.entry_only(); ctx = self.ctx(seed={"NIFTY26NOVFUT": 130}); r = X.run_batch(ctx, ["NSEI|2026-11-13 09:15|ENTRY"])[0]
-        self.assertIn("Kite shows", r["position_check"]); self.assertTrue(os.path.exists(S.STOP_FILE)); self.assertEqual(self.sent[-1][2], "high")
+        self.assertIn("Kite shows", r["position_check"]); self.assertTrue(os.path.exists(S.STOP_SHADOW)); self.assertFalse(os.path.exists(S.STOP_FILE)); self.assertEqual(self.sent[-1][2], "high")
     def test_roll_closes_near_and_opens_next_month(self):
         self.alerts([self.al("NSEI|2026-11-13 09:15|ENTRY", "ENTRY", "BUY", "2026-11-13 09:15", "25000")])
         self.tickets([self.tk("NSEI|2026-11-13 09:15|ENTRY", "ENTRY", "BUY"), self.tk("NSEI|2026-11-20|ROLL", "ROLL", "SELL", limit=24990.0, at="2026-11-20 14:45:20", note="close near month: NIFTY26NOVFUT; open next month: NIFTY26DECFUT"),

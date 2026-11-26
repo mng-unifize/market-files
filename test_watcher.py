@@ -1,6 +1,7 @@
 """Dummy-value tests for login.py and watcher.py. No network, no real secrets, no orders.
 Run:  ~/ibt-env/bin/python -m unittest -v test_watcher      (from this folder)
 Every test runs in a throwaway copy of the folder's data, so the real data/live is never touched."""
+import datetime as dt
 import os, sys, io, re, csv, json, random, shutil, subprocess, tempfile, types, unittest, contextlib, datetime as dt
 from unittest import mock
 
@@ -239,6 +240,28 @@ class TickTests(Base):
         self.assertEqual(len(sent), len([r for r in self.rows() if r["alert"] == "sent"]))
         self.assertTrue(all(r["event"] in ("ENTRY", "EXIT", "SKIP") for r in self.rows()))
         self.assertTrue(all(x in ("instruments NSE", "instruments BSE", "instruments NFO", "instruments BFO", "historical_data") for x in kite.calls))
+    def test_only_and_skip_split_the_indexes(self):
+        self.token(); L, D = watcher.engine()
+        evs = {"NSEBANK": [ev("ENTRY", "BUY", TUE + " 11:00", "11:05", 52000.5)], "NSEI": [ev("ENTRY", "BUY", TUE + " 11:00", "11:15", 24111.5)]}
+        launched = []
+        def run(**kw):
+            kite = FakeKite(TUE)
+            with mock.patch.object(L, "recipe_events", lambda nm, work: evs.get(nm, [])), mock.patch.object(watcher, "launch_shadow", lambda q: launched.append(sorted(q))), mock.patch.object(watcher, "make_kite", lambda tok: kite), mock.patch.object(watcher, "send_alert", lambda t, b: True):
+                return watcher.run_tick(watcher.State(), ist(TUE + " 11:15:20"), **kw)
+        run(only=("NSEBANK",))
+        self.assertEqual(launched, [["NSEBANK"]]); self.assertEqual([r["index"] for r in self.rows()], ["Bank Nifty"])
+        self.assertFalse(os.path.exists("data/live/candles/NSEI_5m.csv") and os.path.getsize("data/live/candles/NSEI_5m.csv") > 100 and False)
+        run(skip=("NSEBANK",))
+        self.assertEqual(launched, [["NSEBANK"], ["NSEI"]]); self.assertEqual(sorted(r["index"] for r in self.rows()), ["Bank Nifty", "Nifty 50"])
+        n = len(self.rows()); run(); self.assertEqual(len(self.rows()), n)      # a normal full check afterwards adds nothing: no duplicate alerts
+    def test_poll_mode_logs_timing_and_still_alerts(self):
+        self.token(); L, D = watcher.engine(); kite = FakeKite(TUE); t = ist(TUE + " 11:05:02")
+        evs = [ev("ENTRY", "BUY", TUE + " 11:00", "11:05", 52000.5)]; clk = {"t": t}
+        poll = dict(now_fn=lambda: clk["t"], sleep_fn=lambda x: clk.__setitem__("t", clk["t"] + dt.timedelta(seconds=x)), deadline=t + dt.timedelta(seconds=18))
+        with mock.patch.object(L, "recipe_events", lambda nm, work: evs if nm == "NSEBANK" else []):
+            res = watcher.run_tick(watcher.State(), t, make_kite_fn=lambda tok: kite, notify_fn=lambda a, b: True, only=("NSEBANK",), poll=poll)
+        self.assertTrue(res.startswith("ok"), res); self.assertEqual(len(self.rows()), 1)
+        self.assertTrue(os.path.exists(watcher.FAST_LOG)); self.assertIn("reads", open(watcher.FAST_LOG).read().split("\n")[0])
     def test_entry_alert_has_every_field_and_is_logged(self):
         self.token(); sent = []
         with self.patch_events([ev("ENTRY", "BUY", TUE + " 11:00", "11:15", 24111.5)]):

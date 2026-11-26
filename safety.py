@@ -16,8 +16,12 @@ MAX_ORDERS_PER_DAY = 8          # 3 indexes x (1 exit + 1 entry) = 6 on a normal
 PRICE_BAND = 0.003               # limit may differ from the last price by at most 0.3 percent
 SPREAD_MAX = 0.002               # bid-ask spread above 0.2 percent of the mid blocks the order
 SESSION = ("09:15", "15:30")
+SLIP_TRIP_PCT = 0.055            # percent per side: the Bank Nifty backtest earns nothing beyond this (26 Nov 2026)
+SLIP_TRIP_N = 10                 # last N filled LIVE orders (entries and exits) are averaged
+SLIP_RESUME = "data/live/SLIP_RESUME"   # optional file holding a timestamp "YYYY-MM-DD HH:MM:SS": only fills at or after it count, which is how you resume after a trip
 STOP_FILE = "data/live/STOP"
 STOP_SEEN = "data/live/stop_seen.txt"
+STOP_SHADOW = "data/live/STOP_SHADOW"   # the rehearsal runner's own stop: it blocks rehearsal orders only and the live runner never reads it
 LOTS = {"NSEI": 65, "BSESN": 20, "NSEBANK": 30}
 CANDLES = "data/live/candles"
 ALERTS = "data/live/alerts.csv"
@@ -39,13 +43,18 @@ def seen_stop_ids():
     if not os.path.exists(STOP_SEEN): return set()
     return {x.strip() for x in open(STOP_SEEN) if x.strip()}
 
-def kill_switch(topic=None, base="https://ntfy.sh", fetch=None, now=None):
-    """(active, reason, warning). The STOP file wins. A phone STOP that is new (id not seen before) creates the file."""
+def kill_switch(topic=None, base="https://ntfy.sh", fetch=None, now=None, shadow=False):
+    """(active, reason, warning). The STOP file wins. A phone STOP that is new (id not seen before) creates the file.
+    shadow=True is the rehearsal runner: it also stops for STOP_SHADOW, which the live runner never reads."""
     now = now or dt.datetime.now()
     if os.path.exists(STOP_FILE):
         try: why = open(STOP_FILE).read().strip()[:120]
         except Exception: why = ""
         return True, "STOP file is present" + (" (%s)" % why if why else ""), ""
+    if shadow and os.path.exists(STOP_SHADOW):
+        try: why = open(STOP_SHADOW).read().strip()[:120]
+        except Exception: why = ""
+        return True, "rehearsal STOP file is present" + (" (%s)" % why if why else ""), ""
     warn = ""
     if topic:
         try:
@@ -153,7 +162,26 @@ def daily_pnl_futures(day, tickets="data/live/tickets.csv", alerts=ALERTS, shado
     return sum(detail.values()), detail, basis
 
 # ---------- order checks ----------
-def pre_trade_checks(kind, event_id, lots, qty, lot_size, limit, bid, ask, last, now, done_ids, stop_active, stop_reason, pnl_today, orders_today=0):
+def slip_tripwire(order_rows, since="", n=None, limit=None):
+    """(tripped, average_pct, count). Averages slip_pct of the last n filled live orders at or after `since`. Needs n fills before it can trip."""
+    n = n or SLIP_TRIP_N; limit = SLIP_TRIP_PCT if limit is None else limit
+    ok = ("FILLED", "REPRICED_FILLED", "FALLBACK_FILLED")
+    f = []
+    for r in order_rows:
+        if r.get("mode") != "live" or r.get("status") not in ok or r.get("slip_pct") in ("", None): continue
+        if since and r.get("run_at_ist", "") < since: continue
+        try: f.append(float(r["slip_pct"]))
+        except ValueError: continue
+    f = f[-n:]
+    if len(f) < n: return False, (sum(f) / len(f) if f else None), len(f)
+    avg = round(sum(f) / len(f), 6)
+    return avg > limit, avg, len(f)
+
+def read_since(path=None):
+    try: return open(path or SLIP_RESUME).read().strip()[:19]
+    except OSError: return ""
+
+def pre_trade_checks(kind, event_id, lots, qty, lot_size, limit, bid, ask, last, now, done_ids, stop_active, stop_reason, pnl_today, orders_today=0, slip_trip=None):
     """(ok, [reasons]). kind is ENTRY or EXIT (a ROLL leg counts as EXIT or ENTRY by its own kind)."""
     why = []
     if stop_active: why.append("kill switch: " + stop_reason)
@@ -170,14 +198,20 @@ def pre_trade_checks(kind, event_id, lots, qty, lot_size, limit, bid, ask, last,
     if orders_today >= MAX_ORDERS_PER_DAY: why.append("order cap: %d orders already placed today (cap %d)" % (orders_today, MAX_ORDERS_PER_DAY))
     if kind in ("ENTRY", "ROLL-OPEN") and pnl_today is not None and pnl_today <= -DAILY_LOSS_STOP:
         why.append("daily loss stop: the day is down Rs %s (limit Rs %s); new entries are blocked, exits still go" % (format(round(-pnl_today), ","), format(DAILY_LOSS_STOP, ",")))
+    if kind in ("ENTRY", "ROLL-OPEN") and slip_trip and slip_trip[0]:
+        why.append("slippage tripwire: the last %d live fills cost %.4f%% a side on average (limit %.3f%%); new entries are paused, exits still go. To resume, write the time into %s" % (slip_trip[2], slip_trip[1], SLIP_TRIP_PCT, SLIP_RESUME))
     return (not why), why
 
-def latch_stop(reason, now=None):
-    """Creates the STOP file. Every automatic stop uses it, so the state is the same as a phone STOP: only deleting the file on the Mac resumes."""
-    now = now or dt.datetime.now()
-    os.makedirs(os.path.dirname(STOP_FILE), exist_ok=True)
-    if not os.path.exists(STOP_FILE):
-        with open(STOP_FILE, "w") as f: f.write("AUTO STOP %s: %s\n" % (now.strftime("%Y-%m-%d %H:%M:%S"), reason))
+def latch_stop(reason, now=None, shadow=False):
+    """Creates the STOP file (shadow=True: the rehearsal-only STOP_SHADOW, which never touches live trading). Only deleting the file on the Mac resumes."""
+    now = now or dt.datetime.now(); path = STOP_SHADOW if shadow else STOP_FILE
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    if not os.path.exists(path):
+        with open(path, "w") as f: f.write("AUTO STOP %s: %s\n" % (now.strftime("%Y-%m-%d %H:%M:%S"), reason))
+
+def stop_is_auto(reason):
+    """True when the kill switch reason comes from an automatic latch (text starts with AUTO STOP). A phone STOP or a STOP file made by hand is a deliberate human stop and is not automatic."""
+    return str(reason).startswith("STOP file is present (AUTO STOP")
 
 def expected_positions(alerts=ALERTS, tickets="data/live/tickets.csv", lots=LOTS, upto=None, before=None):
     """{futures symbol: signed quantity} that the signals say we hold: sent ENTRY alerts open a position on the contract of their ticket, EXIT alerts close it,

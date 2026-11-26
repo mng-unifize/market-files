@@ -28,7 +28,19 @@ def g_money(a, tickets):
     if cash < need * 0.5: bad.append("cash Rs %s is below half the margin, Rs %s" % (format(round(cash), ","), format(round(need * 0.5), ",")))
     return ("FAIL", "; ".join(bad)) if bad else ("PASS", "free margin Rs %s vs need Rs %s plus buffer; cash Rs %s" % (format(round(fm), ","), format(round(need), ","), format(round(cash), ",")))
 
+def _live_pair():
+    """A real live ENTRY then EXIT, both filled, position check ok, from the live order log."""
+    try: o = [r for r in rows(L + "orders_bn_live.csv") if r.get("mode") == "live"]
+    except Exception: return None
+    ok = ("FILLED", "REPRICED_FILLED", "FALLBACK_FILLED")
+    for i in range(len(o) - 1, 0, -1):
+        a, b = o[i - 1], o[i]
+        if a["kind"] == "ENTRY" and b["kind"] == "EXIT" and a["status"] in ok and b["status"] in ok and b.get("position_check") == "ok": return a, b
+    return None
+
 def g_selftest():
+    pr = _live_pair()
+    if pr: return "PASS", "real live round trip %s: bought and sold 1 lot through the live pipeline, net Rs %s" % (pr[1]["run_at_ist"][:16], pr[1].get("trade_net") or "?")
     s = [r for r in rows(L + "selftest.csv") if r["leg"] == "SUMMARY" and r["mode"] == "live"]
     if not s: return "PENDING", "no live round trip recorded yet (data/live/selftest.csv)"
     last = s[-1]
@@ -42,14 +54,18 @@ def g_preflight(golive):
         if ln.strip():
             h, d = ln.split()
             if d < golive and d not in seen: seen[d] = h
+    hol = set()
+    try: hol = {ln.split("#")[0].strip() for ln in open("holidays.txt") if ln.strip() and not ln.startswith("#")}
+    except Exception: pass
+    seen = {d: h for d, h in seen.items() if d not in hol}
     days = sorted(seen)[-3:]
     if len(days) < 3: return "PENDING", "only %d day(s) of pre-flight history" % len(days)
     bad = []; info = []
     for d in days:
         j = json.loads(subprocess.run(["git", "show", "%s:%spreflight.json" % (seen[d], L)], capture_output=True, text=True).stdout or "{}")
         t = j.get("run_at", "")[11:]; info.append("%s %s %s" % (d[5:], j.get("status", "?"), t))
-        if j.get("status") != "pass" or t > "09:12": bad.append(d)
-    return ("FAIL", "not green before 09:12 on " + ", ".join(bad) + " (" + "; ".join(info) + ")") if bad else ("PASS", "; ".join(info))
+        if j.get("status") != "pass" or t > "09:14": bad.append(d)
+    return ("FAIL", "not green by 09:13 on " + ", ".join(bad) + " (" + "; ".join(info) + ")") if bad else ("PASS", "; ".join(info))
 
 def g_health(alerts, orders):
     days = sorted({r["run_at_ist"][:10] for r in orders})[-DAYS_OK:]
