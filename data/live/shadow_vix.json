@@ -1,14 +1,14 @@
 {
  "rule": "skip entry if last VIX close is more than 5% above the mean of the previous 5 closes",
  "scored_from": "2026-10-26",
- "latest_vix_day": "2026-11-26",
+ "latest_vix_day": "2026-11-27",
  "vix_rows_added": 1,
  "by_index": {
   "Nifty 50": {
-   "trades": 27,
+   "trades": 29,
    "flagged": 5,
    "unknown": 0,
-   "net_all": 111140,
+   "net_all": 122301,
    "net_flagged": -17601,
    "flagged_days": [
     "2026-10-26",
@@ -17,13 +17,13 @@
     "2026-11-23",
     "2026-11-25"
    ],
-   "net_if_skipped": 128741
+   "net_if_skipped": 139902
   },
   "Bank Nifty": {
-   "trades": 22,
+   "trades": 23,
    "flagged": 5,
    "unknown": 0,
-   "net_all": 94953,
+   "net_all": 105243,
    "net_flagged": -41270,
    "flagged_days": [
     "2026-11-08",
@@ -32,13 +32,13 @@
     "2026-11-25",
     "2026-11-25"
    ],
-   "net_if_skipped": 136223
+   "net_if_skipped": 146513
   },
   "Sensex": {
-   "trades": 24,
+   "trades": 25,
    "flagged": 5,
    "unknown": 0,
-   "net_all": 136022,
+   "net_all": 129957,
    "net_flagged": -12101,
    "flagged_days": [
     "2026-10-26",
@@ -47,15 +47,15 @@
     "2026-11-23",
     "2026-11-25"
    ],
-   "net_if_skipped": 148123
+   "net_if_skipped": 142058
   }
  },
  "total": {
-  "trades": 73,
+  "trades": 77,
   "flagged": 15,
-  "net_all": 342115,
+  "net_all": 357501,
   "net_flagged": -70972,
-  "net_if_skipped": 413087,
+  "net_if_skipped": 428473,
   "verdict": "rule helped"
  },
  "note": "Shadow only. Nothing is skipped in the live ledger. Backtest basis: Nifty + Bank Nifty ratio 1.47 to 1.72, profit down 7%, picked from 43 tests so unproven."

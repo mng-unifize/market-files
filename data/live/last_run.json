@@ -1,46 +1,49 @@
 {
- "status": "ok",
- "run_at": "2026-11-26 16:01",
- "today": "2026-11-26",
- "problems": [],
+ "status": "warn",
+ "run_at": "2026-11-27 16:01",
+ "today": "2026-11-27",
+ "problems": [
+  "warn: 5 earlier trade rows changed and 0 vanished since the last run (first: ['2026-10-07|Bank Nifty|6', '2026-10-08|Bank Nifty|10', '2026-10-09|Bank Nifty|11']). This happens when official Kite candles replace Yahoo candles; review it.",
+  "warn: live ledger has 2 events the replay does not (first: [('Bank Nifty', 'ENTRY', '2026-11-26 09:15'), ('Bank Nifty', 'EXIT', '2026-11-26 13:40')])"
+ ],
  "data": {
   "NSEI": {
-   "last_candle": "2026-11-26 15:30",
+   "last_candle": "2026-11-27 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 0
   },
   "NSEBANK": {
-   "last_candle": "2026-11-26 15:30",
+   "last_candle": "2026-11-27 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4496,
    "overlap_off_over_0_15pct": 0
   },
   "BSESN": {
-   "last_candle": "2026-11-26 15:30",
+   "last_candle": "2026-11-27 15:30",
    "source_of_last": "yahoo",
    "candles_on_last_day": 75,
    "overlap_candles": 4571,
    "overlap_off_over_0_15pct": 26
   },
-  "changed_past_rows": 0,
+  "changed_past_rows": 5,
   "missing_past_rows": 0,
   "live": {
    "start": "2026-10-27",
-   "events": 82,
-   "non_skip": 56,
-   "expected": 82,
+   "events": 90,
+   "non_skip": 62,
+   "expected": 88,
    "missed": 0,
-   "extra": 0,
+   "extra": 2,
    "price_or_side_differs": 0,
    "no_future_price": 0,
    "future_far_from_index": 0
   },
   "stop_rule": {
    "since": "2026-10-27",
-   "net": 359217,
+   "net": 374603,
    "limit": -300000
   },
   "run_coverage": {
@@ -51,12 +54,12 @@
    "good_day": true
   }
  },
- "latest_day": "2026-11-26",
- "trade_rows": 187,
- "summary_rows": 114,
+ "latest_day": "2026-11-27",
+ "trade_rows": 194,
+ "summary_rows": 117,
  "net_by_index": {
-  "Nifty 50": 121581,
-  "Sensex": 119210,
-  "Bank Nifty": 44008
+  "Nifty 50": 132742,
+  "Sensex": 113145,
+  "Bank Nifty": 60260
  }
 }
