@@ -1,9 +1,7 @@
 {
  "issues": [
-  "bulk 2026-11-27: HTTP 403",
-  "BLOCKED: HTTP 403 repeatedly for arch pages (https://nsearchives.nseindia.com/content/equities/block.csv)",
-  "pledge 2026-11-27: HTTP Error 403: Forbidden",
-  "BLOCKED: HTTP 403 repeatedly for api pages (https://www.nseindia.com/api/corporates-financial-results?in)"
+  "bulkhist 2026-11: Expecting value: line 2 column 1 (char 1)",
+  "blockhist 2026-11: Expecting value: line 2 column 1 (char 1)"
  ],
  "sets": {
   "actions": {
@@ -385,7 +383,7 @@
    },
    "2026-11": {
     "ok": true,
-    "rows": 177
+    "rows": 180
    }
   },
   "announcements": {
@@ -8639,7 +8637,11 @@
    },
    "2026-11-26": {
     "ok": true,
-    "rows": 331
+    "rows": 349
+   },
+   "2026-11-27": {
+    "ok": true,
+    "rows": 366
    }
   },
   "block": {
@@ -8738,6 +8740,10 @@
    "2026-11-26": {
     "ok": true,
     "rows": 105
+   },
+   "2026-11-27": {
+    "ok": true,
+    "rows": 11
    }
   },
   "blockhist": {
@@ -9220,8 +9226,8 @@
     "rows": 117
    },
    "2026-11-27": {
-    "err": "HTTP 403",
-    "ok": false
+    "ok": true,
+    "rows": 115
    }
   },
   "bulkhist": {
@@ -18064,6 +18070,10 @@
    "2026-11-26": {
     "ok": true,
     "rows": 3571
+   },
+   "2026-11-27": {
+    "ok": true,
+    "rows": 3572
    }
   },
   "insider": {
@@ -18546,8 +18556,8 @@
     "rows": 1559
    },
    "2026-11-27": {
-    "err": "HTTP Error 403: Forbidden",
-    "ok": false
+    "ok": true,
+    "rows": 1559
    }
   },
   "prices_old": {
@@ -25148,9 +25158,9 @@
    },
    "2026-11": {
     "ok": true,
-    "rows": 55
+    "rows": 58
    }
   }
  },
- "updated": "2026-11-27T15:32:17Z"
+ "updated": "2026-11-27T15:41:24Z"
 }
