@@ -1,6 +1,6 @@
 {
  "status": "warn",
- "run_at": "2026-11-28 01:32",
+ "run_at": "2026-11-28 02:34",
  "today": "2026-11-27",
  "problems": [
   "warn: live ledger has 2 events the replay does not (first: [('Bank Nifty', 'ENTRY', '2026-11-26 09:15'), ('Bank Nifty', 'EXIT', '2026-11-26 13:40')])"
@@ -58,7 +58,7 @@
  "summary_rows": 117,
  "net_by_index": {
   "Sensex": 113145,
-  "Bank Nifty": 60260,
-  "Nifty 50": 132742
+  "Nifty 50": 132742,
+  "Bank Nifty": 60260
  }
 }
